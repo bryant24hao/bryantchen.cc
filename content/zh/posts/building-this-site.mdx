@@ -1,0 +1,38 @@
+---
+title: "Building This Site"
+date: "2026-03-21"
+description: "How I built a minimal personal site with Next.js, MDX, and Tailwind."
+tags: ["web", "building"]
+draft: false
+---
+
+I wanted a personal site that's simple to maintain. Write a Markdown file, push to git, and it's live. No CMS, no database, no fuss.
+
+## Tech choices
+
+- **Next.js** with the App Router for static generation
+- **MDX** for content — Markdown with React components when I need them
+- **Tailwind CSS** for styling — just black, white, and gray
+- **Vercel** for deployment — push and forget
+
+## Content as files
+
+All content lives in a `content/` directory. Thoughts are short `.md` files. Posts are longer `.mdx` files. Both use YAML frontmatter for metadata.
+
+```yaml
+---
+title: "Post Title"
+date: "2026-03-21"
+description: "A short summary."
+---
+```
+
+A small `lib/content.ts` module reads these files at build time using `gray-matter` and `next-mdx-remote`.
+
+## Design principles
+
+1. **Minimal** — no colors, no animations, no JavaScript bloat
+2. **Readable** — good typography, comfortable width, dark mode
+3. **Fast** — static pages, small fonts, tiny dependencies
+
+That's it. If you're reading this, it worked.
