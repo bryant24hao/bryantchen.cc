@@ -1,38 +1,38 @@
 ---
-title: "Building This Site"
+title: "搭建这个网站"
 date: "2026-03-21"
-description: "How I built a minimal personal site with Next.js, MDX, and Tailwind."
+description: "用 Next.js、MDX 和 Tailwind 搭建一个极简个人网站。"
 tags: ["web", "building"]
 draft: false
 ---
 
-I wanted a personal site that's simple to maintain. Write a Markdown file, push to git, and it's live. No CMS, no database, no fuss.
+我想要一个维护起来特别简单的个人网站。写一个 Markdown 文件，push 到 git，就上线了。不要 CMS，不要数据库，不要折腾。
 
-## Tech choices
+## 技术选择
 
-- **Next.js** with the App Router for static generation
-- **MDX** for content — Markdown with React components when I need them
-- **Tailwind CSS** for styling — just black, white, and gray
-- **Vercel** for deployment — push and forget
+- **Next.js** App Router，静态生成
+- **MDX** 写内容——Markdown 为主，需要时可以嵌入 React 组件
+- **Tailwind CSS** 做样式——只有黑白灰
+- **Vercel** 部署——push 即发布
 
-## Content as files
+## 内容即文件
 
-All content lives in a `content/` directory. Thoughts are short `.md` files. Posts are longer `.mdx` files. Both use YAML frontmatter for metadata.
+所有内容放在 `content/` 目录。碎碎念是短小的 `.md` 文件，文章是较长的 `.mdx` 文件。都用 YAML frontmatter 存元数据。
 
 ```yaml
 ---
-title: "Post Title"
+title: "文章标题"
 date: "2026-03-21"
-description: "A short summary."
+description: "一句话摘要。"
 ---
 ```
 
-A small `lib/content.ts` module reads these files at build time using `gray-matter` and `next-mdx-remote`.
+一个小小的 `lib/content.ts` 模块在构建时用 `gray-matter` 和 `next-mdx-remote` 读取和解析这些文件。
 
-## Design principles
+## 设计原则
 
-1. **Minimal** — no colors, no animations, no JavaScript bloat
-2. **Readable** — good typography, comfortable width, dark mode
-3. **Fast** — static pages, small fonts, tiny dependencies
+1. **极简** —— 不用彩色，不加动画，不堆 JavaScript
+2. **好读** —— 舒适的排版、合适的宽度、暗色模式
+3. **快** —— 静态页面、小字体、极少依赖
 
-That's it. If you're reading this, it worked.
+就这样。你能看到这篇文章，说明它成功了。

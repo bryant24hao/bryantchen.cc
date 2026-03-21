@@ -1,6 +1,11 @@
 import type { Project } from "@/lib/projects";
+import type { Locale } from "@/lib/i18n";
 
-export function ProjectCard({ name, description, url, repo, stars, tags }: Project) {
+interface ProjectCardProps extends Project {
+  lang: Locale;
+}
+
+export function ProjectCard({ name, description, url, repo, stars, tags, lang }: ProjectCardProps) {
   const link = url || repo;
 
   const content = (
@@ -19,7 +24,7 @@ export function ProjectCard({ name, description, url, repo, stars, tags }: Proje
         )}
       </div>
       <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-        {description}
+        {description[lang]}
       </p>
       <div className="flex gap-2 mt-2">
         {tags.map((tag) => (

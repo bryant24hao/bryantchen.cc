@@ -23,7 +23,7 @@ export default async function ProjectsPage({ params }: PageProps) {
       <h1 className="text-2xl font-semibold tracking-tight mb-6">{t.title}</h1>
       <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
         {projects.map((project) => (
-          <ProjectCard key={project.name} {...project} />
+          <ProjectCard key={project.name} lang={lang} {...project} />
         ))}
       </div>
     </div>
