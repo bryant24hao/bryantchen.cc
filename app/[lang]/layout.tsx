@@ -1,4 +1,5 @@
-import { locales, type Locale } from "@/lib/i18n";
+import { notFound } from "next/navigation";
+import { locales, defaultLocale, isValidLocale, type Locale } from "@/lib/i18n";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 
@@ -14,6 +15,7 @@ export default async function LangLayout({
   params: Promise<{ lang: string }>;
 }) {
   const { lang: langParam } = await params;
+  if (!isValidLocale(langParam)) notFound();
   const lang = langParam as Locale;
 
   return (
