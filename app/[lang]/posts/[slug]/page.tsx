@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getPosts, getPostBySlug, formatDate } from "@/lib/content";
 import { locales, type Locale } from "@/lib/i18n";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import { highlight } from "sugar-high";
 
 function Code({ children, ...props }: React.ComponentProps<"code">) {
@@ -48,7 +49,11 @@ export default async function PostPage({ params }: PageProps) {
         </p>
       </header>
       <div className="prose">
-        <MDXRemote source={post.content} components={components} />
+        <MDXRemote
+          source={post.content}
+          components={components}
+          options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+        />
       </div>
     </article>
   );
