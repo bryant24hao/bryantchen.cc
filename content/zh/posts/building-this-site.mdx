@@ -1,38 +1,216 @@
 ---
 title: "搭建这个网站"
 date: "2026-03-21"
-description: "用 Next.js、MDX 和 Tailwind 搭建一个极简个人网站。"
+description: "一个晚上，一个命令行窗口，和 AI 聊了几句，个人网站就上线了。完整记录从规划到部署的全过程。"
 tags: ["web", "building"]
 draft: false
 ---
 
-我想要一个维护起来特别简单的个人网站。写一个 Markdown 文件，push 到 git，就上线了。不要 CMS，不要数据库，不要折腾。
+做一个个人网站的念头大概从好几年前就有了。2022 年买了域名，但一直没有真正动手。这次不一样——一个晚上，一个命令行窗口，和 AI 聊了几句，网站就上线了。
 
-## 技术选择
+这篇文章完整记录了从技术选型到部署上线的全过程。
 
-- **Next.js** App Router，静态生成
-- **MDX** 写内容——Markdown 为主，需要时可以嵌入 React 组件
-- **Tailwind CSS** 做样式——只有黑白灰
-- **Vercel** 部署——push 即发布
+## 我想要什么
 
-## 内容即文件
+需求很简单：
 
-所有内容放在 `content/` 目录。碎碎念是短小的 `.md` 文件，文章是较长的 `.mdx` 文件。都用 YAML frontmatter 存元数据。
+- 写 Markdown，push 到 git，自动发布
+- 不要 CMS，不要数据库
+- 视觉极简，黑白灰
+- 支持中英文双语
+- 维护成本趋近于零
 
-```yaml
+## 技术选型
+
+| 决策 | 选择 | 理由 |
+|------|------|------|
+| 框架 | Next.js (App Router) | 支持 MDX、静态生成、未来易扩展 |
+| 部署 | Vercel | push 即发布，免费 SSL |
+| 内容 | `content/` 目录下的 .md/.mdx | 无数据库，git 驱动 |
+| MDX 渲染 | next-mdx-remote + gray-matter | 需要 frontmatter 解析 |
+| 样式 | Tailwind CSS v4 | 极简站不需要组件库 |
+| 代码高亮 | sugar-high | 1KB，零配置 |
+| 包管理 | pnpm | 快 |
+
+没有选 Hexo、Hugo 之类的静态博客生成器，因为 Next.js 给了更大的灵活性——以后想加评论、订阅、OG 图片生成都很方便。
+
+## 项目结构
+
+```
+bryantchen.cc/
+├── app/
+│   ├── layout.tsx              # 根布局
+│   ├── [lang]/                 # 多语言路由
+│   │   ├── layout.tsx          # 语言布局（导航、页脚）
+│   │   ├── page.tsx            # 首页
+│   │   ├── thoughts/page.tsx   # 碎碎念列表
+│   │   ├── posts/
+│   │   │   ├── page.tsx        # 文章列表
+│   │   │   └── [slug]/page.tsx # 单篇文章
+│   │   ├── projects/page.tsx   # 项目展示
+│   │   └── about/page.tsx      # 关于
+├── content/
+│   ├── zh/                     # 中文内容
+│   │   ├── thoughts/           # 碎碎念
+│   │   └── posts/              # 文章
+│   └── en/                     # 英文内容
+│       ├── thoughts/
+│       └── posts/
+├── lib/
+│   ├── content.ts              # 内容读取解析
+│   ├── i18n.ts                 # 多语言字典
+│   └── projects.ts             # 项目数据
+├── components/                 # UI 组件
+├── middleware.ts               # 语言重定向
+└── next.config.ts
+```
+
+## 内容模型
+
+### 碎碎念
+
+短内容，没有标题，文件名即 slug：
+
+```markdown
+// content/zh/thoughts/2026-03-21-hello.md
+---
+date: "2026-03-21"
+tags: ["life"]
+---
+想说的话写在这里，几句话为主。
+```
+
+### 文章
+
+长内容，有标题和摘要：
+
+```markdown
+// content/zh/posts/some-post.mdx
 ---
 title: "文章标题"
 date: "2026-03-21"
-description: "一句话摘要。"
+description: "一句话摘要"
+tags: ["标签"]
+draft: false
 ---
+正文内容，支持完整的 Markdown 和 MDX 语法...
 ```
 
-一个小小的 `lib/content.ts` 模块在构建时用 `gray-matter` 和 `next-mdx-remote` 读取和解析这些文件。
+`lib/content.ts` 在构建时读取这些文件，用 `gray-matter` 解析 frontmatter，按日期倒序排列。draft 为 true 的文章不会出现在生产环境。
 
-## 设计原则
+## 多语言实现
 
-1. **极简** —— 不用彩色，不加动画，不堆 JavaScript
-2. **好读** —— 舒适的排版、合适的宽度、暗色模式
-3. **快** —— 静态页面、小字体、极少依赖
+这是这个网站架构上最有意思的部分。
 
-就这样。你能看到这篇文章，说明它成功了。
+核心思路是用 Next.js App Router 的 `[lang]` 动态路由段：
+
+- `/zh/posts/xxx` 显示中文
+- `/en/posts/xxx` 显示英文
+- 访问 `/` 自动重定向到 `/zh`
+
+```typescript
+// middleware.ts —— 自动重定向到默认语言
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const hasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+  if (hasLocale) return;
+  // 重定向到中文
+  const url = request.nextUrl.clone();
+  url.pathname = `/${defaultLocale}${pathname}`;
+  return NextResponse.redirect(url);
+}
+```
+
+UI 文案（导航、标题、空状态提示等）用一个字典对象管理，不依赖第三方 i18n 库：
+
+```typescript
+// lib/i18n.ts
+const dictionaries = {
+  zh: {
+    nav: { thoughts: "碎碎念", posts: "文章", ... },
+    ...
+  },
+  en: {
+    nav: { thoughts: "thoughts", posts: "posts", ... },
+    ...
+  },
+};
+```
+
+内容按语言分目录，各写各的。不要求每篇都有对应翻译——中文写了但英文没写，英文站那边就不显示，不会报错。
+
+导航栏右上角有一个语言切换链接，点一下在中英文之间切换。
+
+## 部署
+
+部署分三步，总共不到 10 分钟：
+
+**1. 推到 GitHub**
+
+```bash
+git init && git add -A && git commit -m "Initial commit"
+gh repo create bryant24hao/bryantchen.cc --public --source . --push
+```
+
+**2. Vercel 导入**
+
+打开 Vercel，选 GitHub 仓库，点 Deploy。Next.js 项目自动识别，不用配置。
+
+**3. 域名配置**
+
+在 Vercel Settings → Domains 添加 `bryantchen.cc`，然后在 Cloudflare DNS 加两条记录：
+
+| Type | Name | Value |
+|------|------|-------|
+| A | @ | Vercel 给的 IP |
+| CNAME | www | Vercel 给的专属地址 |
+
+注意 Proxy status 要设成 **DNS only**（灰色云朵），让 Vercel 自己管 SSL。
+
+几分钟后 SSL 自动签发，网站在自定义域名上线。
+
+## 安全加固
+
+静态网站攻击面小，但还是做了几个防御性措施：
+
+- **locale 参数校验**——非法路径直接 404，防路径遍历
+- **安全响应头**—— `X-Frame-Options: DENY`、`X-Content-Type-Options: nosniff`、`Referrer-Policy`、`Permissions-Policy`
+- **.env 防泄漏**——gitignore 覆盖无后缀的 `.env`
+- **隐私检查**——每次 commit 前扫描真实 IP、密码、API key
+
+## 写作工作流
+
+现在发布内容只需要：
+
+```bash
+# 1. 新建文件
+vim content/zh/thoughts/2026-03-22-some-thought.md
+
+# 2. 写内容（frontmatter + 正文）
+
+# 3. 发布
+git add content/ && git commit -m "新碎碎念" && git push
+```
+
+Vercel 收到 push 后约 30 秒自动构建部署。整个过程不需要打开任何后台管理界面。
+
+## 后续计划
+
+MVP 上线了，后面想加的东西：
+
+- RSS feed
+- OG 图片自动生成
+- Giscus 评论（基于 GitHub Discussions）
+- 邮件订阅
+- 全文搜索
+- 标签筛选
+
+但不急。先有内容，再完善功能。
+
+## 最后
+
+从有想法到上线，用了一个晚上。以前觉得搭个人网站是个大工程，现在回头看，真正的门槛不是技术，而是动手。工具已经好到这个程度了——写几句需求，AI 帮你搭骨架，你填内容就好。
+
+如果你也一直想做一个自己的网站，现在就是最好的时候。

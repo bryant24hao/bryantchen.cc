@@ -1,38 +1,215 @@
 ---
 title: "Building This Site"
 date: "2026-03-21"
-description: "How I built a minimal personal site with Next.js, MDX, and Tailwind."
+description: "One evening, one terminal window, a few words with AI, and my personal site was live. A full walkthrough from planning to deployment."
 tags: ["web", "building"]
 draft: false
 ---
 
-I wanted a personal site that's simple to maintain. Write a Markdown file, push to git, and it's live. No CMS, no database, no fuss.
+The idea of building a personal website had been on my mind for years. I bought the domain back in 2022 but never actually shipped it. This time was different — one evening, one terminal window, a few words with AI, and the site was live.
 
-## Tech choices
+This post documents the full process from tech decisions to deployment.
 
-- **Next.js** with the App Router for static generation
-- **MDX** for content — Markdown with React components when I need them
-- **Tailwind CSS** for styling — just black, white, and gray
-- **Vercel** for deployment — push and forget
+## What I wanted
 
-## Content as files
+The requirements were simple:
 
-All content lives in a `content/` directory. Thoughts are short `.md` files. Posts are longer `.mdx` files. Both use YAML frontmatter for metadata.
+- Write Markdown, push to git, auto-publish
+- No CMS, no database
+- Minimal black-and-white design
+- Bilingual support (Chinese and English)
+- Near-zero maintenance cost
 
-```yaml
+## Tech stack
+
+| Decision | Choice | Why |
+|----------|--------|-----|
+| Framework | Next.js (App Router) | MDX support, static generation, extensible |
+| Hosting | Vercel | Push to deploy, free SSL |
+| Content | .md/.mdx in `content/` | No database, git-driven |
+| MDX rendering | next-mdx-remote + gray-matter | Frontmatter parsing |
+| Styling | Tailwind CSS v4 | A minimal site doesn't need a component library |
+| Code highlighting | sugar-high | 1KB, zero config |
+| Package manager | pnpm | Fast |
+
+I didn't go with Hexo, Hugo, or other static site generators because Next.js gives more flexibility — adding comments, subscriptions, or OG image generation later is straightforward.
+
+## Project structure
+
+```
+bryantchen.cc/
+├── app/
+│   ├── layout.tsx              # Root layout
+│   ├── [lang]/                 # i18n routing
+│   │   ├── layout.tsx          # Lang layout (nav, footer)
+│   │   ├── page.tsx            # Home
+│   │   ├── thoughts/page.tsx   # Thoughts list
+│   │   ├── posts/
+│   │   │   ├── page.tsx        # Posts list
+│   │   │   └── [slug]/page.tsx # Single post
+│   │   ├── projects/page.tsx   # Projects
+│   │   └── about/page.tsx      # About
+├── content/
+│   ├── zh/                     # Chinese content
+│   │   ├── thoughts/
+│   │   └── posts/
+│   └── en/                     # English content
+│       ├── thoughts/
+│       └── posts/
+├── lib/
+│   ├── content.ts              # Content reader
+│   ├── i18n.ts                 # i18n dictionaries
+│   └── projects.ts             # Project data
+├── components/                 # UI components
+├── middleware.ts               # Locale redirect
+└── next.config.ts
+```
+
+## Content model
+
+### Thoughts
+
+Short-form, no title. The filename is the slug:
+
+```markdown
+// content/en/thoughts/2026-03-21-hello.md
+---
+date: "2026-03-21"
+tags: ["life"]
+---
+A few sentences about whatever's on my mind.
+```
+
+### Posts
+
+Long-form with title and description:
+
+```markdown
+// content/en/posts/some-post.mdx
 ---
 title: "Post Title"
 date: "2026-03-21"
-description: "A short summary."
+description: "One-line summary"
+tags: ["tag"]
+draft: false
 ---
+Full post content with Markdown and MDX support...
 ```
 
-A small `lib/content.ts` module reads these files at build time using `gray-matter` and `next-mdx-remote`.
+`lib/content.ts` reads these files at build time, parses frontmatter with `gray-matter`, and sorts by date descending. Posts with `draft: true` are excluded from production.
 
-## Design principles
+## Internationalization
 
-1. **Minimal** — no colors, no animations, no JavaScript bloat
-2. **Readable** — good typography, comfortable width, dark mode
-3. **Fast** — static pages, small fonts, tiny dependencies
+This is the most interesting architectural piece.
 
-That's it. If you're reading this, it worked.
+The core idea is using Next.js App Router's `[lang]` dynamic segment:
+
+- `/zh/posts/xxx` shows Chinese
+- `/en/posts/xxx` shows English
+- `/` auto-redirects to `/zh`
+
+```typescript
+// middleware.ts — auto-redirect to default locale
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const hasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+  if (hasLocale) return;
+  const url = request.nextUrl.clone();
+  url.pathname = `/${defaultLocale}${pathname}`;
+  return NextResponse.redirect(url);
+}
+```
+
+UI strings (nav labels, headings, empty states) are managed with a plain dictionary object — no third-party i18n library:
+
+```typescript
+// lib/i18n.ts
+const dictionaries = {
+  zh: {
+    nav: { thoughts: "碎碎念", posts: "文章", ... },
+    ...
+  },
+  en: {
+    nav: { thoughts: "thoughts", posts: "posts", ... },
+    ...
+  },
+};
+```
+
+Content is split by locale directory. Each language is independent — if a post exists in Chinese but not English, the English site simply doesn't show it. No errors.
+
+A language toggle link in the top-right corner of the nav switches between Chinese and English.
+
+## Deployment
+
+Three steps, under 10 minutes total:
+
+**1. Push to GitHub**
+
+```bash
+git init && git add -A && git commit -m "Initial commit"
+gh repo create bryant24hao/bryantchen.cc --public --source . --push
+```
+
+**2. Import to Vercel**
+
+Open Vercel, pick the GitHub repo, click Deploy. Next.js is auto-detected — zero configuration needed.
+
+**3. Domain setup**
+
+Add `bryantchen.cc` in Vercel Settings → Domains, then add two DNS records in Cloudflare:
+
+| Type | Name | Value |
+|------|------|-------|
+| A | @ | IP from Vercel |
+| CNAME | www | Vercel's project-specific address |
+
+Important: set Proxy status to **DNS only** (gray cloud) so Vercel handles SSL.
+
+SSL is auto-provisioned in a few minutes. The site is live on the custom domain.
+
+## Security hardening
+
+A static site has a small attack surface, but a few defensive measures are still worth doing:
+
+- **Locale parameter validation** — invalid paths return 404, preventing path traversal
+- **Security response headers** — `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`
+- **.env leak prevention** — gitignore covers bare `.env` files
+- **Privacy checks** — scan for real IPs, passwords, and API keys before every commit
+
+## Writing workflow
+
+Publishing content is now:
+
+```bash
+# 1. Create a file
+vim content/en/thoughts/2026-03-22-some-thought.md
+
+# 2. Write content (frontmatter + body)
+
+# 3. Publish
+git add content/ && git commit -m "New thought" && git push
+```
+
+Vercel picks up the push and deploys in ~30 seconds. No admin dashboard needed.
+
+## What's next
+
+The MVP is live. Things I want to add later:
+
+- RSS feed
+- Auto-generated OG images
+- Giscus comments (GitHub Discussions-based)
+- Email subscriptions
+- Full-text search
+- Tag filtering
+
+But no rush. Content first, features later.
+
+## Final thought
+
+From idea to live site, it took one evening. I used to think building a personal site was a big project. Looking back, the real barrier was never the tech — it was just starting. The tools are good enough now — describe what you want, AI builds the skeleton, you fill in the content.
+
+If you've been meaning to build your own site, now is the best time.
