@@ -15,23 +15,23 @@
 }
 
 .prose h1 {
-  font-size: 1.875rem;
+  font-size: 1.375rem;
   font-weight: 700;
   margin-top: 2rem;
-  margin-bottom: 1rem;
-  letter-spacing: -0.025em;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.015em;
 }
 
 .prose h2 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   margin-top: 1.75rem;
-  margin-bottom: 0.75rem;
-  letter-spacing: -0.025em;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.015em;
 }
 
 .prose h3 {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
