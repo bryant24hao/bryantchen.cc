@@ -58,6 +58,16 @@ export function getPosts(locale: Locale): Post[] {
       const raw = fs.readFileSync(path.join(dir, file), "utf-8");
       const { data, content } = matter(raw);
       const slug = file.replace(/\.(mdx|md)$/, "");
+      // Strip leading h1 if it duplicates the frontmatter title
+      let body = content;
+      if (data.title) {
+        const h1Re = /^\s*#\s+(.+)\s*\n/;
+        const match = body.match(h1Re);
+        if (match && match[1].trim() === data.title.trim()) {
+          body = body.replace(h1Re, "");
+        }
+      }
+
       return {
         slug,
         title: data.title,
@@ -65,7 +75,7 @@ export function getPosts(locale: Locale): Post[] {
         description: data.description || "",
         tags: data.tags,
         draft: data.draft ?? false,
-        content,
+        content: body,
       } as Post;
     })
     .filter((post) => !post.draft);
