@@ -98,6 +98,33 @@
   line-height: 1.6;
 }
 
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.prose thead {
+  border-bottom: 2px solid var(--color-neutral-200);
+}
+
+.prose th {
+  font-weight: 600;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+}
+
+.prose td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--color-neutral-100);
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: none;
+}
+
 .prose img {
   border-radius: 0.5rem;
   margin-top: 1.5rem;
@@ -129,6 +156,14 @@
   .prose pre {
     background-color: var(--color-neutral-900);
     border-color: var(--color-neutral-800);
+  }
+
+  .prose thead {
+    border-bottom-color: var(--color-neutral-700);
+  }
+
+  .prose td {
+    border-bottom-color: var(--color-neutral-800);
   }
 
   .prose hr {
