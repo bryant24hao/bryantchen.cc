@@ -8,12 +8,12 @@ const LIFE_EXPECTANCY = 90;
 function getAge() {
   const now = Date.now();
   const ageMs = now - BIRTHDAY;
-  const ageYears = ageMs / (365.25 * 24 * 60 * 60 * 1000);
-  return ageYears;
+  return ageMs / (365.25 * 24 * 60 * 60 * 1000);
 }
 
 export function AgeProgress() {
   const [age, setAge] = useState<number | null>(null);
+  const [showETD, setShowETD] = useState(false);
 
   useEffect(() => {
     setAge(getAge());
@@ -23,21 +23,22 @@ export function AgeProgress() {
 
   if (age === null) return null;
 
-  const progress = (age / LIFE_EXPECTANCY) * 100;
   const yearsLeft = LIFE_EXPECTANCY - age;
 
   return (
-    <div className="mt-6">
-      <div className="flex items-baseline justify-between text-xs text-neutral-400 dark:text-neutral-500 mb-1.5 font-mono">
-        <span>{age.toFixed(8)}</span>
-        <span>{yearsLeft.toFixed(2)} yrs left</span>
-      </div>
-      <div className="h-1 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-neutral-900 dark:bg-neutral-100 rounded-full transition-none"
-          style={{ width: `${Math.min(progress, 100)}%` }}
-        />
-      </div>
-    </div>
+    <p
+      className="mt-6 font-mono text-sm text-neutral-400 dark:text-neutral-500 cursor-pointer select-none tabular-nums"
+      onClick={() => setShowETD((v) => !v)}
+    >
+      {showETD ? (
+        <>
+          <span>{yearsLeft.toFixed(20)} ETD</span>
+        </>
+      ) : (
+        <>
+          <span>{age.toFixed(20)}</span>
+        </>
+      )}
+    </p>
   );
 }
