@@ -34,7 +34,7 @@ export function ThoughtCard({ date, content, tags, lang }: ThoughtCardProps) {
   return (
     <div className="py-4 border-b border-neutral-100 dark:border-neutral-800 last:border-0">
       <p className="text-sm text-neutral-500 mb-1">{formatDate(date, lang)}</p>
-      <div className="text-sm text-neutral-800 dark:text-neutral-200 whitespace-pre-line leading-relaxed">
+      <div className="text-neutral-800 dark:text-neutral-200 whitespace-pre-line">
         <Linkify text={content} />
       </div>
       {tags && tags.length > 0 && (
