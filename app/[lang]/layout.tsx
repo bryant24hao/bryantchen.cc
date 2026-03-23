@@ -22,7 +22,7 @@ export default async function LangLayout({
     <div lang={lang} className="max-w-2xl mx-auto px-6">
       <Nav lang={lang} />
       <main className="min-h-[60vh] py-8">{children}</main>
-      <Footer />
+      <Footer lang={lang} />
     </div>
   );
 }

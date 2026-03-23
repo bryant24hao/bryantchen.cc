@@ -22,12 +22,6 @@ export function Nav({ lang }: { lang: Locale }) {
             {t[key]}
           </Link>
         ))}
-        <Link
-          href={`/${otherLang}`}
-          className="text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
-        >
-          {otherLang === "zh" ? "中文" : "EN"}
-        </Link>
       </div>
     </nav>
   );
