@@ -45,6 +45,8 @@
 .prose a {
   text-decoration: underline;
   text-underline-offset: 2px;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .prose a:hover {
