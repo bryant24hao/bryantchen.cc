@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 const BIRTHDAY = new Date("1994-06-21T00:00:00+08:00").getTime();
-const LIFE_EXPECTANCY = 80;
+const LIFE_EXPECTANCY = 90;
 
 function getAge() {
   const now = Date.now();
