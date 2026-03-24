@@ -41,12 +41,9 @@ export function getThoughts(locale: Locale): Thought[] {
     } as Thought;
   });
 
-  return thoughts.sort((a, b) => {
-    const diff = new Date(b.date).getTime() - new Date(a.date).getTime();
-    if (diff !== 0) return diff;
-    // Same date: sort by slug descending (later published files sort first)
-    return b.slug.localeCompare(a.slug);
-  });
+  return thoughts.sort(
+    (a, b) => parseDate(b.date).getTime() - parseDate(a.date).getTime()
+  );
 }
 
 export function getPosts(locale: Locale): Post[] {
@@ -84,7 +81,7 @@ export function getPosts(locale: Locale): Post[] {
     .filter((post) => !post.draft);
 
   return posts.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    (a, b) => parseDate(b.date).getTime() - parseDate(a.date).getTime()
   );
 }
 
@@ -96,8 +93,14 @@ export function getPostBySlug(
   return posts.find((p) => p.slug === slug);
 }
 
+// Parse date string: supports "YYYY-MM-DD" and "YYYY-MM-DDTHH:mm:ss"
+function parseDate(dateStr: string): Date {
+  if (dateStr.includes("T")) return new Date(dateStr);
+  return new Date(dateStr + "T00:00:00");
+}
+
 export function formatDate(dateStr: string, locale: Locale): string {
-  const date = new Date(dateStr + "T00:00:00");
+  const date = parseDate(dateStr);
   return date.toLocaleDateString(locale === "zh" ? "zh-CN" : "en-US", {
     year: "numeric",
     month: "long",
