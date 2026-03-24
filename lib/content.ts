@@ -41,9 +41,12 @@ export function getThoughts(locale: Locale): Thought[] {
     } as Thought;
   });
 
-  return thoughts.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  return thoughts.sort((a, b) => {
+    const diff = new Date(b.date).getTime() - new Date(a.date).getTime();
+    if (diff !== 0) return diff;
+    // Same date: sort by slug descending (later published files sort first)
+    return b.slug.localeCompare(a.slug);
+  });
 }
 
 export function getPosts(locale: Locale): Post[] {
