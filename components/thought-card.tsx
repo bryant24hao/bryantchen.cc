@@ -1,18 +1,20 @@
 import { formatDate, type Thought } from "@/lib/content";
 import type { Locale } from "@/lib/i18n";
+import { ThoughtShareButton } from "./thought-share-button";
 
 interface ThoughtCardProps extends Thought {
   lang: Locale;
 }
 
 const URL_RE = /(https?:\/\/[^\s]+)/g;
+const URL_TEST = /^https?:\/\/[^\s]+$/;
 
 function Linkify({ text }: { text: string }) {
   const parts = text.split(URL_RE);
   return (
     <>
       {parts.map((part, i) =>
-        URL_RE.test(part) ? (
+        URL_TEST.test(part) ? (
           <a
             key={i}
             href={part}
@@ -30,25 +32,35 @@ function Linkify({ text }: { text: string }) {
   );
 }
 
-export function ThoughtCard({ date, content, tags, lang }: ThoughtCardProps) {
+export function ThoughtCard({ slug, date, content, tags, lang }: ThoughtCardProps) {
   return (
-    <div className="py-4 border-b border-neutral-100 dark:border-neutral-800 last:border-0">
+    <div id={slug} className="py-4 border-b border-neutral-100 dark:border-neutral-800 last:border-0 scroll-mt-24">
       <p className="text-sm text-neutral-500 mb-1">{formatDate(date, lang)}</p>
       <div className="text-neutral-800 dark:text-neutral-200 whitespace-pre-line">
         <Linkify text={content} />
       </div>
-      {tags && tags.length > 0 && (
-        <div className="flex gap-2 mt-2">
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="text-xs text-neutral-400 dark:text-neutral-500"
-            >
-              #{tag}
-            </span>
-          ))}
-        </div>
-      )}
+      <div className="flex items-center justify-between mt-2">
+        {tags && tags.length > 0 ? (
+          <div className="flex gap-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="text-xs text-neutral-400 dark:text-neutral-500"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <div />
+        )}
+        <ThoughtShareButton
+          content={content}
+          date={date}
+          slug={slug}
+          lang={lang}
+        />
+      </div>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import { highlight } from "sugar-high";
+import { PostShareButton } from "@/components/post-share-button";
 
 function Code({ children, ...props }: React.ComponentProps<"code">) {
   const isInline = typeof children === "string" && !children.includes("\n");
@@ -17,6 +18,25 @@ function Code({ children, ...props }: React.ComponentProps<"code">) {
 }
 
 const components = { code: Code };
+
+function stripMarkdown(md: string): string {
+  return md
+    .replace(/^---[\s\S]*?---\n*/m, "")  // frontmatter
+    .replace(/^#{1,6}\s+/gm, "")          // headings
+    .replace(/\*\*(.+?)\*\*/g, "$1")      // bold
+    .replace(/\*(.+?)\*/g, "$1")          // italic
+    .replace(/`{3}[\s\S]*?`{3}/g, "")     // code blocks
+    .replace(/`(.+?)`/g, "$1")            // inline code
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // links
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "") // images
+    .replace(/^\s*[-*+]\s+/gm, "")        // list markers
+    .replace(/^\s*\d+\.\s+/gm, "")        // numbered lists
+    .replace(/^\s*>\s+/gm, "")            // blockquotes
+    .replace(/\|.*\|/g, "")               // tables
+    .replace(/^[-|:\s]+$/gm, "")          // table separators
+    .replace(/\n{3,}/g, "\n\n")           // excess newlines
+    .trim();
+}
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
@@ -56,6 +76,14 @@ export default async function PostPage({ params }: PageProps) {
           options={{ mdxOptions: { remarkPlugins: [remarkGfm, remarkBreaks] } }}
         />
       </div>
+      <PostShareButton
+        title={post.title}
+        description={post.description}
+        content={stripMarkdown(post.content)}
+        date={post.date}
+        slug={slug}
+        lang={lang}
+      />
     </article>
   );
 }
