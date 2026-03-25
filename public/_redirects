@@ -1,0 +1,6 @@
+# Redirect root to Chinese version
+/ /zh 302
+/thoughts /zh/thoughts 302
+/posts /zh/posts 302
+/projects /zh/projects 302
+/about /zh/about 302
