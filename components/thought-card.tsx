@@ -6,8 +6,8 @@ interface ThoughtCardProps extends Thought {
   lang: Locale;
 }
 
-const URL_RE = /(https?:\/\/[^\s]+)/g;
-const URL_TEST = /^https?:\/\/[^\s]+$/;
+const URL_RE = /(https?:\/\/[^\s\u3000-\u303F\uFF00-\uFFEF\u3001\u3002\uff0c\uff0e\uff1b\uff1a\uff01\uff1f\u201c\u201d\u2018\u2019\u300a\u300b\u3010\u3011]+)/g;
+const URL_TEST = /^https?:\/\//;
 
 function Linkify({ text }: { text: string }) {
   const parts = text.split(URL_RE);
