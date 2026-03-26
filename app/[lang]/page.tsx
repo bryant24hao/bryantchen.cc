@@ -3,7 +3,7 @@ import { getThoughts, getPosts } from "@/lib/content";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { ThoughtCard } from "@/components/thought-card";
 import { PostCard } from "@/components/post-card";
-import { AgeProgress } from "@/components/age-progress";
+
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -22,7 +22,6 @@ export default async function Home({ params }: PageProps) {
         <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
           {t.intro}
         </p>
-        <AgeProgress />
       </section>
 
       {thoughts.length > 0 && (
