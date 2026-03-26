@@ -17,7 +17,7 @@ export const projects: Project[] = [
       en: "Pixel desktop companion for M5Stack Cardputer (ESP32-S3). AI chat, voice input, real-time weather, synced macOS desktop pet.",
     },
     repo: "https://github.com/bryant24hao/ClawPuter",
-    stars: 47,
+    stars: 68,
     tags: ["C++", "ESP32", "IoT"],
   },
   {
