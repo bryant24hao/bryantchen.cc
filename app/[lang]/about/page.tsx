@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getDictionary, type Locale } from "@/lib/i18n";
+import { SoloCounter } from "@/components/solo-counter";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -47,9 +48,10 @@ export default async function AboutPage({ params }: PageProps) {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight mb-6">{t.title}</h1>
+      <h1 className="text-2xl font-semibold tracking-tight mb-4">{t.title}</h1>
+      <SoloCounter lang={lang} />
 
-      <div className="space-y-4 text-neutral-700 dark:text-neutral-300 leading-relaxed">
+      <div className="mt-6 space-y-4 text-neutral-700 dark:text-neutral-300 leading-relaxed">
         <p>{t.intro1}</p>
         <p>
           {t.intro2Pre}
