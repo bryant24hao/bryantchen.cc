@@ -7,13 +7,162 @@
     <link>https://bryantchen.cc/zh</link>
     <description>Bryant 的个人网站 — 独立开发、AI、产品思考</description>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 07 Apr 2026 12:11:40 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 07 Apr 2026 15:19:46 GMT</lastBuildDate>
     <atom:link href="https://bryantchen.cc/zh/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>AI 时代构建产品有一个充分不必要条件：在做产品的第一天，可能你就得想好如何打造“产品奇观”。
+
+产品奇观这个东西，很多时候不一定是想出来的，但是如果你第一天不…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-04-07-product-spectacle</guid>
+      <pubDate>Tue, 07 Apr 2026 14:17:00 GMT</pubDate>
+      <description>AI 时代构建产品有一个充分不必要条件：在做产品的第一天，可能你就得想好如何打造“产品奇观”。
+
+产品奇观这个东西，很多时候不一定是想出来的，但是如果你第一天不想的话，它一定是不存在的。包括说当你构建了一个产品之后，如果你觉得它很难构成产品奇观，那大概率它是不会成功或者火爆的。</description>
+      <content:encoded><![CDATA[AI 时代构建产品有一个充分不必要条件：在做产品的第一天，可能你就得想好如何打造“产品奇观”。
+
+产品奇观这个东西，很多时候不一定是想出来的，但是如果你第一天不想的话，它一定是不存在的。包括说当你构建了一个产品之后，如果你觉得它很难构成产品奇观，那大概率它是不会成功或者火爆的。]]></content:encoded>
+    </item>
+    <item>
+      <title>看到朋友的项目被别人逆向后在 Github 开源，一个感慨是现在 build in public 变了。你必须以相对高的完成度发布、宣发、卖出去。否则很被动，另…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-04-07-ship-before-open</guid>
+      <pubDate>Tue, 07 Apr 2026 13:27:00 GMT</pubDate>
+      <description>看到朋友的项目被别人逆向后在 Github 开源，一个感慨是现在 build in public 变了。你必须以相对高的完成度发布、宣发、卖出去。否则很被动，另外和你的真实用户在一起，远离开发者。</description>
+      <content:encoded><![CDATA[看到朋友的项目被别人逆向后在 Github 开源，一个感慨是现在 build in public 变了。你必须以相对高的完成度发布、宣发、卖出去。否则很被动，另外和你的真实用户在一起，远离开发者。]]></content:encoded>
+    </item>
+    <item>
+      <title>商业产品的最小闭环才意味着开发完成，所谓最小闭环指的是：产品 demo 、基本的登录、基础的支付与订阅、官网。完成发布和内测，有之前一个付费用户，这才是最小闭环…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-04-07-minimum-viable-loop</guid>
+      <pubDate>Tue, 07 Apr 2026 11:46:00 GMT</pubDate>
+      <description>商业产品的最小闭环才意味着开发完成，所谓最小闭环指的是：产品 demo 、基本的登录、基础的支付与订阅、官网。完成发布和内测，有之前一个付费用户，这才是最小闭环。
+
+否则都不算。</description>
+      <content:encoded><![CDATA[商业产品的最小闭环才意味着开发完成，所谓最小闭环指的是：产品 demo 、基本的登录、基础的支付与订阅、官网。完成发布和内测，有之前一个付费用户，这才是最小闭环。
+
+否则都不算。]]></content:encoded>
+    </item>
+    <item>
+      <title>一人公司到底是在追求什么？
+
+最近总有人问我这个问题。我现在的答案很简单：一个是为了自由，另一个是为了养成独立造血的能力，真正对结果负责。不要自嗨，要做有人买单…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-04-04-one-person-company-pmf</guid>
+      <pubDate>Sat, 04 Apr 2026 00:27:00 GMT</pubDate>
+      <description>一人公司到底是在追求什么？
+
+最近总有人问我这个问题。我现在的答案很简单：一个是为了自由，另一个是为了养成独立造血的能力，真正对结果负责。不要自嗨，要做有人买单的产品，形成一个完整的商业闭环。
+
+另外，我最近一直在想的一个命题是：到底什么样的切入点适合小团队和一人公司去做？哪些方向其实更像是在讲故事，并不适合我这样的阶段？想清楚这件事之后，很多东西都会自然变得清楚。
+
+早点跑通 PMF，加油。</description>
+      <content:encoded><![CDATA[一人公司到底是在追求什么？
+
+最近总有人问我这个问题。我现在的答案很简单：一个是为了自由，另一个是为了养成独立造血的能力，真正对结果负责。不要自嗨，要做有人买单的产品，形成一个完整的商业闭环。
+
+另外，我最近一直在想的一个命题是：到底什么样的切入点适合小团队和一人公司去做？哪些方向其实更像是在讲故事，并不适合我这样的阶段？想清楚这件事之后，很多东西都会自然变得清楚。
+
+早点跑通 PMF，加油。]]></content:encoded>
+    </item>
+    <item>
+      <title>当你发现一个产品形态不对劲的时候，应该果断放弃还是先再挣扎一下？最近在思考这个问题。
+
+我觉得成为独立开发者后，最大的不爽之处是，Vibe Coding 容易稀…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-03-31-vibe-coding-trap</guid>
+      <pubDate>Tue, 31 Mar 2026 17:23:00 GMT</pubDate>
+      <description>当你发现一个产品形态不对劲的时候，应该果断放弃还是先再挣扎一下？最近在思考这个问题。
+
+我觉得成为独立开发者后，最大的不爽之处是，Vibe Coding 容易稀释自己作为产品经理的产品定义浓度，反而将大量的时间放在了 build 和疲于应付发布上。要警醒这一点啊，做产品首先要抓住真正的需求和定义出差异化的体验。要牢记的一点是「424：时间精力分配上，40% 找需求 + 20%开发 + 40%宣传」，千万不要本末倒置啊。</description>
+      <content:encoded><![CDATA[当你发现一个产品形态不对劲的时候，应该果断放弃还是先再挣扎一下？最近在思考这个问题。
+
+我觉得成为独立开发者后，最大的不爽之处是，Vibe Coding 容易稀释自己作为产品经理的产品定义浓度，反而将大量的时间放在了 build 和疲于应付发布上。要警醒这一点啊，做产品首先要抓住真正的需求和定义出差异化的体验。要牢记的一点是「424：时间精力分配上，40% 找需求 + 20%开发 + 40%宣传」，千万不要本末倒置啊。]]></content:encoded>
+    </item>
+    <item>
+      <title>周日晚上重温贾科长《山河故人》，科长对于 2025 的电子设备的想象是透明的液态玻璃，虽然 GUI 还是套用了 2014 年的，但不得不说，人类想象的 2025…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-03-31-mountains-may-depart-software</guid>
+      <pubDate>Tue, 31 Mar 2026 17:01:00 GMT</pubDate>
+      <description>周日晚上重温贾科长《山河故人》，科长对于 2025 的电子设备的想象是透明的液态玻璃，虽然 GUI 还是套用了 2014 年的，但不得不说，人类想象的 2025 年硬件还是没有达到，但软件却超出了人们的想象。普通人往往会低估软件的发展、高估了硬件的发展。</description>
+      <content:encoded><![CDATA[周日晚上重温贾科长《山河故人》，科长对于 2025 的电子设备的想象是透明的液态玻璃，虽然 GUI 还是套用了 2014 年的，但不得不说，人类想象的 2025 年硬件还是没有达到，但软件却超出了人们的想象。普通人往往会低估软件的发展、高估了硬件的发展。]]></content:encoded>
+    </item>
+    <item>
+      <title>关于自己和周遭的几个洞察</title>
+      <link>https://bryantchen.cc/zh/posts/several-observations-about-myself-and-the-world</link>
+      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/several-observations-about-myself-and-the-world</guid>
+      <pubDate>Sat, 28 Mar 2026 01:26:00 GMT</pubDate>
+      <description>关于熬夜、AI、发布、春天、自然节律与旁观者视角的一组记录。</description>
+      <content:encoded><![CDATA[关于自己和周遭的几个洞察：
+
+## 1. 熬夜与节律
+
+熬夜是个坏东西，过去的几个工作日，我好像有点时间颠倒了，当然对于一人公司的我也没有工作日一说，但熬夜让人没有规律的作息和工作时间，总归是不好的。
+
+## 2. 多和没怎么接触 AI 的人聊天
+
+最近和做 AI 的人聊得太多之后，我觉得接下来要多和没怎么接触过 AI 的人多聊，他们的需求和痛点可能才是最关键的。做 AI 的人一是都太疯癫了，觉得自己无所不能；二是觉得不拥抱 AI 的人都是傻子。对，我也是在骂我自己。但我从学《控制论》的第一天起就牢记祖师爷说过的一句话：“人有人的用处”。
+
+## 3. 异动之前的活跃
+
+一个人如果发表暴论或者在公众场合很活跃，可以证明几个事情，一是 ta 要有工作上的异动了，二是在孔雀开屏准备拿融资或者要创业了。
+
+## 4. 关于发布与工匠精神
+
+看到总有人鼓吹“产品做到 30% 就可以发布了”，但身边也有把产品做到尽可能好再发布的人，特别是我今天听到《诗梳风》的最新一期和谜底 61 的对谈，让人感到踏实，我希望有工匠精神的人可以得到用户的奖励。
+
+## 5. 北京的春天
+
+我今天最受到触动的瞬间是 —— 下午出门骑车在路边看到一句花开，原来这才是北京的春天啊，我 25-30 岁的春天都看到了些什么啊。一生之计在于春！
+
+## 6. 一日之计在于晨
+
+话说回来了，一日之际在于晨，别熬夜了，我忽然有点理解 Birdwatcher 了，除了亲近大自然外，和自然的节律一起醒来、作为旁观者参与进来是很美妙的事情。
+
+## 7. 猫头鹰视角
+
+说到这里，我想到上周末看《巴斯特·斯特鲁格斯的歌谣》中的一段，以猫头鹰视角记录淘金山谷中的故事，这种视角真好。人到三十好几了，终于懂了这部电影，也终于懂了“天地不仁，以万物为刍狗”到底在说啥了。]]></content:encoded>
+    </item>
+    <item>
+      <title>我慢慢接受了一件事：
+
+不一定非要把一个完整的大产品推到面前，才算发布。
+
+对我来说，MemoryX 也许已经错过了“作为完整产品被推出”的最好时机。
+但这不意…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-03-28-memoryx-plugin-first</guid>
+      <pubDate>Sat, 28 Mar 2026 01:16:00 GMT</pubDate>
+      <description>我慢慢接受了一件事：
+
+不一定非要把一个完整的大产品推到面前，才算发布。
+
+对我来说，MemoryX 也许已经错过了“作为完整产品被推出”的最好时机。
+但这不意味着里面的东西没有价值。
+
+更现实的做法，也许是先把插件发出去。
+让一个更小、更具体的切口先见人，先收集真实信号。
+
+有时候，发布不是把所有东西一次讲完。
+而是先把最有生命力的那一部分交给世界。</description>
+      <content:encoded><![CDATA[我慢慢接受了一件事：
+
+不一定非要把一个完整的大产品推到面前，才算发布。
+
+对我来说，MemoryX 也许已经错过了“作为完整产品被推出”的最好时机。
+但这不意味着里面的东西没有价值。
+
+更现实的做法，也许是先把插件发出去。
+让一个更小、更具体的切口先见人，先收集真实信号。
+
+有时候，发布不是把所有东西一次讲完。
+而是先把最有生命力的那一部分交给世界。]]></content:encoded>
+    </item>
     <item>
       <title>创业中做事的三个原则与坐标轴</title>
       <link>https://bryantchen.cc/zh/posts/entrepreneurship-three-axes</link>
       <guid isPermaLink="true">https://bryantchen.cc/zh/posts/entrepreneurship-three-axes</guid>
-      <pubDate>Thu, 26 Mar 2026 00:00:00 GMT</pubDate>
+      <pubDate>Thu, 26 Mar 2026 01:11:00 GMT</pubDate>
       <description>深夜反思：在『自己喜欢』之外，更要关注『用户需要』和『市场买单』。</description>
       <content:encoded><![CDATA[创业中做事的几个原则。
 
@@ -33,7 +182,7 @@
 1. 单个平…</title>
       <link>https://bryantchen.cc/zh/thoughts</link>
       <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-03-24-multi-platform-publishing</guid>
-      <pubDate>Tue, 24 Mar 2026 22:00:00 GMT</pubDate>
+      <pubDate>Tue, 24 Mar 2026 15:42:00 GMT</pubDate>
       <description>最近几个瞬间逐渐让我有点理解为什么如果你做内容，需要发布在多平台了。看起来是一些常识，但人性（最主要是懒和对某些平台的漠视）会让自己忽略这一点：
 
 1. 单个平台的流量规则就是随机事件，比如小红书，作为新手其实很难搞清楚，什么内容有量什么内容没量。但作为创作者，忽略数据的随机性，真诚分享、绝对利他，保持这样的原则去产出内容就够了。因为这种原则下产出的内容，在 A 平台没数据，说不定在 B 平台就有量了。
@@ -53,7 +202,7 @@
       <title>最近读过的最有共鸣的文章是 Eric Xu 的这篇《2016年我做过一次AI写代码创业》 https://x.com/xleaps/status/2033027…</title>
       <link>https://bryantchen.cc/zh/thoughts</link>
       <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-03-24-action-beats-anxiety</guid>
-      <pubDate>Tue, 24 Mar 2026 10:00:00 GMT</pubDate>
+      <pubDate>Tue, 24 Mar 2026 00:14:00 GMT</pubDate>
       <description>最近读过的最有共鸣的文章是 Eric Xu 的这篇《2016年我做过一次AI写代码创业》 https://x.com/xleaps/status/2033027083476054377。其实几周前读过一次，今天我又仔细读了一下，读完之后还是不断划线的那种，作为硅谷创业者，Eric 讲述了这样的一个观察：
 
 「看见未来 ≠ 到达未来」，在生活和工作中，总是会存在三种错位「有视野没资源、有资源没方向、有贡献不自知。」
@@ -71,7 +220,7 @@
       <title>写在一人公司第 60 天</title>
       <link>https://bryantchen.cc/zh/posts/day-60-of-solo-company</link>
       <guid isPermaLink="true">https://bryantchen.cc/zh/posts/day-60-of-solo-company</guid>
-      <pubDate>Mon, 23 Mar 2026 00:00:00 GMT</pubDate>
+      <pubDate>Mon, 23 Mar 2026 01:42:00 GMT</pubDate>
       <description>写在一人公司第 60 天</description>
       <content:encoded><![CDATA[## 一些心愿的实现门槛降低了
 
@@ -100,10 +249,18 @@
 先写到这，找时间可以再完整写写，今天先到这里。晚安了！]]></content:encoded>
     </item>
     <item>
+      <title>给自己做一个个人博客网站这件事可能是从很多年前就有的心愿，过去几年或因为时间问题、或因为自己的动手能力有限，甚至在 2022 年买了自己的域名最终也没有部署和上…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-03-21-hello</guid>
+      <pubDate>Sat, 21 Mar 2026 16:16:00 GMT</pubDate>
+      <description>给自己做一个个人博客网站这件事可能是从很多年前就有的心愿，过去几年或因为时间问题、或因为自己的动手能力有限，甚至在 2022 年买了自己的域名最终也没有部署和上线。不过这次不一样了，就在昨天的一个晚上，我打开了一个命令行的窗口，和 AI 沟通了几句，我的个人网站就出来了。得益于自己有比较好的上下文维护习惯，这个网站的内容架构也很快搭建起来了。你好，来到我个人主页的人，在这里我会记录自己的想法、作品和成长。谢谢你来！</description>
+      <content:encoded><![CDATA[给自己做一个个人博客网站这件事可能是从很多年前就有的心愿，过去几年或因为时间问题、或因为自己的动手能力有限，甚至在 2022 年买了自己的域名最终也没有部署和上线。不过这次不一样了，就在昨天的一个晚上，我打开了一个命令行的窗口，和 AI 沟通了几句，我的个人网站就出来了。得益于自己有比较好的上下文维护习惯，这个网站的内容架构也很快搭建起来了。你好，来到我个人主页的人，在这里我会记录自己的想法、作品和成长。谢谢你来！]]></content:encoded>
+    </item>
+    <item>
       <title>搭建这个网站</title>
       <link>https://bryantchen.cc/zh/posts/building-this-site</link>
       <guid isPermaLink="true">https://bryantchen.cc/zh/posts/building-this-site</guid>
-      <pubDate>Sat, 21 Mar 2026 00:00:00 GMT</pubDate>
+      <pubDate>Sat, 21 Mar 2026 04:30:00 GMT</pubDate>
       <description>一个晚上，一个命令行窗口，和 AI 聊了几句，个人网站就上线了。完整记录从规划到部署的全过程。</description>
       <content:encoded><![CDATA[做一个个人网站的念头大概从好几年前就有了。2022 年买了域名，但一直没有真正动手。这次不一样——一个晚上，一个命令行窗口，和 AI 聊了几句，网站就上线了。
 
@@ -313,14 +470,6 @@ MVP 上线了，后面想加的东西：
 从有想法到上线，用了一个晚上。以前觉得搭个人网站是个大工程，现在回头看，真正的门槛不是技术，而是动手。工具已经好到这个程度了——写几句需求，AI 帮你搭骨架，你填内容就好。
 
 如果你也一直想做一个自己的网站，现在就是最好的时候。]]></content:encoded>
-    </item>
-    <item>
-      <title>给自己做一个个人博客网站这件事可能是从很多年前就有的心愿，过去几年或因为时间问题、或因为自己的动手能力有限，甚至在 2022 年买了自己的域名最终也没有部署和上…</title>
-      <link>https://bryantchen.cc/zh/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-03-21-hello</guid>
-      <pubDate>Sat, 21 Mar 2026 00:00:00 GMT</pubDate>
-      <description>给自己做一个个人博客网站这件事可能是从很多年前就有的心愿，过去几年或因为时间问题、或因为自己的动手能力有限，甚至在 2022 年买了自己的域名最终也没有部署和上线。不过这次不一样了，就在昨天的一个晚上，我打开了一个命令行的窗口，和 AI 沟通了几句，我的个人网站就出来了。得益于自己有比较好的上下文维护习惯，这个网站的内容架构也很快搭建起来了。你好，来到我个人主页的人，在这里我会记录自己的想法、作品和成长。谢谢你来！</description>
-      <content:encoded><![CDATA[给自己做一个个人博客网站这件事可能是从很多年前就有的心愿，过去几年或因为时间问题、或因为自己的动手能力有限，甚至在 2022 年买了自己的域名最终也没有部署和上线。不过这次不一样了，就在昨天的一个晚上，我打开了一个命令行的窗口，和 AI 沟通了几句，我的个人网站就出来了。得益于自己有比较好的上下文维护习惯，这个网站的内容架构也很快搭建起来了。你好，来到我个人主页的人，在这里我会记录自己的想法、作品和成长。谢谢你来！]]></content:encoded>
     </item>
   </channel>
 </rss>

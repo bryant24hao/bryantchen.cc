@@ -1,5 +1,5 @@
 ---
-date: "2026-03-28"
+date: "2026-03-28T01:16:00"
 tags: ["memoryx", "shipping"]
 ---
 I'm slowly accepting something:

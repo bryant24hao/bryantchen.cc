@@ -1,5 +1,5 @@
 ---
-date: "2026-03-24"
+date: "2026-03-24T15:42:00"
 tags: ["creating", "growth"]
 ---
 A few recent moments have helped me understand why, if you create content, you need to publish across multiple platforms. It seems like common sense, but human nature — mainly laziness and indifference toward certain platforms — makes us overlook this:

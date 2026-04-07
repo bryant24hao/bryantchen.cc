@@ -1,5 +1,5 @@
 ---
-date: "2026-03-31"
+date: "2026-03-31T17:23:00"
 tags: ["indie-hacking", "product", "thoughts"]
 ---
 When you realize a product's form factor feels wrong, should you cut your losses immediately or struggle with it a bit longer? I've been thinking about this recently.

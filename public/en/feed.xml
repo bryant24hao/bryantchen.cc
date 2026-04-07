@@ -7,13 +7,161 @@
     <link>https://bryantchen.cc/en</link>
     <description>Bryant&apos;s personal website — indie dev, AI, product thinking</description>
     <language>en</language>
-    <lastBuildDate>Tue, 07 Apr 2026 12:11:40 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 07 Apr 2026 15:19:46 GMT</lastBuildDate>
     <atom:link href="https://bryantchen.cc/en/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>AI 时代构建产品有一个“充分不必要条件”：在做产品的第一天，可能你就得想好如何打造“产品奇观”。
+
+产品奇观这个东西，很多时候不一定是想出来的，但是如果你第一…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-07-product-spectacle</guid>
+      <pubDate>Tue, 07 Apr 2026 14:17:00 GMT</pubDate>
+      <description>AI 时代构建产品有一个“充分不必要条件”：在做产品的第一天，可能你就得想好如何打造“产品奇观”。
+
+产品奇观这个东西，很多时候不一定是想出来的，但是如果你第一天不想的话，它一定是不存在的。包括说当你构建了一个产品之后，如果你觉得它很难构成产品奇观，那大概率它是不会成功或者火爆的。</description>
+      <content:encoded><![CDATA[AI 时代构建产品有一个“充分不必要条件”：在做产品的第一天，可能你就得想好如何打造“产品奇观”。
+
+产品奇观这个东西，很多时候不一定是想出来的，但是如果你第一天不想的话，它一定是不存在的。包括说当你构建了一个产品之后，如果你觉得它很难构成产品奇观，那大概率它是不会成功或者火爆的。]]></content:encoded>
+    </item>
+    <item>
+      <title>Seeing a friend’s project get reverse engineered and then open-sourced on GitHub…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-07-ship-before-open</guid>
+      <pubDate>Tue, 07 Apr 2026 13:27:00 GMT</pubDate>
+      <description>Seeing a friend’s project get reverse engineered and then open-sourced on GitHub made me realize build in public has changed. You now have to ship with a relatively high level of completeness, market it, and sell it. Otherwise you’re in a passive position.
+
+Also, stay close to yo...</description>
+      <content:encoded><![CDATA[Seeing a friend’s project get reverse engineered and then open-sourced on GitHub made me realize build in public has changed. You now have to ship with a relatively high level of completeness, market it, and sell it. Otherwise you’re in a passive position.
+
+Also, stay close to your real users, and stay away from developers.
+
+Thought.]]></content:encoded>
+    </item>
+    <item>
+      <title>商业产品的最小闭环才意味着开发完成，所谓最小闭环指的是：产品 demo 、基本的登录、基础的支付与订阅、官网。完成发布和内测，有之前一个付费用户，这才是最小闭环…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-07-minimum-viable-loop</guid>
+      <pubDate>Tue, 07 Apr 2026 11:46:00 GMT</pubDate>
+      <description>商业产品的最小闭环才意味着开发完成，所谓最小闭环指的是：产品 demo 、基本的登录、基础的支付与订阅、官网。完成发布和内测，有之前一个付费用户，这才是最小闭环。
+
+
+
+否则都不算。</description>
+      <content:encoded><![CDATA[商业产品的最小闭环才意味着开发完成，所谓最小闭环指的是：产品 demo 、基本的登录、基础的支付与订阅、官网。完成发布和内测，有之前一个付费用户，这才是最小闭环。
+
+
+
+否则都不算。]]></content:encoded>
+    </item>
+    <item>
+      <title>What is a one-person company really pursuing?
+
+People have been asking me this a…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-04-one-person-company-pmf</guid>
+      <pubDate>Sat, 04 Apr 2026 00:27:00 GMT</pubDate>
+      <description>What is a one-person company really pursuing?
+
+People have been asking me this a lot lately. My answer right now is simple: first, freedom; second, the ability to generate your own cash flow and truly take responsibility for outcomes. Don’t just entertain yourself. Build products...</description>
+      <content:encoded><![CDATA[What is a one-person company really pursuing?
+
+People have been asking me this a lot lately. My answer right now is simple: first, freedom; second, the ability to generate your own cash flow and truly take responsibility for outcomes. Don’t just entertain yourself. Build products people are actually willing to pay for, and form a complete business loop.
+
+Another question I’ve been sitting with recently is this: what kinds of entry points are actually suitable for a small team or a one-person company? And which directions are really just good stories, but not a fit for a company at my stage? Once you think that through, a lot of things become naturally clearer.
+
+Run through PMF as early as possible. Keep going.]]></content:encoded>
+    </item>
+    <item>
+      <title>When you realize a product&apos;s form factor feels wrong, should you cut your losses…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-31-vibe-coding-trap</guid>
+      <pubDate>Tue, 31 Mar 2026 17:23:00 GMT</pubDate>
+      <description>When you realize a product&apos;s form factor feels wrong, should you cut your losses immediately or struggle with it a bit longer? I&apos;ve been thinking about this recently.
+
+Since becoming an indie developer, the most frustrating part is that &quot;Vibe Coding&quot; easily dilutes your focus as ...</description>
+      <content:encoded><![CDATA[When you realize a product's form factor feels wrong, should you cut your losses immediately or struggle with it a bit longer? I've been thinking about this recently.
+
+Since becoming an indie developer, the most frustrating part is that "Vibe Coding" easily dilutes your focus as a product manager. You end up spending too much time just building and rushing to ship. I need to stay vigilant about this: building a product must start with capturing real user needs and defining a differentiated experience. Always remember the "424 rule" for time allocation: 40% finding needs + 20% development + 40% marketing. Don't get the priorities backward.]]></content:encoded>
+    </item>
+    <item>
+      <title>Rewatching Jia Zhangke&apos;s &quot;Mountains May Depart&quot; on Sunday night. His imagination…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-31-mountains-may-depart-software</guid>
+      <pubDate>Tue, 31 Mar 2026 17:01:00 GMT</pubDate>
+      <description>Rewatching Jia Zhangke&apos;s &quot;Mountains May Depart&quot; on Sunday night. His imagination for electronic devices in 2025 was transparent liquid glass, though the GUI still felt stuck in 2014. It has to be said: the hardware of 2025 we imagined hasn&apos;t quite arrived, but software has vastly...</description>
+      <content:encoded><![CDATA[Rewatching Jia Zhangke's "Mountains May Depart" on Sunday night. His imagination for electronic devices in 2025 was transparent liquid glass, though the GUI still felt stuck in 2014. It has to be said: the hardware of 2025 we imagined hasn't quite arrived, but software has vastly exceeded human imagination. Ordinary people often underestimate the development of software while overestimating the advancement of hardware.]]></content:encoded>
+    </item>
+    <item>
+      <title>Several Observations About Myself and the World Around Me</title>
+      <link>https://bryantchen.cc/en/posts/several-observations-about-myself-and-the-world</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/several-observations-about-myself-and-the-world</guid>
+      <pubDate>Sat, 28 Mar 2026 01:26:00 GMT</pubDate>
+      <description>A set of notes on staying up late, AI, shipping, spring, natural rhythms, and the observer&apos;s point of view.</description>
+      <content:encoded><![CDATA[Several observations about myself and the world around me:
+
+## 1. Staying Up Late and Rhythm
+
+Staying up late is a bad thing. Over the past few workdays, my schedule seems to have flipped around a bit. Of course, as a one-person company, I don't really have a strict distinction between workdays and non-workdays, but staying up late throws off any regular rhythm in sleep and work, and that's never good.
+
+## 2. Talk More With People Who Haven't Really Used AI
+
+After talking to too many people who work in AI lately, I feel like the next step is to talk more with people who haven't really been exposed to AI. Their needs and pain points may be the most important ones.
+
+People who work in AI tend to go to two extremes: first, they're a bit too crazy and think they can do anything; second, they think anyone who doesn't embrace AI is an idiot. Yes, I'm also criticizing myself here. But ever since the first day I studied Cybernetics, I've remembered something one of the founding figures said: "Humans have their own use."
+
+## 3. Public Activity Before a Change
+
+If someone starts making bold takes or becomes very active in public, it usually proves a few things: first, something is about to change in their work; second, they're peacocking before fundraising or getting ready to start a company.
+
+## 4. On Shipping and Craftsmanship
+
+I always see people saying that "a product is ready to ship when it's 30% done," but around me there are also people who try to make a product as good as they can before releasing it. Especially after listening today to the latest episode of 诗梳风 and the conversation with 谜底61, I felt a kind of steadiness. I hope people with a real craftsman's spirit can be rewarded by users.
+
+## 5. Beijing's Spring
+
+The moment that moved me most today was this — I went out for a bike ride in the afternoon and saw flowers blooming by the roadside. So this is what spring in Beijing really is. What exactly did I see during the springs when I was 25 to 30? A whole life's plan begins in spring.
+
+## 6. A Day Begins in the Morning
+
+Coming back to it: a day begins in the morning, so stop staying up late. I suddenly understand Birdwatching a little more. Beyond being close to nature, there is something beautiful about waking up with nature's rhythm and participating in it as an observer.
+
+## 7. The Owl's Point of View
+
+That reminds me of a scene from The Ballad of Buster Scruggs that I watched last weekend, where the story in the gold-mining valley is recorded from something like an owl's point of view. It's such a good perspective. Now that I'm well into my thirties, I finally understand this film, and I finally understand what "Heaven and earth are not benevolent; they treat all things as straw dogs" is really getting at.]]></content:encoded>
+    </item>
+    <item>
+      <title>I&apos;m slowly accepting something:
+
+You don&apos;t have to put a whole big product in fr…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-28-memoryx-plugin-first</guid>
+      <pubDate>Sat, 28 Mar 2026 01:16:00 GMT</pubDate>
+      <description>I&apos;m slowly accepting something:
+
+You don&apos;t have to put a whole big product in front of the world for it to count as shipping.
+
+For me, MemoryX may have already missed its best moment to be launched as a complete product.
+But that doesn&apos;t mean what&apos;s inside it has no value.
+
+A mor...</description>
+      <content:encoded><![CDATA[I'm slowly accepting something:
+
+You don't have to put a whole big product in front of the world for it to count as shipping.
+
+For me, MemoryX may have already missed its best moment to be launched as a complete product.
+But that doesn't mean what's inside it has no value.
+
+A more realistic path might be to ship the extension first.
+Let a smaller, more specific slice meet the world and collect real signals.
+
+Sometimes shipping isn't about telling the whole story at once.
+It's about giving the world the part that feels the most alive first.]]></content:encoded>
+    </item>
     <item>
       <title>Three Guiding Axes for Entrepreneurship and Product</title>
       <link>https://bryantchen.cc/en/posts/entrepreneurship-three-axes</link>
       <guid isPermaLink="true">https://bryantchen.cc/en/posts/entrepreneurship-three-axes</guid>
-      <pubDate>Thu, 26 Mar 2026 00:00:00 GMT</pubDate>
+      <pubDate>Thu, 26 Mar 2026 01:11:00 GMT</pubDate>
       <description>A late-night reflection on balancing personal passion with market demand and business viability.</description>
       <content:encoded><![CDATA[Here are a few principles for getting things done in entrepreneurship.
 
@@ -28,24 +176,10 @@ Evaluating what I've been doing over the past two months, most of it has landed 
 Additionally, considering competition is an absolute must. There are some things you simply can't win just by trying to out-work or "out-involution" others. Self-reflection is needed, but we still have to try our best to get there! That is the only way to improve our win rate.]]></content:encoded>
     </item>
     <item>
-      <title>The most resonant article I&apos;ve read recently is Eric Xu&apos;s &quot;In 2016, I did an AI …</title>
-      <link>https://bryantchen.cc/en/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-24-action-beats-anxiety</guid>
-      <pubDate>Tue, 24 Mar 2026 00:00:00 GMT</pubDate>
-      <description>The most resonant article I&apos;ve read recently is Eric Xu&apos;s &quot;In 2016, I did an AI coding startup&quot; https://x.com/xleaps/status/2033027083476054377. I actually read it a few weeks ago, but today I read it carefully again, and it&apos;s the kind of piece where I kept highlighting text. As ...</description>
-      <content:encoded><![CDATA[The most resonant article I've read recently is Eric Xu's "In 2016, I did an AI coding startup" https://x.com/xleaps/status/2033027083476054377. I actually read it a few weeks ago, but today I read it carefully again, and it's the kind of piece where I kept highlighting text. As a Silicon Valley founder, Eric shared this observation:
-
-"Seeing the future ≠ Arriving at the future." In life and work, there are always three kinds of mismatches: "Having vision without resources, having resources without direction, having contributions without self-awareness."
-
-Most of the time, we don't even know which position we are in. Anxiety is the underlying tone for founders, but it never generates signals; only action generates signals. After seeing this sentence, I changed it to my pinned WeChat signature.
-
-Replace deduction and anxiety with proactive action. Within the boundaries you can currently see, try your best to make choices that do justice to yourself. Thus have I heard.]]></content:encoded>
-    </item>
-    <item>
       <title>A few recent moments have helped me understand why, if you create content, you n…</title>
       <link>https://bryantchen.cc/en/thoughts</link>
       <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-24-multi-platform-publishing</guid>
-      <pubDate>Tue, 24 Mar 2026 00:00:00 GMT</pubDate>
+      <pubDate>Tue, 24 Mar 2026 15:42:00 GMT</pubDate>
       <description>A few recent moments have helped me understand why, if you create content, you need to publish across multiple platforms. It seems like common sense, but human nature — mainly laziness and indifference toward certain platforms — makes us overlook this:
 
 1. Traffic rules on any si...</description>
@@ -60,10 +194,32 @@ A concrete example: I recently shared ClawPuter's Build in Public content. The f
 The above is purely a beginner's practical sharing — take it with a grain of salt.]]></content:encoded>
     </item>
     <item>
+      <title>The most resonant article I&apos;ve read recently is Eric Xu&apos;s &quot;In 2016, I did an AI …</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-24-action-beats-anxiety</guid>
+      <pubDate>Tue, 24 Mar 2026 00:14:00 GMT</pubDate>
+      <description>The most resonant article I&apos;ve read recently is Eric Xu&apos;s &quot;In 2016, I did an AI coding startup&quot; https://x.com/xleaps/status/2033027083476054377. I actually read it a few weeks ago, but today I read it carefully again, and it&apos;s the kind of piece where I kept highlighting text. As ...</description>
+      <content:encoded><![CDATA[The most resonant article I've read recently is Eric Xu's "In 2016, I did an AI coding startup" https://x.com/xleaps/status/2033027083476054377. I actually read it a few weeks ago, but today I read it carefully again, and it's the kind of piece where I kept highlighting text. As a Silicon Valley founder, Eric shared this observation:
+
+"Seeing the future ≠ Arriving at the future." In life and work, there are always three kinds of mismatches: "Having vision without resources, having resources without direction, having contributions without self-awareness."
+
+Most of the time, we don't even know which position we are in. Anxiety is the underlying tone for founders, but it never generates signals; only action generates signals. After seeing this sentence, I changed it to my pinned WeChat signature.
+
+Replace deduction and anxiety with proactive action. Within the boundaries you can currently see, try your best to make choices that do justice to yourself. Thus have I heard.]]></content:encoded>
+    </item>
+    <item>
+      <title>Building a personal website has been on my mind for years. I kept putting it off…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-21-hello</guid>
+      <pubDate>Sat, 21 Mar 2026 16:16:00 GMT</pubDate>
+      <description>Building a personal website has been on my mind for years. I kept putting it off — never enough time, not enough skills, and even after buying my domain back in 2022, it still never went live. But this time was different. One evening, I opened a terminal, had a quick chat with AI...</description>
+      <content:encoded><![CDATA[Building a personal website has been on my mind for years. I kept putting it off — never enough time, not enough skills, and even after buying my domain back in 2022, it still never went live. But this time was different. One evening, I opened a terminal, had a quick chat with AI, and my site was up. Thanks to good context management habits, the content architecture came together fast too. Hello, whoever you are visiting my little corner of the internet — here I'll be sharing my thoughts, projects, and growth. Thanks for stopping by!]]></content:encoded>
+    </item>
+    <item>
       <title>Building This Site</title>
       <link>https://bryantchen.cc/en/posts/building-this-site</link>
       <guid isPermaLink="true">https://bryantchen.cc/en/posts/building-this-site</guid>
-      <pubDate>Sat, 21 Mar 2026 00:00:00 GMT</pubDate>
+      <pubDate>Sat, 21 Mar 2026 04:30:00 GMT</pubDate>
       <description>One evening, one terminal window, a few words with AI, and my personal site was live. A full walkthrough from planning to deployment.</description>
       <content:encoded><![CDATA[The idea of building a personal website had been on my mind for years. I bought the domain back in 2022 but never actually shipped it. This time was different — one evening, one terminal window, a few words with AI, and the site was live.
 
@@ -272,14 +428,6 @@ But no rush. Content first, features later.
 From idea to live site, it took one evening. I used to think building a personal site was a big project. Looking back, the real barrier was never the tech — it was just starting. The tools are good enough now — describe what you want, AI builds the skeleton, you fill in the content.
 
 If you've been meaning to build your own site, now is the best time.]]></content:encoded>
-    </item>
-    <item>
-      <title>Building a personal website has been on my mind for years. I kept putting it off…</title>
-      <link>https://bryantchen.cc/en/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-21-hello</guid>
-      <pubDate>Sat, 21 Mar 2026 00:00:00 GMT</pubDate>
-      <description>Building a personal website has been on my mind for years. I kept putting it off — never enough time, not enough skills, and even after buying my domain back in 2022, it still never went live. But this time was different. One evening, I opened a terminal, had a quick chat with AI...</description>
-      <content:encoded><![CDATA[Building a personal website has been on my mind for years. I kept putting it off — never enough time, not enough skills, and even after buying my domain back in 2022, it still never went live. But this time was different. One evening, I opened a terminal, had a quick chat with AI, and my site was up. Thanks to good context management habits, the content architecture came together fast too. Hello, whoever you are visiting my little corner of the internet — here I'll be sharing my thoughts, projects, and growth. Thanks for stopping by!]]></content:encoded>
     </item>
   </channel>
 </rss>

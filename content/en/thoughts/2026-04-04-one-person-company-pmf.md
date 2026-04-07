@@ -1,5 +1,5 @@
 ---
-date: "2026-04-04"
+date: "2026-04-04T00:27:00"
 tags: ["indie", "pmf", "business"]
 ---
 What is a one-person company really pursuing?
