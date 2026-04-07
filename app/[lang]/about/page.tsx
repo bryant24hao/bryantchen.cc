@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { getDictionary, type Locale } from "@/lib/i18n";
+import { getActivityData } from "@/lib/content";
 import { SoloCounter } from "@/components/solo-counter";
 import { AgeProgress } from "@/components/age-progress";
+import { ActivityHeatmap } from "@/components/activity-heatmap";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -35,6 +37,8 @@ export default async function AboutPage({ params }: PageProps) {
   const t = getDictionary(lang).about;
   const projDesc = getDictionary(lang).projectDescriptions;
   const osDesc = getDictionary(lang).openSourceDescriptions;
+
+  const activityData = getActivityData(lang);
 
   const buildingProjects = [
     { name: "MemoryX", desc: projDesc.MemoryX },
@@ -70,6 +74,8 @@ export default async function AboutPage({ params }: PageProps) {
           {t.intro2Post}
         </p>
       </div>
+
+      <ActivityHeatmap data={activityData} locale={lang} />
 
       <section className="mt-10">
         <h2 className="font-semibold mb-4">{t.building}</h2>
