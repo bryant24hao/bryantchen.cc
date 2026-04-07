@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bryant Chen</title>
+    <link>https://bryantchen.cc/en</link>
+    <description>Bryant&apos;s personal website — indie dev, AI, product thinking</description>
+    <language>en</language>
+    <lastBuildDate>Tue, 07 Apr 2026 12:11:40 GMT</lastBuildDate>
+    <atom:link href="https://bryantchen.cc/en/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Three Guiding Axes for Entrepreneurship and Product</title>
+      <link>https://bryantchen.cc/en/posts/entrepreneurship-three-axes</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/entrepreneurship-three-axes</guid>
+      <pubDate>Thu, 26 Mar 2026 00:00:00 GMT</pubDate>
+      <description>A late-night reflection on balancing personal passion with market demand and business viability.</description>
+      <content:encoded><![CDATA[Here are a few principles for getting things done in entrepreneurship.
+
+Think of them as three coordinate axes:
+
+1. **What you love**: This measures whether you actually like what you're doing, whether you're willing to pour your energy and willpower into it, and whether it aligns with your personal aesthetics. However, this axis alone can't decide too many things. It only determines how far you can go and whether the product reflects your character and taste.
+2. **What users need**: This is actually the most important one. Often, what you like isn't necessarily what users need, or perhaps there simply aren't that many users who need it. When evaluating a new project, you must build something that users actually need, not just something you happen to like.
+3. **What the market will pay for (financial return)**: Without this, nothing else holds up. Entrepreneurship is a marathon. If you want to reach the finish line, you must do things the market is willing to pay for and that can generate a positive commercial return.
+
+Evaluating what I've been doing over the past two months, most of it has landed on axis 1, with too little focus on axes 2 and 3. I need to reflect on this.
+
+Additionally, considering competition is an absolute must. There are some things you simply can't win just by trying to out-work or "out-involution" others. Self-reflection is needed, but we still have to try our best to get there! That is the only way to improve our win rate.]]></content:encoded>
+    </item>
+    <item>
+      <title>The most resonant article I&apos;ve read recently is Eric Xu&apos;s &quot;In 2016, I did an AI …</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-24-action-beats-anxiety</guid>
+      <pubDate>Tue, 24 Mar 2026 00:00:00 GMT</pubDate>
+      <description>The most resonant article I&apos;ve read recently is Eric Xu&apos;s &quot;In 2016, I did an AI coding startup&quot; https://x.com/xleaps/status/2033027083476054377. I actually read it a few weeks ago, but today I read it carefully again, and it&apos;s the kind of piece where I kept highlighting text. As ...</description>
+      <content:encoded><![CDATA[The most resonant article I've read recently is Eric Xu's "In 2016, I did an AI coding startup" https://x.com/xleaps/status/2033027083476054377. I actually read it a few weeks ago, but today I read it carefully again, and it's the kind of piece where I kept highlighting text. As a Silicon Valley founder, Eric shared this observation:
+
+"Seeing the future ≠ Arriving at the future." In life and work, there are always three kinds of mismatches: "Having vision without resources, having resources without direction, having contributions without self-awareness."
+
+Most of the time, we don't even know which position we are in. Anxiety is the underlying tone for founders, but it never generates signals; only action generates signals. After seeing this sentence, I changed it to my pinned WeChat signature.
+
+Replace deduction and anxiety with proactive action. Within the boundaries you can currently see, try your best to make choices that do justice to yourself. Thus have I heard.]]></content:encoded>
+    </item>
+    <item>
+      <title>A few recent moments have helped me understand why, if you create content, you n…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-24-multi-platform-publishing</guid>
+      <pubDate>Tue, 24 Mar 2026 00:00:00 GMT</pubDate>
+      <description>A few recent moments have helped me understand why, if you create content, you need to publish across multiple platforms. It seems like common sense, but human nature — mainly laziness and indifference toward certain platforms — makes us overlook this:
+
+1. Traffic rules on any si...</description>
+      <content:encoded><![CDATA[A few recent moments have helped me understand why, if you create content, you need to publish across multiple platforms. It seems like common sense, but human nature — mainly laziness and indifference toward certain platforms — makes us overlook this:
+
+1. Traffic rules on any single platform are essentially random events. Take Xiaohongshu (RED) for example — as a beginner, it's really hard to figure out what gets traction and what doesn't. But as a creator, ignore the randomness of metrics. Just share sincerely, be genuinely helpful, and stick to those principles. Content produced this way might flop on Platform A but take off on Platform B.
+
+A concrete example: I recently shared ClawPuter's Build in Public content. The first four episodes did great on Xiaohongshu, but episode five — where I put extra effort into the cover design and edited with CapCut — got zero traction. What I didn't expect was that WeChat Stickers' recommendation algorithm gave this episode a ton of traffic over the past two days. This is what they call "when the east doesn't shine, the west will."
+
+2. Behind multi-platform publishing, there's another reason: if you're making good content, when you don't publish it somewhere, someone else might repost or remix it. If you don't publish, someone else will. Rather than watching your metrics get claimed by others, it's worth casually posting on other platforms too. Sure, your original content might perform worse than someone else's remix. But you won't know unless you try.
+
+The above is purely a beginner's practical sharing — take it with a grain of salt.]]></content:encoded>
+    </item>
+    <item>
+      <title>Building This Site</title>
+      <link>https://bryantchen.cc/en/posts/building-this-site</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/building-this-site</guid>
+      <pubDate>Sat, 21 Mar 2026 00:00:00 GMT</pubDate>
+      <description>One evening, one terminal window, a few words with AI, and my personal site was live. A full walkthrough from planning to deployment.</description>
+      <content:encoded><![CDATA[The idea of building a personal website had been on my mind for years. I bought the domain back in 2022 but never actually shipped it. This time was different — one evening, one terminal window, a few words with AI, and the site was live.
+
+This post documents the full process from tech decisions to deployment.
+
+## What I wanted
+
+The requirements were simple:
+
+- Write Markdown, push to git, auto-publish
+- No CMS, no database
+- Minimal black-and-white design
+- Bilingual support (Chinese and English)
+- Near-zero maintenance cost
+
+## Tech stack
+
+| Decision | Choice | Why |
+|----------|--------|-----|
+| Framework | Next.js (App Router) | MDX support, static generation, extensible |
+| Hosting | Vercel | Push to deploy, free SSL |
+| Content | .md/.mdx in `content/` | No database, git-driven |
+| MDX rendering | next-mdx-remote + gray-matter | Frontmatter parsing |
+| Styling | Tailwind CSS v4 | A minimal site doesn't need a component library |
+| Code highlighting | sugar-high | 1KB, zero config |
+| Package manager | pnpm | Fast |
+
+I didn't go with Hexo, Hugo, or other static site generators because Next.js gives more flexibility — adding comments, subscriptions, or OG image generation later is straightforward.
+
+## Project structure
+
+```
+bryantchen.cc/
+├── app/
+│   ├── layout.tsx              # Root layout
+│   ├── [lang]/                 # i18n routing
+│   │   ├── layout.tsx          # Lang layout (nav, footer)
+│   │   ├── page.tsx            # Home
+│   │   ├── thoughts/page.tsx   # Thoughts list
+│   │   ├── posts/
+│   │   │   ├── page.tsx        # Posts list
+│   │   │   └── [slug]/page.tsx # Single post
+│   │   ├── projects/page.tsx   # Projects
+│   │   └── about/page.tsx      # About
+├── content/
+│   ├── zh/                     # Chinese content
+│   │   ├── thoughts/
+│   │   └── posts/
+│   └── en/                     # English content
+│       ├── thoughts/
+│       └── posts/
+├── lib/
+│   ├── content.ts              # Content reader
+│   ├── i18n.ts                 # i18n dictionaries
+│   └── projects.ts             # Project data
+├── components/                 # UI components
+├── middleware.ts               # Locale redirect
+└── next.config.ts
+```
+
+## Content model
+
+### Thoughts
+
+Short-form, no title. The filename is the slug:
+
+```markdown
+// content/en/thoughts/2026-03-21-hello.md
+---
+date: "2026-03-21"
+tags: ["life"]
+---
+A few sentences about whatever's on my mind.
+```
+
+### Posts
+
+Long-form with title and description:
+
+```markdown
+// content/en/posts/some-post.mdx
+---
+title: "Post Title"
+date: "2026-03-21"
+description: "One-line summary"
+tags: ["tag"]
+draft: false
+---
+Full post content with Markdown and MDX support...
+```
+
+`lib/content.ts` reads these files at build time, parses frontmatter with `gray-matter`, and sorts by date descending. Posts with `draft: true` are excluded from production.
+
+## Internationalization
+
+This is the most interesting architectural piece.
+
+The core idea is using Next.js App Router's `[lang]` dynamic segment:
+
+- `/zh/posts/xxx` shows Chinese
+- `/en/posts/xxx` shows English
+- `/` auto-redirects to `/zh`
+
+```typescript
+// middleware.ts — auto-redirect to default locale
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const hasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+  if (hasLocale) return;
+  const url = request.nextUrl.clone();
+  url.pathname = `/${defaultLocale}${pathname}`;
+  return NextResponse.redirect(url);
+}
+```
+
+UI strings (nav labels, headings, empty states) are managed with a plain dictionary object — no third-party i18n library:
+
+```typescript
+// lib/i18n.ts
+const dictionaries = {
+  zh: {
+    nav: { thoughts: "碎碎念", posts: "文章", ... },
+    ...
+  },
+  en: {
+    nav: { thoughts: "thoughts", posts: "posts", ... },
+    ...
+  },
+};
+```
+
+Content is split by locale directory. Each language is independent — if a post exists in Chinese but not English, the English site simply doesn't show it. No errors.
+
+A language toggle link in the top-right corner of the nav switches between Chinese and English.
+
+## Deployment
+
+Three steps, under 10 minutes total:
+
+**1. Push to GitHub**
+
+```bash
+git init && git add -A && git commit -m "Initial commit"
+gh repo create bryant24hao/bryantchen.cc --public --source . --push
+```
+
+**2. Import to Vercel**
+
+Open Vercel, pick the GitHub repo, click Deploy. Next.js is auto-detected — zero configuration needed.
+
+**3. Domain setup**
+
+Add `bryantchen.cc` in Vercel Settings → Domains, then add two DNS records in Cloudflare:
+
+| Type | Name | Value |
+|------|------|-------|
+| A | @ | IP from Vercel |
+| CNAME | www | Vercel's project-specific address |
+
+Important: set Proxy status to **DNS only** (gray cloud) so Vercel handles SSL.
+
+SSL is auto-provisioned in a few minutes. The site is live on the custom domain.
+
+## Security hardening
+
+A static site has a small attack surface, but a few defensive measures are still worth doing:
+
+- **Locale parameter validation** — invalid paths return 404, preventing path traversal
+- **Security response headers** — `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`
+- **.env leak prevention** — gitignore covers bare `.env` files
+- **Privacy checks** — scan for real IPs, passwords, and API keys before every commit
+
+## Writing workflow
+
+Publishing content is now:
+
+```bash
+# 1. Create a file
+vim content/en/thoughts/2026-03-22-some-thought.md
+
+# 2. Write content (frontmatter + body)
+
+# 3. Publish
+git add content/ && git commit -m "New thought" && git push
+```
+
+Vercel picks up the push and deploys in ~30 seconds. No admin dashboard needed.
+
+## What's next
+
+The MVP is live. Things I want to add later:
+
+- RSS feed
+- Auto-generated OG images
+- Giscus comments (GitHub Discussions-based)
+- Email subscriptions
+- Full-text search
+- Tag filtering
+
+But no rush. Content first, features later.
+
+## Final thought
+
+From idea to live site, it took one evening. I used to think building a personal site was a big project. Looking back, the real barrier was never the tech — it was just starting. The tools are good enough now — describe what you want, AI builds the skeleton, you fill in the content.
+
+If you've been meaning to build your own site, now is the best time.]]></content:encoded>
+    </item>
+    <item>
+      <title>Building a personal website has been on my mind for years. I kept putting it off…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-21-hello</guid>
+      <pubDate>Sat, 21 Mar 2026 00:00:00 GMT</pubDate>
+      <description>Building a personal website has been on my mind for years. I kept putting it off — never enough time, not enough skills, and even after buying my domain back in 2022, it still never went live. But this time was different. One evening, I opened a terminal, had a quick chat with AI...</description>
+      <content:encoded><![CDATA[Building a personal website has been on my mind for years. I kept putting it off — never enough time, not enough skills, and even after buying my domain back in 2022, it still never went live. But this time was different. One evening, I opened a terminal, had a quick chat with AI, and my site was up. Thanks to good context management habits, the content architecture came together fast too. Hello, whoever you are visiting my little corner of the internet — here I'll be sharing my thoughts, projects, and growth. Thanks for stopping by!]]></content:encoded>
+    </item>
+  </channel>
+</rss>

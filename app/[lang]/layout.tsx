@@ -1,10 +1,26 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { locales, defaultLocale, isValidLocale, type Locale } from "@/lib/i18n";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  return {
+    alternates: {
+      types: {
+        "application/rss+xml": `https://bryantchen.cc/${lang}/feed.xml`,
+      },
+    },
+  };
 }
 
 export default async function LangLayout({

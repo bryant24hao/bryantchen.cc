@@ -148,6 +148,17 @@ export default async function AboutPage({ params }: PageProps) {
               </a>
             </li>
           ))}
+          <li className="flex gap-2">
+            <span className="text-neutral-400 w-16 shrink-0">RSS</span>
+            <a
+              href={`/${lang}/feed.xml`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:decoration-2"
+            >
+              {lang === "zh" ? "订阅 RSS" : "Subscribe via RSS"}
+            </a>
+          </li>
         </ul>
       </section>
     </div>

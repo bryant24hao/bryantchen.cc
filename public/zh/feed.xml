@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bryant Chen</title>
+    <link>https://bryantchen.cc/zh</link>
+    <description>Bryant 的个人网站 — 独立开发、AI、产品思考</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 07 Apr 2026 12:11:40 GMT</lastBuildDate>
+    <atom:link href="https://bryantchen.cc/zh/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>创业中做事的三个原则与坐标轴</title>
+      <link>https://bryantchen.cc/zh/posts/entrepreneurship-three-axes</link>
+      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/entrepreneurship-three-axes</guid>
+      <pubDate>Thu, 26 Mar 2026 00:00:00 GMT</pubDate>
+      <description>深夜反思：在『自己喜欢』之外，更要关注『用户需要』和『市场买单』。</description>
+      <content:encoded><![CDATA[创业中做事的几个原则。
+
+有三条坐标轴：
+
+1. **自己喜欢**：衡量这个事情是不是你喜欢的、你愿不愿意为它投入精力和愿力、是不是符合你的个人审美的。但这一个轴上不能决定太多的事情，只能决定你能走多远、做的产品是不是符合你的性格和品味的。
+2. **用户需要**：这一条其实是最重要的，很多时候你喜欢的不一定是用户需要的，或者说不一定有那么多用户需要。在评估一个项目立项的时候，一定要做用户需要的东西，而不仅仅是我自己喜欢。
+3. **市场买单、赚取足够多的商业回报**：没有这一条一切都不成立，创业是一场长跑，如果想要抵达终点，一定要做市场愿意买单、能赚取正向商业回报的事情。
+
+评价自己最近两个月做的事情，大部分都落在了 1 ，对于 2 和 3 关于的有点少。反思之。
+
+另外，考虑竞争还是必须的，有些事情真不是你想卷就卷得过的。自省之，但是也还要尽量做到啊！这样才能提高胜率。]]></content:encoded>
+    </item>
+    <item>
+      <title>最近几个瞬间逐渐让我有点理解为什么如果你做内容，需要发布在多平台了。看起来是一些常识，但人性（最主要是懒和对某些平台的漠视）会让自己忽略这一点：
+
+1. 单个平…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-03-24-multi-platform-publishing</guid>
+      <pubDate>Tue, 24 Mar 2026 22:00:00 GMT</pubDate>
+      <description>最近几个瞬间逐渐让我有点理解为什么如果你做内容，需要发布在多平台了。看起来是一些常识，但人性（最主要是懒和对某些平台的漠视）会让自己忽略这一点：
+
+1. 单个平台的流量规则就是随机事件，比如小红书，作为新手其实很难搞清楚，什么内容有量什么内容没量。但作为创作者，忽略数据的随机性，真诚分享、绝对利他，保持这样的原则去产出内容就够了。因为这种原则下产出的内容，在 A 平台没数据，说不定在 B 平台就有量了。
+
+举个具体的例子是，最近分享了 ClawPuter 的 Build in Public 内容，前四期在小红书的数据都很好，但是第五期很用心的优化了封面、...</description>
+      <content:encoded><![CDATA[最近几个瞬间逐渐让我有点理解为什么如果你做内容，需要发布在多平台了。看起来是一些常识，但人性（最主要是懒和对某些平台的漠视）会让自己忽略这一点：
+
+1. 单个平台的流量规则就是随机事件，比如小红书，作为新手其实很难搞清楚，什么内容有量什么内容没量。但作为创作者，忽略数据的随机性，真诚分享、绝对利他，保持这样的原则去产出内容就够了。因为这种原则下产出的内容，在 A 平台没数据，说不定在 B 平台就有量了。
+
+举个具体的例子是，最近分享了 ClawPuter 的 Build in Public 内容，前四期在小红书的数据都很好，但是第五期很用心的优化了封面、用剪映剪了下内容，但就是没量。没想到的是，这两天似乎微信贴图的推荐对这期内容给了很多的流量。这就是所谓的「东方不亮西方亮」吧。
+
+2. 多平台发布的背后，还有一个原因是，如果你做的是好内容，当你不发布的时候，可能会有其他人搬运和对你的内容进行二创/Remix。你不发布，总有人会发布，与其看着数据被别人抢走，随手在其他平台发一发也是也是有必要的。虽然，很多时候，你的原创内容数据很可能不如别人的二创。但不试试怎么知道呢。
+
+以上，纯属小白实践分享，不一定对。]]></content:encoded>
+    </item>
+    <item>
+      <title>最近读过的最有共鸣的文章是 Eric Xu 的这篇《2016年我做过一次AI写代码创业》 https://x.com/xleaps/status/2033027…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-03-24-action-beats-anxiety</guid>
+      <pubDate>Tue, 24 Mar 2026 10:00:00 GMT</pubDate>
+      <description>最近读过的最有共鸣的文章是 Eric Xu 的这篇《2016年我做过一次AI写代码创业》 https://x.com/xleaps/status/2033027083476054377。其实几周前读过一次，今天我又仔细读了一下，读完之后还是不断划线的那种，作为硅谷创业者，Eric 讲述了这样的一个观察：
+
+「看见未来 ≠ 到达未来」，在生活和工作中，总是会存在三种错位「有视野没资源、有资源没方向、有贡献不自知。」
+
+而多数时候其实我们也不知道自己处在哪个位置，焦虑是创业者的底色，但它从不产生信号，行动才能产生信号。我看到这句话后，将它改成了自己的微信置顶...</description>
+      <content:encoded><![CDATA[最近读过的最有共鸣的文章是 Eric Xu 的这篇《2016年我做过一次AI写代码创业》 https://x.com/xleaps/status/2033027083476054377。其实几周前读过一次，今天我又仔细读了一下，读完之后还是不断划线的那种，作为硅谷创业者，Eric 讲述了这样的一个观察：
+
+「看见未来 ≠ 到达未来」，在生活和工作中，总是会存在三种错位「有视野没资源、有资源没方向、有贡献不自知。」
+
+而多数时候其实我们也不知道自己处在哪个位置，焦虑是创业者的底色，但它从不产生信号，行动才能产生信号。我看到这句话后，将它改成了自己的微信置顶签名。
+
+用积极行动代替推演和焦虑，在当下能看到的边界之内，尽力做出对得起自己的选择。如是我闻]]></content:encoded>
+    </item>
+    <item>
+      <title>写在一人公司第 60 天</title>
+      <link>https://bryantchen.cc/zh/posts/day-60-of-solo-company</link>
+      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/day-60-of-solo-company</guid>
+      <pubDate>Mon, 23 Mar 2026 00:00:00 GMT</pubDate>
+      <description>写在一人公司第 60 天</description>
+      <content:encoded><![CDATA[## 一些心愿的实现门槛降低了
+
+我不断感慨这是属于有好奇心、爱折腾的产品经理的最好的时代 —— 过去的一周里尽管很多既定的 TODO，但有一些小小的、属于自己的心愿被实现了。
+
+1. 大约是在 2022 年中的时候，那会儿我想要做个一个文学时钟的插件，喜欢的文学作品中显示当前的时间，同时以时间对应的十六进制数值作为背景色。这个愿望纯粹是为了满足自己的爱好 —— 我想看看作家们在写时间的时候都在想什么。
+
+... 接着，这个想法被尘封在我的飞书文档中好久，直到上周我无意中翻到这个想法，在我的命令行中新开了一个窗口将这个需求丢给 Claude Code，断断续续花了一些时间，从开发到发布，只用了一天时间。
+
+这个插件叫「拾刻 - 中文文学时钟」，我想所有使用这个插件的人都可以感受、拾取到文学中关于时间的片刻。这是这款插件的链接：https://chromewebstore.google.com/detail/agoanicnncfnnilkkihplfkpkpkhdbac?utm_source=item-share-cb
+
+这个插件最复杂的地方其实是语料库，如果你不设定约束和范围，AI 会出现幻觉和编造。目前整体的句子我还不是特别满意，所以只在几个小群内测了。
+
+2. 周六我不想做其他太消耗脑力的事情，但是晚上走到书房的电脑前，就像黑洞一样被吸进去了。我又打开了命令行 —— 给自己做个博客网站吧，域名过年的时候早就买好了。
+
+接着很快就搭建好了。对了，这也是我想做了很久的送给自己的礼物。
+
+## 说回到一人公司 60 天
+
+说点别的，今天是从公司离职一人公司的第 60 天。不过要计算拿到个体户执照的日子，其实才刚一个月左右。
+
+一句话概括下这两个月：没赚到什么现金，和自己的实际行动/项目/精力投入都没有以商业化的视角去考量有较大关系。这是能力当然更是态度问题，短期看不觉得有什么不好。不过要是说的话，整体我对自己还算满意，看到了不少希望。万物之中，希望最美！
+
+另外，也在"被更多的看见"。包括自己也看到自己的无限能量和潜能。
+
+先写到这，找时间可以再完整写写，今天先到这里。晚安了！]]></content:encoded>
+    </item>
+    <item>
+      <title>搭建这个网站</title>
+      <link>https://bryantchen.cc/zh/posts/building-this-site</link>
+      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/building-this-site</guid>
+      <pubDate>Sat, 21 Mar 2026 00:00:00 GMT</pubDate>
+      <description>一个晚上，一个命令行窗口，和 AI 聊了几句，个人网站就上线了。完整记录从规划到部署的全过程。</description>
+      <content:encoded><![CDATA[做一个个人网站的念头大概从好几年前就有了。2022 年买了域名，但一直没有真正动手。这次不一样——一个晚上，一个命令行窗口，和 AI 聊了几句，网站就上线了。
+
+这篇文章完整记录了从技术选型到部署上线的全过程。
+
+## 我想要什么
+
+需求很简单：
+
+- 写 Markdown，push 到 git，自动发布
+- 不要 CMS，不要数据库
+- 视觉极简，黑白灰
+- 支持中英文双语
+- 维护成本趋近于零
+
+## 技术选型
+
+| 决策 | 选择 | 理由 |
+|------|------|------|
+| 框架 | Next.js (App Router) | 支持 MDX、静态生成、未来易扩展 |
+| 部署 | Vercel | push 即发布，免费 SSL |
+| 内容 | `content/` 目录下的 .md/.mdx | 无数据库，git 驱动 |
+| MDX 渲染 | next-mdx-remote + gray-matter | 需要 frontmatter 解析 |
+| 样式 | Tailwind CSS v4 | 极简站不需要组件库 |
+| 代码高亮 | sugar-high | 1KB，零配置 |
+| 包管理 | pnpm | 快 |
+
+没有选 Hexo、Hugo 之类的静态博客生成器，因为 Next.js 给了更大的灵活性——以后想加评论、订阅、OG 图片生成都很方便。
+
+## 项目结构
+
+```
+bryantchen.cc/
+├── app/
+│   ├── layout.tsx              # 根布局
+│   ├── [lang]/                 # 多语言路由
+│   │   ├── layout.tsx          # 语言布局（导航、页脚）
+│   │   ├── page.tsx            # 首页
+│   │   ├── thoughts/page.tsx   # 碎碎念列表
+│   │   ├── posts/
+│   │   │   ├── page.tsx        # 文章列表
+│   │   │   └── [slug]/page.tsx # 单篇文章
+│   │   ├── projects/page.tsx   # 项目展示
+│   │   └── about/page.tsx      # 关于
+├── content/
+│   ├── zh/                     # 中文内容
+│   │   ├── thoughts/           # 碎碎念
+│   │   └── posts/              # 文章
+│   └── en/                     # 英文内容
+│       ├── thoughts/
+│       └── posts/
+├── lib/
+│   ├── content.ts              # 内容读取解析
+│   ├── i18n.ts                 # 多语言字典
+│   └── projects.ts             # 项目数据
+├── components/                 # UI 组件
+├── middleware.ts               # 语言重定向
+└── next.config.ts
+```
+
+## 内容模型
+
+### 碎碎念
+
+短内容，没有标题，文件名即 slug：
+
+```markdown
+// content/zh/thoughts/2026-03-21-hello.md
+---
+date: "2026-03-21"
+tags: ["life"]
+---
+想说的话写在这里，几句话为主。
+```
+
+### 文章
+
+长内容，有标题和摘要：
+
+```markdown
+// content/zh/posts/some-post.mdx
+---
+title: "文章标题"
+date: "2026-03-21"
+description: "一句话摘要"
+tags: ["标签"]
+draft: false
+---
+正文内容，支持完整的 Markdown 和 MDX 语法...
+```
+
+`lib/content.ts` 在构建时读取这些文件，用 `gray-matter` 解析 frontmatter，按日期倒序排列。draft 为 true 的文章不会出现在生产环境。
+
+## 多语言实现
+
+这是这个网站架构上最有意思的部分。
+
+核心思路是用 Next.js App Router 的 `[lang]` 动态路由段：
+
+- `/zh/posts/xxx` 显示中文
+- `/en/posts/xxx` 显示英文
+- 访问 `/` 自动重定向到 `/zh`
+
+```typescript
+// middleware.ts —— 自动重定向到默认语言
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const hasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+  if (hasLocale) return;
+  // 重定向到中文
+  const url = request.nextUrl.clone();
+  url.pathname = `/${defaultLocale}${pathname}`;
+  return NextResponse.redirect(url);
+}
+```
+
+UI 文案（导航、标题、空状态提示等）用一个字典对象管理，不依赖第三方 i18n 库：
+
+```typescript
+// lib/i18n.ts
+const dictionaries = {
+  zh: {
+    nav: { thoughts: "碎碎念", posts: "文章", ... },
+    ...
+  },
+  en: {
+    nav: { thoughts: "thoughts", posts: "posts", ... },
+    ...
+  },
+};
+```
+
+内容按语言分目录，各写各的。不要求每篇都有对应翻译——中文写了但英文没写，英文站那边就不显示，不会报错。
+
+导航栏右上角有一个语言切换链接，点一下在中英文之间切换。
+
+## 部署
+
+部署分三步，总共不到 10 分钟：
+
+**1. 推到 GitHub**
+
+```bash
+git init && git add -A && git commit -m "Initial commit"
+gh repo create bryant24hao/bryantchen.cc --public --source . --push
+```
+
+**2. Vercel 导入**
+
+打开 Vercel，选 GitHub 仓库，点 Deploy。Next.js 项目自动识别，不用配置。
+
+**3. 域名配置**
+
+在 Vercel Settings → Domains 添加 `bryantchen.cc`，然后在 Cloudflare DNS 加两条记录：
+
+| Type | Name | Value |
+|------|------|-------|
+| A | @ | Vercel 给的 IP |
+| CNAME | www | Vercel 给的专属地址 |
+
+注意 Proxy status 要设成 **DNS only**（灰色云朵），让 Vercel 自己管 SSL。
+
+几分钟后 SSL 自动签发，网站在自定义域名上线。
+
+## 安全加固
+
+静态网站攻击面小，但还是做了几个防御性措施：
+
+- **locale 参数校验**——非法路径直接 404，防路径遍历
+- **安全响应头**—— `X-Frame-Options: DENY`、`X-Content-Type-Options: nosniff`、`Referrer-Policy`、`Permissions-Policy`
+- **.env 防泄漏**——gitignore 覆盖无后缀的 `.env`
+- **隐私检查**——每次 commit 前扫描真实 IP、密码、API key
+
+## 写作工作流
+
+现在发布内容只需要：
+
+```bash
+# 1. 新建文件
+vim content/zh/thoughts/2026-03-22-some-thought.md
+
+# 2. 写内容（frontmatter + 正文）
+
+# 3. 发布
+git add content/ && git commit -m "新碎碎念" && git push
+```
+
+Vercel 收到 push 后约 30 秒自动构建部署。整个过程不需要打开任何后台管理界面。
+
+## 后续计划
+
+MVP 上线了，后面想加的东西：
+
+- RSS feed
+- OG 图片自动生成
+- Giscus 评论（基于 GitHub Discussions）
+- 邮件订阅
+- 全文搜索
+- 标签筛选
+
+但不急。先有内容，再完善功能。
+
+## 最后
+
+从有想法到上线，用了一个晚上。以前觉得搭个人网站是个大工程，现在回头看，真正的门槛不是技术，而是动手。工具已经好到这个程度了——写几句需求，AI 帮你搭骨架，你填内容就好。
+
+如果你也一直想做一个自己的网站，现在就是最好的时候。]]></content:encoded>
+    </item>
+    <item>
+      <title>给自己做一个个人博客网站这件事可能是从很多年前就有的心愿，过去几年或因为时间问题、或因为自己的动手能力有限，甚至在 2022 年买了自己的域名最终也没有部署和上…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-03-21-hello</guid>
+      <pubDate>Sat, 21 Mar 2026 00:00:00 GMT</pubDate>
+      <description>给自己做一个个人博客网站这件事可能是从很多年前就有的心愿，过去几年或因为时间问题、或因为自己的动手能力有限，甚至在 2022 年买了自己的域名最终也没有部署和上线。不过这次不一样了，就在昨天的一个晚上，我打开了一个命令行的窗口，和 AI 沟通了几句，我的个人网站就出来了。得益于自己有比较好的上下文维护习惯，这个网站的内容架构也很快搭建起来了。你好，来到我个人主页的人，在这里我会记录自己的想法、作品和成长。谢谢你来！</description>
+      <content:encoded><![CDATA[给自己做一个个人博客网站这件事可能是从很多年前就有的心愿，过去几年或因为时间问题、或因为自己的动手能力有限，甚至在 2022 年买了自己的域名最终也没有部署和上线。不过这次不一样了，就在昨天的一个晚上，我打开了一个命令行的窗口，和 AI 沟通了几句，我的个人网站就出来了。得益于自己有比较好的上下文维护习惯，这个网站的内容架构也很快搭建起来了。你好，来到我个人主页的人，在这里我会记录自己的想法、作品和成长。谢谢你来！]]></content:encoded>
+    </item>
+  </channel>
+</rss>

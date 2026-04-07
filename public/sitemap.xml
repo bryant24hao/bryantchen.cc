@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://bryantchen.cc/zh</loc><lastmod>2026-03-25</lastmod></url>
-  <url><loc>https://bryantchen.cc/zh/thoughts</loc><lastmod>2026-03-25</lastmod></url>
-  <url><loc>https://bryantchen.cc/zh/posts</loc><lastmod>2026-03-25</lastmod></url>
-  <url><loc>https://bryantchen.cc/zh/projects</loc><lastmod>2026-03-25</lastmod></url>
-  <url><loc>https://bryantchen.cc/zh/about</loc><lastmod>2026-03-25</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh</loc><lastmod>2026-04-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/thoughts</loc><lastmod>2026-04-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts</loc><lastmod>2026-04-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/projects</loc><lastmod>2026-04-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/about</loc><lastmod>2026-04-07</lastmod></url>
   <url><loc>https://bryantchen.cc/zh/posts/building-this-site</loc><lastmod>2026-03-21</lastmod></url>
   <url><loc>https://bryantchen.cc/zh/posts/day-60-of-solo-company</loc><lastmod>2026-03-23</lastmod></url>
-  <url><loc>https://bryantchen.cc/en</loc><lastmod>2026-03-25</lastmod></url>
-  <url><loc>https://bryantchen.cc/en/thoughts</loc><lastmod>2026-03-25</lastmod></url>
-  <url><loc>https://bryantchen.cc/en/posts</loc><lastmod>2026-03-25</lastmod></url>
-  <url><loc>https://bryantchen.cc/en/projects</loc><lastmod>2026-03-25</lastmod></url>
-  <url><loc>https://bryantchen.cc/en/about</loc><lastmod>2026-03-25</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/entrepreneurship-three-axes</loc><lastmod>2026-03-26</lastmod></url>
+  <url><loc>https://bryantchen.cc/en</loc><lastmod>2026-04-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/thoughts</loc><lastmod>2026-04-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/posts</loc><lastmod>2026-04-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/projects</loc><lastmod>2026-04-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/about</loc><lastmod>2026-04-07</lastmod></url>
   <url><loc>https://bryantchen.cc/en/posts/building-this-site</loc><lastmod>2026-03-21</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/posts/entrepreneurship-three-axes</loc><lastmod>2026-03-26</lastmod></url>
 </urlset>
