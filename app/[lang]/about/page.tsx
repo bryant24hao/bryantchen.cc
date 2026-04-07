@@ -16,12 +16,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return { title: t.title };
 }
 
+const chromeExtensions = [
+  { name: "拾刻 (Shike)", href: "https://github.com/bryant24hao/shike" },
+  { name: "Tab Cleanup", href: "https://github.com/bryant24hao/tab-cleanup" },
+];
+
 const openSourceItems = [
   { name: "macos-calendar-assistant-skill", href: "https://github.com/bryant24hao/macos-calendar-assistant-skill" },
   { name: "oc-doctor", href: "https://github.com/bryant24hao/oc-doctor" },
   { name: "cc-speed", href: "https://github.com/bryant24hao/cc-speed" },
   { name: "skill-publisher", href: "https://github.com/bryant24hao/skill-publisher" },
-  { name: "拾刻 (Shike)", href: "https://github.com/bryant24hao/shike" },
 ];
 
 const contacts = [
@@ -37,6 +41,7 @@ export default async function AboutPage({ params }: PageProps) {
   const t = getDictionary(lang).about;
   const projDesc = getDictionary(lang).projectDescriptions;
   const osDesc = getDictionary(lang).openSourceDescriptions;
+  const extDesc = getDictionary(lang).chromeExtensionDescriptions;
 
   const activityData = getActivityData(lang);
 
@@ -45,7 +50,7 @@ export default async function AboutPage({ params }: PageProps) {
     {
       name: "ClawPuter",
       desc: projDesc.ClawPuter,
-      extra: `68 ${t.stars}`,
+      extra: `87 ${t.stars}`,
       href: "https://github.com/bryant24hao/ClawPuter",
     },
     { name: "Curioso", desc: projDesc.Curioso },
@@ -107,6 +112,28 @@ export default async function AboutPage({ params }: PageProps) {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="font-semibold mb-4">{t.chromeExtensions}</h2>
+        <ul className="space-y-2">
+          {chromeExtensions.map((item) => (
+            <li key={item.name} className="text-sm">
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium underline underline-offset-2 hover:decoration-2"
+              >
+                {item.name}
+              </a>
+              <span className="text-neutral-500">
+                {" "}
+                — {extDesc[item.name as keyof typeof extDesc]}
+              </span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="mt-10">

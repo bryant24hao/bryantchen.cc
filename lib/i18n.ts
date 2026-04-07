@@ -42,12 +42,17 @@ const dictionaries = {
         "C++、TypeScript、Python、Swift、Shell。硬件用 ESP32，AI 用 Claude。",
       contact: "联系方式",
       stars: "GitHub stars",
+      chromeExtensions: "Chrome 插件",
     },
     projectDescriptions: {
       MemoryX: "个人数字伙伴，多智能体协作。帮你记住、整理、浮现重要的事。",
       ClawPuter:
         "M5Stack Cardputer（ESP32-S3）上的像素桌面伙伴。AI 聊天、语音输入、实时天气、macOS 桌面宠物同步。",
       Curioso: "一个用 AI 驱动对话把好奇心变成知识的 iOS app。",
+    },
+    chromeExtensionDescriptions: {
+      "拾刻 (Shike)": "Chrome 新标签页插件，拾取文学经典中的每一个时刻",
+      "Tab Cleanup": "一键清理浏览器标签页",
     },
     openSourceDescriptions: {
       "macos-calendar-assistant-skill":
@@ -56,7 +61,6 @@ const dictionaries = {
       "cc-speed": "分析 Claude Code token 输出速度的 CLI 工具",
       "skill-publisher":
         "一条命令把 agent skill 发布到 GitHub、ClawdHub 和 skills.sh",
-      "拾刻 (Shike)": "Chrome 新标签页插件，拾取文学经典中的每一个时刻",
     },
   },
   en: {
@@ -99,6 +103,7 @@ const dictionaries = {
         "C++, TypeScript, Python, Swift, Shell. ESP32 for hardware. Claude for AI.",
       contact: "Get in touch",
       stars: "stars on GitHub",
+      chromeExtensions: "Chrome Extensions",
     },
     projectDescriptions: {
       MemoryX:
@@ -108,6 +113,11 @@ const dictionaries = {
       Curioso:
         "An iOS app that turns curiosity into knowledge through AI-powered conversations.",
     },
+    chromeExtensionDescriptions: {
+      "拾刻 (Shike)":
+        "Chrome new tab extension that surfaces literary moments",
+      "Tab Cleanup": "Clean up your browser tabs in one click",
+    },
     openSourceDescriptions: {
       "macos-calendar-assistant-skill":
         "OpenClaw-native macOS calendar skill for IM-first schedule management",
@@ -115,8 +125,6 @@ const dictionaries = {
       "cc-speed": "CLI tool to analyze Claude Code token output speed",
       "skill-publisher":
         "One command to publish your agent skill to GitHub, ClawdHub, and skills.sh",
-      "拾刻 (Shike)":
-        "Chrome new tab extension that surfaces literary moments",
     },
   },
 } as const;

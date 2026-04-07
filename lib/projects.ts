@@ -17,7 +17,7 @@ export const projects: Project[] = [
       en: "Pixel desktop companion for M5Stack Cardputer (ESP32-S3). AI chat, voice input, real-time weather, synced macOS desktop pet.",
     },
     repo: "https://github.com/bryant24hao/ClawPuter",
-    stars: 68,
+    stars: 87,
     tags: ["C++", "ESP32", "IoT"],
   },
   {
@@ -37,13 +37,31 @@ export const projects: Project[] = [
     tags: ["Swift", "iOS", "AI"],
   },
   {
+    name: "拾刻 (Shike)",
+    description: {
+      zh: "Chrome 新标签页插件，拾取文学经典中的每一个时刻。",
+      en: "Chrome new tab extension that surfaces literary moments from classic works.",
+    },
+    repo: "https://github.com/bryant24hao/shike",
+    tags: ["HTML", "Chrome Extension"],
+  },
+  {
+    name: "Tab Cleanup",
+    description: {
+      zh: "一键清理浏览器标签页的 Chrome 插件。",
+      en: "Chrome extension to clean up your browser tabs in one click.",
+    },
+    repo: "https://github.com/bryant24hao/tab-cleanup",
+    tags: ["TypeScript", "Chrome Extension"],
+  },
+  {
     name: "macos-calendar-assistant-skill",
     description: {
       zh: "OpenClaw 原生 macOS 日历技能，IM 优先的日程管理——规划、执行、回顾、安全去重。",
       en: "OpenClaw-native macOS calendar skill for IM-first schedule management — planning, execution, review, and safe dedup cleanup.",
     },
     repo: "https://github.com/bryant24hao/macos-calendar-assistant-skill",
-    stars: 9,
+    stars: 10,
     tags: ["Python", "OpenClaw"],
   },
   {
@@ -63,16 +81,7 @@ export const projects: Project[] = [
       en: "CLI tool to analyze Claude Code token output speed from local JSONL logs.",
     },
     repo: "https://github.com/bryant24hao/cc-speed",
-    stars: 1,
+    stars: 2,
     tags: ["TypeScript", "Claude Code"],
-  },
-  {
-    name: "拾刻 (Shike)",
-    description: {
-      zh: "Chrome 新标签页插件，拾取文学经典中的每一个时刻。",
-      en: "Chrome new tab extension that surfaces literary moments from classic works.",
-    },
-    repo: "https://github.com/bryant24hao/shike",
-    tags: ["HTML", "Chrome Extension"],
   },
 ];
