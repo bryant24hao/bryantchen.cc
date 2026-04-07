@@ -2,6 +2,8 @@
 date: "2026-04-07"
 tags: ["build", "product"]
 ---
-I only call a commercial product “done” when the minimum loop is closed: a working demo, basic login, basic payments and subscription, and a website that can actually convert, plus a real release and private beta, and at least one real paying user.
+商业产品的最小闭环才意味着开发完成，所谓最小闭环指的是：产品 demo 、基本的登录、基础的支付与订阅、官网。完成发布和内测，有之前一个付费用户，这才是最小闭环。
 
-Before that, more features and more polish still mean “in progress”, not “finished”.
+
+
+否则都不算。
