@@ -2,8 +2,6 @@
 date: "2026-04-07T11:46:00"
 tags: ["build", "product"]
 ---
-商业产品的最小闭环才意味着开发完成，所谓最小闭环指的是：产品 demo 、基本的登录、基础的支付与订阅、官网。完成发布和内测，有之前一个付费用户，这才是最小闭环。
+The minimum viable loop of a commercial product is what "development complete" actually means. That loop is: a working demo, basic login, basic payment and subscription, and a website. Launch it, run a beta, get at least one paying user. That's the minimum viable loop.
 
-
-
-否则都不算。
+Anything less doesn't count.

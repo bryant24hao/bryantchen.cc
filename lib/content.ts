@@ -101,9 +101,17 @@ function parseDate(dateStr: string): Date {
 
 export function formatDate(dateStr: string, locale: Locale): string {
   const date = parseDate(dateStr);
-  return date.toLocaleDateString(locale === "zh" ? "zh-CN" : "en-US", {
+  const hasTime = dateStr.includes("T");
+  const datePart = date.toLocaleDateString(locale === "zh" ? "zh-CN" : "en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+  if (!hasTime) return datePart;
+  const timePart = date.toLocaleTimeString(locale === "zh" ? "zh-CN" : "en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+  return `${datePart} ${timePart}`;
 }

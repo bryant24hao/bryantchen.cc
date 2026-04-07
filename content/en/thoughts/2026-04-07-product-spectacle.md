@@ -2,6 +2,6 @@
 date: "2026-04-07T14:17:00"
 tags: ["ai", "product"]
 ---
-AI 时代构建产品有一个“充分不必要条件”：在做产品的第一天，可能你就得想好如何打造“产品奇观”。
+Building products in the AI era has a sufficient but not necessary condition: from day one, you probably need to think about how to create a “product spectacle.”
 
-产品奇观这个东西，很多时候不一定是想出来的，但是如果你第一天不想的话，它一定是不存在的。包括说当你构建了一个产品之后，如果你觉得它很难构成产品奇观，那大概率它是不会成功或者火爆的。
+A product spectacle isn't always something you can plan for, but if you don't think about it from day one, it definitely won't exist. And if, after building a product, you feel it's hard to create that spectacle, it's very likely it won't succeed or go viral.
