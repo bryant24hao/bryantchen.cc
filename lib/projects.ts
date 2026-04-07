@@ -26,6 +26,7 @@ export const projects: Project[] = [
       zh: "个人数字伙伴，多智能体协作。帮你记住、整理、浮现重要的事。",
       en: "Personal digital companion with multi-agent collaboration. Remembers, organizes, and surfaces what matters to you.",
     },
+    url: "https://memoryx.cc",
     tags: ["Swift", "iOS", "AI"],
   },
   {

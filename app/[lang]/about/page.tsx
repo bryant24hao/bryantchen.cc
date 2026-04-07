@@ -46,7 +46,7 @@ export default async function AboutPage({ params }: PageProps) {
   const activityData = getActivityData(lang);
 
   const buildingProjects = [
-    { name: "MemoryX", desc: projDesc.MemoryX },
+    { name: "MemoryX", desc: projDesc.MemoryX, href: "https://memoryx.cc" },
     {
       name: "ClawPuter",
       desc: projDesc.ClawPuter,
