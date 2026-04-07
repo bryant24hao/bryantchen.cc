@@ -8,6 +8,12 @@ export function Footer({ lang }: { lang: Locale }) {
     <footer className="py-8 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
       <p className="text-sm text-neutral-500">Bryant Chen</p>
       <div className="flex items-center gap-3">
+        <Link
+          href={`/${lang}/evolution`}
+          className="text-sm text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+        >
+          {lang === "zh" ? "进化史" : "Evolution"}
+        </Link>
         <a
           href={`/${lang}/feed.xml`}
           className="text-sm text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"

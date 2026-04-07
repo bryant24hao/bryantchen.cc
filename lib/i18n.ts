@@ -28,6 +28,10 @@ const dictionaries = {
     projects: {
       title: "项目",
     },
+    evolution: {
+      title: "进化史",
+      subtitle: "这个网站是怎么长出来的。",
+    },
     about: {
       title: "关于",
       intro1:
@@ -87,6 +91,10 @@ const dictionaries = {
     },
     projects: {
       title: "Projects",
+    },
+    evolution: {
+      title: "Evolution",
+      subtitle: "How this site grew, one feature at a time.",
     },
     about: {
       title: "About",

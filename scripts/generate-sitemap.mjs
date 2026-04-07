@@ -25,7 +25,7 @@ const entries = [];
 const today = new Date().toISOString().split("T")[0];
 
 for (const lang of locales) {
-  for (const route of ["", "/thoughts", "/posts", "/projects", "/about"]) {
+  for (const route of ["", "/thoughts", "/posts", "/projects", "/about", "/evolution"]) {
     entries.push(`  <url><loc>${baseUrl}/${lang}${route}</loc><lastmod>${today}</lastmod></url>`);
   }
   for (const post of getPosts(lang)) {
