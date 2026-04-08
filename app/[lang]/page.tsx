@@ -3,7 +3,9 @@ import { getThoughts, getPosts } from "@/lib/content";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { ThoughtCard } from "@/components/thought-card";
 import { PostCard } from "@/components/post-card";
-
+import { compileMDX } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -16,6 +18,16 @@ export default async function Home({ params }: PageProps) {
   const thoughts = getThoughts(lang).slice(0, 5);
   const posts = getPosts(lang).slice(0, 3);
 
+  const compiledThoughts = await Promise.all(
+    thoughts.map(async (thought) => {
+      const { content: rendered } = await compileMDX({
+        source: thought.content,
+        options: { mdxOptions: { remarkPlugins: [remarkGfm, remarkBreaks] } },
+      });
+      return { ...thought, rendered };
+    })
+  );
+
   return (
     <div>
       <section className="mb-12">
@@ -24,7 +36,7 @@ export default async function Home({ params }: PageProps) {
         </p>
       </section>
 
-      {thoughts.length > 0 && (
+      {compiledThoughts.length > 0 && (
         <section className="mb-12">
           <div className="flex items-baseline justify-between mb-4">
             <h2 className="font-semibold">{t.recentThoughts}</h2>
@@ -35,7 +47,7 @@ export default async function Home({ params }: PageProps) {
               {t.all} &rarr;
             </Link>
           </div>
-          {thoughts.map((thought) => (
+          {compiledThoughts.map((thought) => (
             <ThoughtCard key={thought.slug} lang={lang} {...thought} />
           ))}
         </section>
