@@ -19,6 +19,17 @@ interface TimelineEntry {
 
 const timeline: TimelineEntry[] = [
   {
+    date: "2026-04-08",
+    title: {
+      zh: "图床 + Markdown 渲染",
+      en: "Image Hosting + Markdown Rendering",
+    },
+    description: {
+      zh: "碎碎念支持完整 Markdown 渲染——粗体、列表、图片、链接。搭建独立图床 img.bryantchen.cc，图片不再进主仓库。分享卡片自动清理 Markdown 语法。",
+      en: "Thoughts now fully render Markdown — bold, lists, images, links. Set up dedicated image hosting at img.bryantchen.cc to keep the main repo lean. Share cards auto-strip Markdown syntax.",
+    },
+  },
+  {
     date: "2026-04-07",
     title: {
       zh: "RSS 订阅 + 写作热力图",
