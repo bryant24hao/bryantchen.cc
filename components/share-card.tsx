@@ -165,7 +165,7 @@ export function ShareCard(props: ShareCardProps) {
             maxHeight: "70vh",
             objectFit: "contain",
             borderRadius: 12,
-            boxShadow: "0 24px 64px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1)",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)",
             imageRendering: "crisp-edges",
           }}
         />

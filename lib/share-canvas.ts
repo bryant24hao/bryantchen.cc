@@ -44,10 +44,11 @@ export function generateShareCard(data: ShareCardData): string {
   let titleLines: string[] = [];
 
   if (data.type === "thought" && data.content) {
+    const cleaned = stripMarkdownForShare(data.content);
     const truncated =
-      data.content.length > 200
-        ? data.content.slice(0, 200) + "..."
-        : data.content;
+      cleaned.length > 200
+        ? cleaned.slice(0, 200) + "..."
+        : cleaned;
     tmpCtx.font = `${bodyFontSize}px ${fontFamily}`;
     textLines = wrapText(tmpCtx, truncated, maxTextWidth);
   } else if (data.type === "post") {
@@ -204,6 +205,23 @@ export function generateShareCard(data: ShareCardData): string {
   ctx.fillText("bryantchen.cc", padding, footerCenterY);
 
   return canvas.toDataURL("image/png");
+}
+
+function stripMarkdownForShare(text: string): string {
+  return text
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/~~(.+?)~~/g, "$1")
+    .replace(/^\s*[-*+]\s+/gm, "- ")
+    .replace(/^\s*\d+\.\s+/gm, "")
+    .replace(/^\s*>\s+/gm, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 function wrapText(
