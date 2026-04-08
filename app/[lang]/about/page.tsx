@@ -4,6 +4,7 @@ import { getActivityData } from "@/lib/content";
 import { SoloCounter } from "@/components/solo-counter";
 import { AgeProgress } from "@/components/age-progress";
 import { ActivityHeatmap } from "@/components/activity-heatmap";
+import { VisitorCounter } from "@/components/visitor-counter";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -62,6 +63,7 @@ export default async function AboutPage({ params }: PageProps) {
       <div className="space-y-1">
         <AgeProgress />
         <SoloCounter lang={lang} />
+        <VisitorCounter locale={lang} />
       </div>
 
       <div className="mt-6 space-y-4 text-neutral-700 dark:text-neutral-300 leading-relaxed">
