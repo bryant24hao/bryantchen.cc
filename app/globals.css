@@ -133,6 +133,12 @@
   margin-bottom: 1.5rem;
 }
 
+.prose-sm img {
+  max-height: 400px;
+  width: auto;
+  object-fit: contain;
+}
+
 .prose hr {
   border-color: var(--color-neutral-200);
   margin-top: 2rem;
