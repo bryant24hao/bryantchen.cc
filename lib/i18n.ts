@@ -53,6 +53,7 @@ const dictionaries = {
       ClawPuter:
         "M5Stack Cardputer（ESP32-S3）上的像素桌面伙伴。AI 聊天、语音输入、实时天气、macOS 桌面宠物同步。",
       Curioso: "一个用 AI 驱动对话把好奇心变成知识的 iOS app。",
+      AIBT: "AI Behavior Test — 让 AI 通过分析你的对话历史，给你做一份行为画像。",
     },
     chromeExtensionDescriptions: {
       "拾刻 (Shike)": "Chrome 新标签页插件，拾取文学经典中的每一个时刻",
@@ -120,6 +121,7 @@ const dictionaries = {
         "A pixel desktop companion for M5Stack Cardputer (ESP32-S3). AI chat, voice input, real-time weather, synced macOS desktop pet.",
       Curioso:
         "An iOS app that turns curiosity into knowledge through AI-powered conversations.",
+      AIBT: "AI Behavior Test — AI analyzes your conversation history to build a behavioral profile of you.",
     },
     chromeExtensionDescriptions: {
       "拾刻 (Shike)":
