@@ -20,7 +20,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 const chromeExtensions = [
-  { name: "拾刻 (Shike)", href: "https://github.com/bryant24hao/shike" },
+  {
+    name: "拾刻 (Shike)",
+    href: "https://chromewebstore.google.com/detail/agoanicnncfnnilkkihplfkpkpkhdbac?utm_source=bryantchen.cc",
+  },
   { name: "Tab Cleanup", href: "https://github.com/bryant24hao/tab-cleanup" },
 ];
 

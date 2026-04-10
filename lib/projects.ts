@@ -59,6 +59,7 @@ export const projects: Project[] = [
       zh: "Chrome 新标签页插件，拾取文学经典中的每一个时刻。",
       en: "Chrome new tab extension that surfaces literary moments from classic works.",
     },
+    url: "https://chromewebstore.google.com/detail/agoanicnncfnnilkkihplfkpkpkhdbac?utm_source=bryantchen.cc",
     repo: "https://github.com/bryant24hao/shike",
     tags: ["HTML", "Chrome Extension"],
     status: "live",
