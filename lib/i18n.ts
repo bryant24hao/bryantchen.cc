@@ -47,6 +47,13 @@ const dictionaries = {
       contact: "联系方式",
       stars: "GitHub stars",
       chromeExtensions: "Chrome 插件",
+      projectStatus: {
+        earning: "盈利中",
+        live: "已上线",
+        building: "开发中",
+        paused: "搁置中",
+        archived: "已归档",
+      },
     },
     projectDescriptions: {
       MemoryX: "个人数字伙伴，多智能体协作。帮你记住、整理、浮现重要的事。",
@@ -113,6 +120,13 @@ const dictionaries = {
       contact: "Get in touch",
       stars: "stars on GitHub",
       chromeExtensions: "Chrome Extensions",
+      projectStatus: {
+        earning: "Earning",
+        live: "Live",
+        building: "Building",
+        paused: "Paused",
+        archived: "Archived",
+      },
     },
     projectDescriptions: {
       MemoryX:

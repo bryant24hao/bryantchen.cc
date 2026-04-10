@@ -5,6 +5,8 @@ import { SoloCounter } from "@/components/solo-counter";
 import { AgeProgress } from "@/components/age-progress";
 import { ActivityHeatmap } from "@/components/activity-heatmap";
 import { VisitorCounter } from "@/components/visitor-counter";
+import { ProjectStatusBadge } from "@/components/project-status";
+import type { ProjectStatus } from "@/lib/projects";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -46,16 +48,37 @@ export default async function AboutPage({ params }: PageProps) {
 
   const activityData = getActivityData(lang);
 
-  const buildingProjects = [
-    { name: "MemoryX", desc: projDesc.MemoryX, href: "https://memoryx.cc" },
+  const buildingProjects: Array<{
+    name: string;
+    desc: string;
+    extra?: string;
+    href?: string;
+    status: ProjectStatus;
+  }> = [
+    {
+      name: "MemoryX",
+      desc: projDesc.MemoryX,
+      href: "https://memoryx.cc",
+      status: "building",
+    },
     {
       name: "ClawPuter",
       desc: projDesc.ClawPuter,
       extra: `90 ${t.stars}`,
       href: "https://github.com/bryant24hao/ClawPuter",
+      status: "live",
     },
-    { name: "AIBT", desc: projDesc.AIBT, href: "https://aibtapp.com" },
-    { name: "Curioso", desc: projDesc.Curioso },
+    {
+      name: "AIBT",
+      desc: projDesc.AIBT,
+      href: "https://aibtapp.com",
+      status: "earning",
+    },
+    {
+      name: "Curioso",
+      desc: projDesc.Curioso,
+      status: "building",
+    },
   ];
 
   return (
@@ -90,7 +113,7 @@ export default async function AboutPage({ params }: PageProps) {
         <div className="space-y-4">
           {buildingProjects.map((project) => (
             <div key={project.name}>
-              <h3 className="font-medium">
+              <h3 className="font-medium flex items-baseline gap-2 flex-wrap">
                 {project.href ? (
                   <a
                     href={project.href}
@@ -103,8 +126,9 @@ export default async function AboutPage({ params }: PageProps) {
                 ) : (
                   project.name
                 )}
+                <ProjectStatusBadge status={project.status} lang={lang} />
                 {project.extra && (
-                  <span className="text-sm font-normal text-neutral-400 ml-2">
+                  <span className="text-sm font-normal text-neutral-400">
                     {project.extra}
                   </span>
                 )}

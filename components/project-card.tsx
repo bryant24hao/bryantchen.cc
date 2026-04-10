@@ -1,17 +1,19 @@
 import type { Project } from "@/lib/projects";
 import type { Locale } from "@/lib/i18n";
+import { ProjectStatusBadge } from "./project-status";
 
 interface ProjectCardProps extends Project {
   lang: Locale;
 }
 
-export function ProjectCard({ name, description, url, repo, stars, tags, lang }: ProjectCardProps) {
+export function ProjectCard({ name, description, url, repo, stars, tags, status, lang }: ProjectCardProps) {
   const link = url || repo;
 
   const content = (
     <div className="py-4">
-      <div className="flex items-baseline gap-2">
+      <div className="flex items-baseline gap-2 flex-wrap">
         <h3 className="font-medium">{name}</h3>
+        {status && <ProjectStatusBadge status={status} lang={lang} />}
         {stars != null && stars > 0 && (
           <span className="text-xs text-neutral-400 dark:text-neutral-500">
             {stars} stars

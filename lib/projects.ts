@@ -1,5 +1,7 @@
 import type { Locale } from "./i18n";
 
+export type ProjectStatus = "earning" | "live" | "building" | "paused" | "archived";
+
 export interface Project {
   name: string;
   description: Record<Locale, string>;
@@ -7,6 +9,7 @@ export interface Project {
   repo?: string;
   stars?: number;
   tags: string[];
+  status?: ProjectStatus;
 }
 
 export const projects: Project[] = [
@@ -19,6 +22,7 @@ export const projects: Project[] = [
     repo: "https://github.com/bryant24hao/ClawPuter",
     stars: 90,
     tags: ["C++", "ESP32", "IoT"],
+    status: "live",
   },
   {
     name: "MemoryX",
@@ -28,6 +32,7 @@ export const projects: Project[] = [
     },
     url: "https://memoryx.cc",
     tags: ["Swift", "iOS", "AI"],
+    status: "building",
   },
   {
     name: "AIBT",
@@ -37,6 +42,7 @@ export const projects: Project[] = [
     },
     url: "https://aibtapp.com",
     tags: ["Web", "AI"],
+    status: "earning",
   },
   {
     name: "Curioso",
@@ -45,6 +51,7 @@ export const projects: Project[] = [
       en: "iOS app that turns curiosity into knowledge through AI-powered conversations.",
     },
     tags: ["Swift", "iOS", "AI"],
+    status: "building",
   },
   {
     name: "拾刻 (Shike)",
@@ -54,6 +61,7 @@ export const projects: Project[] = [
     },
     repo: "https://github.com/bryant24hao/shike",
     tags: ["HTML", "Chrome Extension"],
+    status: "live",
   },
   {
     name: "Tab Cleanup",
@@ -63,6 +71,7 @@ export const projects: Project[] = [
     },
     repo: "https://github.com/bryant24hao/tab-cleanup",
     tags: ["TypeScript", "Chrome Extension"],
+    status: "live",
   },
   {
     name: "macos-calendar-assistant-skill",
