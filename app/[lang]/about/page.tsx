@@ -24,7 +24,10 @@ const chromeExtensions = [
     name: "拾刻 (Shike)",
     href: "https://chromewebstore.google.com/detail/agoanicnncfnnilkkihplfkpkpkhdbac?utm_source=bryantchen.cc",
   },
-  { name: "Tab Cleanup", href: "https://github.com/bryant24hao/tab-cleanup" },
+  {
+    name: "Tab Cleanup",
+    href: "https://chromewebstore.google.com/detail/tab-cleanup/eefjpecolahbfgfdpcjpfbeejoplfgnp?utm_source=bryantchen.cc",
+  },
 ];
 
 const openSourceItems = [

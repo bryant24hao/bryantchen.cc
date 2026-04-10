@@ -70,6 +70,7 @@ export const projects: Project[] = [
       zh: "一键清理浏览器标签页的 Chrome 插件。",
       en: "Chrome extension to clean up your browser tabs in one click.",
     },
+    url: "https://chromewebstore.google.com/detail/tab-cleanup/eefjpecolahbfgfdpcjpfbeejoplfgnp?utm_source=bryantchen.cc",
     repo: "https://github.com/bryant24hao/tab-cleanup",
     tags: ["TypeScript", "Chrome Extension"],
     status: "live",
