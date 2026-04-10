@@ -77,7 +77,7 @@ export default async function AboutPage({ params }: PageProps) {
     {
       name: "Curioso",
       desc: projDesc.Curioso,
-      status: "building",
+      status: "paused",
     },
   ];
 

@@ -51,7 +51,7 @@ export const projects: Project[] = [
       en: "iOS app that turns curiosity into knowledge through AI-powered conversations.",
     },
     tags: ["Swift", "iOS", "AI"],
-    status: "building",
+    status: "paused",
   },
   {
     name: "拾刻 (Shike)",
