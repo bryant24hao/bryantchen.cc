@@ -113,21 +113,21 @@ export default async function AboutPage({ params }: PageProps) {
         <div className="space-y-4">
           {buildingProjects.map((project) => (
             <div key={project.name}>
-              <div className="flex items-center gap-3 flex-wrap">
-                <h3 className="font-medium">
-                  {project.href ? (
-                    <a
-                      href={project.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline underline-offset-2 hover:decoration-2"
-                    >
-                      {project.name}
-                    </a>
-                  ) : (
-                    project.name
-                  )}
-                </h3>
+              <h3 className="font-medium">
+                {project.href ? (
+                  <a
+                    href={project.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:decoration-2"
+                  >
+                    {project.name}
+                  </a>
+                ) : (
+                  project.name
+                )}
+              </h3>
+              <div className="flex items-center gap-3 mt-1">
                 <ProjectStatusBadge status={project.status} lang={lang} />
                 {project.extra && (
                   <span className="text-xs text-neutral-400 dark:text-neutral-500">

@@ -11,20 +11,24 @@ export function ProjectCard({ name, description, url, repo, stars, tags, status,
 
   const content = (
     <div className="py-4">
-      <div className="flex items-center gap-3 flex-wrap">
-        <h3 className="font-medium">{name}</h3>
-        {status && <ProjectStatusBadge status={status} lang={lang} />}
-        {stars != null && stars > 0 && (
-          <span className="text-xs text-neutral-400 dark:text-neutral-500">
-            {stars} stars
-          </span>
-        )}
+      <h3 className="font-medium">
+        {name}
         {link && (
-          <span className="text-xs text-neutral-400 dark:text-neutral-500">
+          <span className="text-xs text-neutral-400 dark:text-neutral-500 ml-2 align-middle">
             &rarr;
           </span>
         )}
-      </div>
+      </h3>
+      {(status || (stars != null && stars > 0)) && (
+        <div className="flex items-center gap-3 mt-1">
+          {status && <ProjectStatusBadge status={status} lang={lang} />}
+          {stars != null && stars > 0 && (
+            <span className="text-xs text-neutral-400 dark:text-neutral-500">
+              {stars} stars
+            </span>
+          )}
+        </div>
+      )}
       <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
         {description[lang]}
       </p>
