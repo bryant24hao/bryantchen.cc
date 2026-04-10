@@ -11,7 +11,7 @@ export function ProjectCard({ name, description, url, repo, stars, tags, status,
 
   const content = (
     <div className="py-4">
-      <div className="flex items-baseline gap-2 flex-wrap">
+      <div className="flex items-center gap-3 flex-wrap">
         <h3 className="font-medium">{name}</h3>
         {status && <ProjectStatusBadge status={status} lang={lang} />}
         {stars != null && stars > 0 && (
