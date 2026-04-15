@@ -64,8 +64,8 @@ export default async function AboutPage({ params }: PageProps) {
     {
       name: "MemoryX",
       desc: projDesc.MemoryX,
-      href: "https://memoryx.cc",
-      status: "building",
+      href: "https://chromewebstore.google.com/detail/lkfndjgbfadcaiooidegddhplcpifkge?utm_source=bryantchen.cc",
+      status: "live",
     },
     {
       name: "ClawPuter",
