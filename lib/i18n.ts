@@ -48,7 +48,7 @@ const dictionaries = {
       stars: "GitHub stars",
       chromeExtensions: "Chrome 插件",
       projectStatus: {
-        earning: "盈利中",
+        earning: "有收入",
         live: "已上线",
         building: "开发中",
         paused: "搁置中",
