@@ -1,0 +1,191 @@
+---
+title: "独立开发者广告变现：Adsterra 接入完整指南（附真实收入数据）"
+date: "2026-04-16T00:30:00"
+description: "AdSense 注册卡在手机验证，转投 Adsterra 一个晚上搞定。从选型踩坑、注册流程、广告格式选择、代码批量注入到投放策略，基于 AIBT 项目的真实接入全记录。"
+tags: ["indie-hacking", "monetization", "build-in-public", "adsterra"]
+draft: false
+---
+
+> 本文根据我和 Claude（AI）的实际项目对话记录整理而成。所有数据、踩坑经验、代码示例均来自 [AIBT](https://aibtapp.com) 的真实接入过程。
+
+## 先说结论：AdSense 怎么把我卡住的
+
+我的项目是 [AIBT](https://aibtapp.com)——一个 AI 版 MBTI 性格测试，72 个 SEO 页面、三语支持（中英日）、Cloudflare Pages 部署。按理说内容质量不差，但注册 AdSense 的时候遇到了一个致命问题：
+
+**付款地区一旦选了就不能改。**
+
+我选了 Hong Kong（因为有港卡），结果手机验证要求 +852 号码。我手上只有 +86 和美国号，验证过不了。这个 AdSense 账号就废了——不能改地区，不能删账号重来（同一个 Google 账号只能开一个 AdSense）。
+
+如果你也没有对应地区的手机号，AdSense 这条路可能走不通。
+
+## 为什么转向 Adsterra
+
+| | Google AdSense | Adsterra |
+|---|---|---|
+| 审批时间 | 1-4 周 | **几小时** |
+| 最低流量要求 | 无官方要求但低流量常被拒 | **无要求** |
+| 手机号验证 | 必须匹配付款地区 | **不需要** |
+| 付款门槛 | $100 | **$5**（Paxum/USDT） |
+| 付款方式 | 仅银行电汇 | PayPal、USDT、Wire、Paxum |
+| 广告质量 | 高 | 中等 |
+
+一句话：AdSense 是"大厂审批制"，Adsterra 是"自助服务制"。对于日活百级的小站，Adsterra 的 ROI 更高——因为你至少能接上。
+
+## 注册流程（5 分钟）
+
+### 1. 创建账号
+
+打开 [Adsterra](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX) → Sign Up → 选 **Publisher**。
+
+需要填的：
+- **E-mail**：常用邮箱
+- **Login**：用户名
+- **Messenger**：随便选一个填社交账号（不会真的联系你）
+- **Country**：选你实际所在的国家。**这个不影响收款**——不像 AdSense 会锁死，Adsterra 后面随时可以选 PayPal/USDT 等方式收款
+
+不需要手机号，不需要银行信息，不需要身份验证。
+
+### 2. 添加网站
+
+Websites → ADD WEBSITE → 填域名和分类。
+
+Adsterra 的分类很粗（Social / Movies / Downloads...），没有 Technology 或 Entertainment。选 **Other** 最安全。
+
+**Adult ads 一定要关掉**——除非你是成人内容站。
+
+### 3. 选广告格式（最关键的决策）
+
+这步决定了你的收入水平和用户体验之间的平衡。
+
+**推荐选的：**
+
+- **Native Banner** — 和内容混排，看起来像推荐内容，CTR 最高。每个页面都可以放
+- **Banner** — 传统展示广告。选 728x90（桌面横幅）+ 300x250（通用方块）+ 320x50（手机横条）三个尺寸就够
+
+**看情况选的：**
+
+- **Popunder** — 用户关闭/切换页面时弹窗。CPM 是 Banner 的 3-5 倍，但影响体验。**建议只在 SEO 流量页放**（搜索来的路人），核心体验页不放
+
+**不要选的：**
+
+- **Social Bar** — 浮动通知条，遮挡内容
+- **Smartlink** — 跳转广告页，完全不适合
+
+### 4. 等待激活
+
+提交后 3 分钟刷新页面，状态变成 Active。比泡一杯咖啡还快。
+
+### 5. 获取代码
+
+每个 Ad Unit 右侧 GET CODE → 复制 HTML/JS 代码。
+
+## 投放策略：哪些页面放什么广告
+
+**核心原则：越是需要用户分享/互动的页面，广告越要克制。**
+
+| 页面类型 | Native Banner | 300x250 | 728x90 / 320x50 | Popunder |
+|---|---|---|---|---|
+| 首页 | ✅ footer 下方 | ❌ | ❌ | ❌ |
+| 核心体验页（测试结果） | ✅ 结果下方 | ❌ | ❌ | ❌ |
+| 内容详情页（SEO 页） | ✅ | ✅ 文章中间 | ✅ footer 上方 | ✅ |
+| 工具页（统计/FAQ） | ✅ | ❌ | ✅ footer 上方 | ✅ |
+
+**为什么首页和结果页只放 Native Banner？**
+
+首页弹窗 = 用户第一次来就被弹，直接走人。结果页是用户截图分享的页面——分享带来的免费流量，比那点广告收入值钱得多。
+
+**为什么详情页可以多放？**
+
+这些页面的流量来自 Google 搜索，用户是"路人"，对广告容忍度高，是广告变现的主力。
+
+## 技术实现
+
+### 响应式：桌面和手机显示不同广告
+
+```html
+<style>
+.ad-desktop { display: block; }
+.ad-mobile { display: none; }
+@media (max-width: 768px) {
+  .ad-desktop { display: none; }
+  .ad-mobile { display: block; }
+}
+</style>
+
+<!-- 桌面：728x90 -->
+<div class="ad-desktop"><!-- 广告代码 --></div>
+
+<!-- 手机：320x50 -->
+<div class="ad-mobile"><!-- 广告代码 --></div>
+```
+
+### 批量注入：几十个页面不用手动加
+
+AIBT 有 72 个 personality 页面 × 3 语言 = 216 个 HTML 文件。手动加太慢，写个 Python 脚本：
+
+```python
+from pathlib import Path
+
+AD_CODE = '''<!-- 你的广告代码 -->'''
+
+for html_file in Path('personality').rglob('index.html'):
+    html = html_file.read_text()
+    if '广告标识' not in html:  # 幂等检查，避免重复注入
+        html = html.replace('<footer>', AD_CODE + '\n<footer>')
+        html_file.write_text(html)
+```
+
+### 动态页面：JS 渲染后注入
+
+SPA 或动态渲染的页面不能直接在 HTML 里写广告代码。用 JS 动态创建：
+
+```javascript
+const adContainer = document.getElementById('ad-slot');
+if (adContainer && !adContainer.dataset.loaded) {
+  adContainer.dataset.loaded = '1';
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = '你的广告脚本URL';
+  adContainer.appendChild(s);
+}
+```
+
+## 别忘了更新隐私政策
+
+接入广告后必须在隐私政策里披露，否则可能违反 GDPR/CCPA。在"第三方服务"部分加一行：
+
+> **Adsterra**：内容页面的展示广告。适用 [Adsterra 的隐私政策](https://adsterra.com/privacy-policy/)。
+
+## 真实收入数据
+
+**第一天**：34 次展示、0 次点击、$0 收入、CPM $0.094。
+
+别慌——新站就是这样。Adsterra 的算法需要几天到几周来学习你的流量质量，然后才会分配更高 CPM 的广告。
+
+**合理预期：**
+
+| 日均访问 | 月展示量 | 预估月收入 |
+|---|---|---|
+| 100 | 3,000 | $3-10 |
+| 500 | 15,000 | $15-50 |
+| 1,000 | 30,000 | $30-100 |
+
+测试/娱乐类站点 CPM 通常在 $1-3。不会让你暴富，但**完全被动**——代码接好之后你不需要做任何事，流量来了就自动产生收入。
+
+## 常见问题
+
+**Q: 广告加了但看不到？**
+三种可能：(1) 广告拦截器 → 关掉；(2) 新站填充率需要时间 → 等几小时；(3) 你的地区暂时没广告库存。
+
+**Q: 可以同时接 AdSense 和 Adsterra 吗？**
+可以，但建议不同页面放不同家的广告，避免同页面抢资源拉低 CPM。
+
+**Q: 网站两侧空白能放广告吗？**
+单栏布局的两侧空白是 body 背景，要放广告需要改整个页面结构，成本远大于收益。考虑底部悬浮横幅作为替代。
+
+**Q: Popunder 会不会让用户反感？**
+会。但它 CPM 最高。折中方案：只在 SEO 流量页放，核心页不放。
+
+---
+
+*本文整理自我和 Claude（AI）的实际项目对话记录。如果你也在做独立项目的广告变现，希望这篇能帮你少踩几个坑。*
