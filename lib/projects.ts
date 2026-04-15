@@ -27,8 +27,8 @@ export const projects: Project[] = [
   {
     name: "MemoryX",
     description: {
-      zh: "个人数字伙伴，多智能体协作。帮你记住、整理、浮现重要的事。",
-      en: "Personal digital companion with multi-agent collaboration. Remembers, organizes, and surfaces what matters to you.",
+      zh: "你的 AI 记忆伙伴。Chrome 插件已上线，帮你在浏览中自动记住、整理、浮现重要的信息。桌面端正在探索和 dogfooding 中，未来适时发布。",
+      en: "Your AI memory companion. Chrome extension is live — automatically remembers, organizes, and surfaces what matters as you browse. Desktop app in exploration and dogfooding, to be released when ready.",
     },
     url: "https://chromewebstore.google.com/detail/lkfndjgbfadcaiooidegddhplcpifkge?utm_source=bryantchen.cc",
     tags: ["Chrome Extension", "AI"],

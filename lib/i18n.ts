@@ -56,7 +56,8 @@ const dictionaries = {
       },
     },
     projectDescriptions: {
-      MemoryX: "个人数字伙伴，多智能体协作。帮你记住、整理、浮现重要的事。",
+      MemoryX:
+        "你的 AI 记忆伙伴。Chrome 插件已上线，帮你在浏览中自动记住、整理、浮现重要的信息。桌面端正在探索和 dogfooding 中，未来适时发布。",
       ClawPuter:
         "M5Stack Cardputer（ESP32-S3）上的像素桌面伙伴。AI 聊天、语音输入、实时天气、macOS 桌面宠物同步。",
       Curioso: "一个用 AI 驱动对话把好奇心变成知识的 iOS app。",
@@ -130,7 +131,7 @@ const dictionaries = {
     },
     projectDescriptions: {
       MemoryX:
-        "A personal digital companion with multi-agent collaboration. Designed to remember, organize, and surface what matters to you.",
+        "Your AI memory companion. Chrome extension is live — automatically remembers, organizes, and surfaces what matters as you browse. Desktop app in exploration and dogfooding, to be released when ready.",
       ClawPuter:
         "A pixel desktop companion for M5Stack Cardputer (ESP32-S3). AI chat, voice input, real-time weather, synced macOS desktop pet.",
       Curioso:
