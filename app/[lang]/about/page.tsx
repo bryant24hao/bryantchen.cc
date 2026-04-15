@@ -70,7 +70,7 @@ export default async function AboutPage({ params }: PageProps) {
     {
       name: "ClawPuter",
       desc: projDesc.ClawPuter,
-      extra: `90 ${t.stars}`,
+      extra: `94 ${t.stars}`,
       href: "https://github.com/bryant24hao/ClawPuter",
       status: "live",
     },
