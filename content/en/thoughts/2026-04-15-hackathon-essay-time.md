@@ -2,12 +2,12 @@
 date: "2026-04-15"
 tags: ["writing", "reflection"]
 ---
-读朋友三年前写的一篇关于黑客松参赛感悟的文章。我上次读这篇文章的感受已经记不起来了，不过昨晚再读的时候，有些地方挺有趣的：
+Read a friend's essay from three years ago about their hackathon experience. I can't remember what I felt the first time I read it, but re-reading it last night, a few things stood out:
 
-会发现里面技术的部分变化的真快，我三年前读的时候有些其实都没太 get，现在看，觉得这些技术都是上个世纪的东西了。
+The technical parts have changed incredibly fast. Some of the stuff I didn't fully get three years ago now feels like ancient history.
 
-但不变的是，关于产品的洞察、比如散步、BGM、一些人文的东西，我觉得现在都还是有意义的，我也会时不时想到这些 idea。
+But what hasn't changed are the product insights — the walks, the background music, the human touches. I still think about those ideas from time to time.
 
-另外就是说，很难想象三年前大家用了 6 个人做了 48 小时的东西，在今天可能一个人一小时就可以做出来了。
+Also, it's wild to think that what six people spent 48 hours building back then could probably be done by one person in an hour today.
 
-很好的一篇文章。人就是要多写，即便书写的不是历史，在人类的长河中留下自己的一点痕迹也是不错的。
+A great essay. People should write more. Even if you're not writing history, leaving a small trace of yourself in the human timeline is worth something.

@@ -2,4 +2,4 @@
 date: "2026-04-15"
 tags: ["product", "pivot"]
 ---
-前几周我总说产品闭环，产品闭环的一个好处就是用数据来让你自己彻底死心或者 pivot，不然你总是心存侥幸。
+I keep talking about the product loop these past few weeks. One real benefit of closing that loop is that data forces you to either fully let go or pivot. Without it, you always hold onto false hope.

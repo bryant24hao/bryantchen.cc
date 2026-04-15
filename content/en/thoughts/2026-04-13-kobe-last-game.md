@@ -2,6 +2,6 @@
 date: "2026-04-13"
 tags: ["kobe", "memory"]
 ---
-科比退役之战十周年，那一年我大四，在实验室里看完了这场比赛。时间过得太快了，转眼十年又过去了，联盟又安排了湖人 vs 爵士作为这个赛季常规赛的最后一场。
+Ten years since Kobe's farewell game. I was a senior in college, watching it in the lab. Time flies — another decade gone, and the league scheduled Lakers vs Jazz as the last regular season game this year.
 
-睡前看了尼克尔森和摩根弗里曼的《遗愿清单》，尼克尔森是湖人和科比的死忠粉丝。
+Before bed, I watched "The Bucket List" with Jack Nicholson and Morgan Freeman. Nicholson is a die-hard Lakers and Kobe fan.
