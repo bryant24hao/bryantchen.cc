@@ -1,0 +1,197 @@
+---
+title: "Ad Monetization for Indie Developers: A Complete Adsterra Integration Guide (With Real Revenue Data)"
+date: "2026-04-16T00:30:00"
+description: "After getting stuck on AdSense phone verification, I switched to Adsterra and had ads running in one evening. Registration, ad format selection, code injection, and placement strategy — all from a real project."
+tags: ["indie-hacking", "monetization", "build-in-public", "adsterra"]
+draft: false
+---
+
+> This article is organized from my actual project conversation with Claude (AI). All data, lessons learned, and code examples are from integrating ads into [AIBT](https://aibtapp.com).
+
+## How AdSense Blocked Me Before I Even Started
+
+My project is [AIBT](https://aibtapp.com) — an MBTI-style personality test for AI. 72 SEO pages, three languages (EN/ZH/JA), deployed on Cloudflare Pages. Content quality wasn't the issue. The issue was AdSense's registration flow.
+
+**Once you pick a payment country, you can't change it.**
+
+I chose Hong Kong (I have an HK bank card), and then the phone verification demanded a +852 number. I only had +86 and a US number. Verification failed. The account was stuck — can't change region, can't delete and restart (one AdSense account per Google account).
+
+If you don't have a phone number that matches your chosen payment country, AdSense might not work for you.
+
+## Why Adsterra
+
+| | Google AdSense | Adsterra |
+|---|---|---|
+| Approval time | 1-4 weeks | **A few hours** |
+| Minimum traffic | No official minimum but low-traffic sites often get rejected | **None** |
+| Phone verification | Must match payment country | **Not required** |
+| Payment threshold | $100 | **$5** (Paxum/USDT) |
+| Payment methods | Bank wire only | PayPal, USDT, Wire, Paxum |
+| Ad quality | High | Medium |
+
+In short: AdSense is enterprise-grade gatekeeping. Adsterra is self-service. For sites with under 100 daily visitors, Adsterra has better ROI — because at least you can get ads running.
+
+## Registration (5 Minutes)
+
+### 1. Create an Account
+
+Go to [Adsterra](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX) → Sign Up → choose **Publisher**.
+
+What you need:
+- **Email**: your regular email
+- **Login**: a username
+- **Messenger**: pick any (Telegram/Twitter/Skype), fill in your handle — they won't actually contact you
+- **Country**: your actual country. **This doesn't lock your payment method** — unlike AdSense, Adsterra lets you choose PayPal/USDT/Wire at any time
+
+No phone number, no bank info, no identity verification. Just email verification.
+
+### 2. Add Your Website
+
+Websites → ADD WEBSITE → enter your domain and category.
+
+Adsterra's categories are rough (Social / Movies / Downloads...) — there's no "Technology" or "Entertainment." Pick **Other** if nothing fits.
+
+**Turn off Adult ads** unless you run an adult site.
+
+### 3. Choose Ad Formats (The Key Decision)
+
+This step determines the balance between revenue and user experience.
+
+**Recommended:**
+
+- **Native Banner** — blends with content, looks like a recommendation widget. Best CTR, lowest visual disruption. Safe for every page
+- **Banner** — traditional display ads. Pick 728x90 (desktop leaderboard) + 300x250 (universal rectangle) + 320x50 (mobile strip)
+
+**Use with caution:**
+
+- **Popunder** — opens a new window when the user closes/switches tabs. CPM is 3-5x higher than banners, but it hurts UX. **Only use on SEO landing pages** (visitors from Google who have no brand loyalty), never on your core experience pages
+
+**Avoid:**
+
+- **Social Bar** — floating notification bar that blocks content
+- **Smartlink** — redirects users to ad pages, completely wrong for content sites
+
+### 4. Wait for Activation
+
+Submit and refresh after 3 minutes. Status changes to **Active**. Faster than making a cup of coffee.
+
+### 5. Get the Code
+
+Each Ad Unit has a **GET CODE** button → copy the HTML/JS snippet.
+
+## Placement Strategy: What Goes Where
+
+**Core principle: the more you need users to share/interact on a page, the fewer ads it should have.**
+
+| Page Type | Native Banner | 300x250 | 728x90 / 320x50 | Popunder |
+|---|---|---|---|---|
+| Homepage | ✅ below footer | ❌ | ❌ | ❌ |
+| Core experience (test results) | ✅ below results | ❌ | ❌ | ❌ |
+| Content detail pages (SEO) | ✅ | ✅ mid-article | ✅ above footer | ✅ |
+| Utility pages (stats/FAQ) | ✅ | ❌ | ✅ above footer | ✅ |
+
+**Why only Native Banner on homepage and results?**
+
+Homepage popunder = user's first visit gets a popup, they leave immediately. Results page is where users screenshot and share — sharing generates free traffic that's worth more than ad revenue. Too many ads kills the sharing impulse.
+
+**Why can detail pages have more?**
+
+These pages get traffic from Google search. Users are "strangers" with high ad tolerance. Long content (1500+ words) has enough space. This is where ad revenue actually comes from.
+
+## Technical Implementation
+
+### Responsive: Different Ads for Desktop and Mobile
+
+```html
+<style>
+.ad-desktop { display: block; }
+.ad-mobile { display: none; }
+@media (max-width: 768px) {
+  .ad-desktop { display: none; }
+  .ad-mobile { display: block; }
+}
+</style>
+
+<!-- Desktop: 728x90 -->
+<div class="ad-desktop"><!-- ad code --></div>
+
+<!-- Mobile: 320x50 -->
+<div class="ad-mobile"><!-- ad code --></div>
+```
+
+### Batch Injection: Don't Add Manually to 200+ Pages
+
+AIBT has 72 personality pages × 3 languages = 216 HTML files. Write a Python script:
+
+```python
+from pathlib import Path
+
+AD_CODE = '''<!-- your ad code -->'''
+
+for html_file in Path('personality').rglob('index.html'):
+    html = html_file.read_text()
+    if 'ad-identifier' not in html:  # idempotency check
+        html = html.replace('<footer>', AD_CODE + '\n<footer>')
+        html_file.write_text(html)
+```
+
+### Dynamic Pages: Inject After JS Render
+
+For SPA or dynamically rendered pages, you can't hardcode ad scripts in the HTML. Inject via JavaScript:
+
+```javascript
+const adContainer = document.getElementById('ad-slot');
+if (adContainer && !adContainer.dataset.loaded) {
+  adContainer.dataset.loaded = '1';
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'your-ad-script-url';
+  adContainer.appendChild(s);
+}
+```
+
+## Update Your Privacy Policy
+
+After adding ads, you **must** disclose this in your privacy policy (GDPR/CCPA compliance). Add to your "Third-Party Services" section:
+
+> **Adsterra**: Display advertising on content pages. Subject to [Adsterra's privacy policy](https://adsterra.com/privacy-policy/).
+
+## Real Revenue Data
+
+Let me set expectations:
+
+**Day 1**: 34 impressions, 0 clicks, $0 revenue, CPM $0.094.
+
+This is normal. Adsterra's algorithm needs days to weeks to learn your traffic quality before it serves higher-CPM ads.
+
+**Realistic expectations:**
+
+| Daily visits | Monthly impressions | Estimated monthly revenue |
+|---|---|---|
+| 100 | 3,000 | $3-10 |
+| 500 | 15,000 | $15-50 |
+| 1,000 | 30,000 | $30-100 |
+
+Quiz/entertainment sites typically see $1-3 CPM. It won't make you rich, but it's **completely passive** — once the code is in, you don't do anything. Traffic comes in, money trickles out.
+
+## FAQ
+
+**Q: Ads added but nothing shows up?**
+Three possibilities: (1) ad blocker in your browser → disable it; (2) new site fill rate takes hours to ramp up → wait; (3) no ad inventory for your region right now.
+
+**Q: Can I run AdSense and Adsterra simultaneously?**
+Yes, but put them on different pages. Same-page competition lowers CPM for both.
+
+**Q: Can I put ads in the blank space on both sides of a centered layout?**
+If you're using a single-column layout (e.g., `max-width: 760px`), the blank sides are just body background. Adding sidebar ads requires restructuring the entire page — not worth it. Consider a sticky bottom banner instead.
+
+**Q: Will Popunder annoy users?**
+Yes. But its CPM is the highest. Compromise: only use it on SEO traffic pages (those users weren't going to become loyal visitors anyway). Never on core pages.
+
+---
+
+*This article was organized from my actual project conversation with Claude (AI). If you're also figuring out ad monetization for an indie project, hope this saves you a few headaches.*
+
+---
+
+If you'd like to try Adsterra, feel free to sign up through [my referral link](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX) — it helps support this blog at no extra cost to you.
