@@ -6,6 +6,7 @@ import { AgeProgress } from "@/components/age-progress";
 import { ActivityHeatmap } from "@/components/activity-heatmap";
 import { VisitorCounter } from "@/components/visitor-counter";
 import { ProjectStatusBadge } from "@/components/project-status";
+import { RichText } from "@/components/rich-text";
 import type { ProjectStatus } from "@/lib/projects";
 
 interface PageProps {
@@ -142,7 +143,7 @@ export default async function AboutPage({ params }: PageProps) {
                 )}
               </div>
               <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-                {project.desc}
+                <RichText text={project.desc} />
               </p>
             </div>
           ))}

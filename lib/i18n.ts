@@ -59,7 +59,7 @@ const dictionaries = {
       MemoryX:
         "你的 AI 记忆伙伴。Chrome 插件已上线，帮你在浏览中自动记住、整理、浮现重要的信息。桌面端正在探索和 dogfooding 中，未来适时发布。",
       ClawPuter:
-        "M5Stack Cardputer（ESP32-S3）上的像素桌面伙伴。AI 聊天、语音输入、实时天气、macOS 桌面宠物同步。",
+        "M5Stack Cardputer（ESP32-S3）上的像素桌面伙伴。AI 聊天、语音输入、实时天气、macOS 桌面宠物同步。[查看演示](https://img.bryantchen.cc/slides/clawputer-story)",
       Curioso: "一个用 AI 驱动对话把好奇心变成知识的 iOS app。",
       AIBT: "AI Behavior Test — 让 AI 通过分析你的对话历史，给你做一份行为画像。",
     },
@@ -133,7 +133,7 @@ const dictionaries = {
       MemoryX:
         "Your AI memory companion. Chrome extension is live — automatically remembers, organizes, and surfaces what matters as you browse. Desktop app in exploration and dogfooding, to be released when ready.",
       ClawPuter:
-        "A pixel desktop companion for M5Stack Cardputer (ESP32-S3). AI chat, voice input, real-time weather, synced macOS desktop pet.",
+        "A pixel desktop companion for M5Stack Cardputer (ESP32-S3). AI chat, voice input, real-time weather, synced macOS desktop pet. [View slides](https://img.bryantchen.cc/slides/clawputer-story)",
       Curioso:
         "An iOS app that turns curiosity into knowledge through AI-powered conversations.",
       AIBT: "AI Behavior Test — AI analyzes your conversation history to build a behavioral profile of you.",

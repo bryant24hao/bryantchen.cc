@@ -1,6 +1,7 @@
 import type { Project } from "@/lib/projects";
 import type { Locale } from "@/lib/i18n";
 import { ProjectStatusBadge } from "./project-status";
+import { RichText } from "./rich-text";
 
 interface ProjectCardProps extends Project {
   lang: Locale;
@@ -30,7 +31,7 @@ export function ProjectCard({ name, description, url, repo, stars, tags, status,
         </div>
       )}
       <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-        {description[lang]}
+        <RichText text={description[lang]} />
       </p>
       <div className="flex gap-2 mt-2">
         {tags.map((tag) => (
