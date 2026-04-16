@@ -7,7 +7,7 @@
     <link>https://bryantchen.cc/zh</link>
     <description>Bryant 的个人网站 — 独立开发、AI、产品思考</description>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 16 Apr 2026 04:35:05 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 16 Apr 2026 04:44:45 GMT</lastBuildDate>
     <atom:link href="https://bryantchen.cc/zh/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>iOS 翻墙客户端避坑：为什么免费 App 全军覆没，$2.99 就解决了</title>
@@ -191,6 +191,22 @@ Fingerprint：chrome
 免费工具不是不好用，而是当你的服务端用了较新的协议（比如 VLESS Reality），它们共享的底层核心就可能成为瓶颈。这种问题从 App 的界面上完全看不出来，只会显示一个毫无信息量的「超时」。
 
 最贵的成本从来不是工具本身的价格，而是你为了「省这点钱」花掉的时间。]]></content:encoded>
+    </item>
+    <item>
+      <title>对于一些基础设施类的工具和服务，能付费就不要轻易自己折腾。费时间、费力气，有的时候还搞不定。今天在手机端 Shadowrocket 这个工具的选择上被狠狠上了一…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-04-16-pay-for-infra-tools</guid>
+      <pubDate>Thu, 16 Apr 2026 00:00:00 GMT</pubDate>
+      <description>对于一些基础设施类的工具和服务，能付费就不要轻易自己折腾。费时间、费力气，有的时候还搞不定。今天在手机端 Shadowrocket 这个工具的选择上被狠狠上了一课——其实早就该选它了，之前一直用开源或免费的客户端，各种兼容性问题。来来回回折腾了三个 App 两个多小时，最后 $2.99 买断，30 秒搞定。
+
+最贵的成本从来不是工具本身的价格，而是你为了「省这点钱」花掉的时间。
+
+详细踩坑记录：[iOS 翻墙客户端避坑](/zh/posts/ios-proxy-client-pitfalls)</description>
+      <content:encoded><![CDATA[对于一些基础设施类的工具和服务，能付费就不要轻易自己折腾。费时间、费力气，有的时候还搞不定。今天在手机端 Shadowrocket 这个工具的选择上被狠狠上了一课——其实早就该选它了，之前一直用开源或免费的客户端，各种兼容性问题。来来回回折腾了三个 App 两个多小时，最后 $2.99 买断，30 秒搞定。
+
+最贵的成本从来不是工具本身的价格，而是你为了「省这点钱」花掉的时间。
+
+详细踩坑记录：[iOS 翻墙客户端避坑](/zh/posts/ios-proxy-client-pitfalls)]]></content:encoded>
     </item>
     <item>
       <title>独立开发者广告变现：Adsterra 接入完整指南（附真实收入数据）</title>
