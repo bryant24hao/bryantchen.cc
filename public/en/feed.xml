@@ -7,8 +7,522 @@
     <link>https://bryantchen.cc/en</link>
     <description>Bryant&apos;s personal website — indie dev, AI, product thinking</description>
     <language>en</language>
-    <lastBuildDate>Tue, 07 Apr 2026 15:44:53 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 16 Apr 2026 04:35:05 GMT</lastBuildDate>
     <atom:link href="https://bryantchen.cc/en/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>iOS Proxy Client Pitfalls: Why Free Apps Failed and $2.99 Saved the Day</title>
+      <link>https://bryantchen.cc/en/posts/ios-proxy-client-pitfalls</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/ios-proxy-client-pitfalls</guid>
+      <pubDate>Thu, 16 Apr 2026 12:00:00 GMT</pubDate>
+      <description>Self-hosted VPS proxy, phone couldn&apos;t connect. Tried 3 free iOS apps — all failed. Turns out it was a core engine compatibility issue. Full troubleshooting journey, 5-app comparison, and a lesson about false economy.</description>
+      <content:encoded><![CDATA[> Based on my real troubleshooting experience, co-created with Claude (AI). All technical details verified in a live environment.
+
+## Background
+
+I run Xray on a VPS with two proxy protocols:
+
+- **Shadowsocks (SS)**: Classic protocol, port `18388`
+- **VLESS Reality**: Next-gen protocol, port `443`, disguised as normal HTTPS traffic
+
+Mac connects via SSH tunnel — rock solid. Then one day, my phone just stopped connecting. Not "intermittent." Just dead.
+
+## The Investigation
+
+### Step 1: VPS is Fine
+
+SSH in, quick check:
+
+```bash
+systemctl status xray          # ✅ running
+ss -tlnp | grep xray           # ✅ ports 18388, 443 listening
+curl -s https://www.google.com  # ✅ 200
+```
+
+Nothing wrong server-side.
+
+### Step 2: Three Free Apps, Three Failures
+
+Tried every free iOS proxy client I could find:
+
+| App | SS | VLESS Reality |
+|-----|-----|---------------|
+| **Streisand** | timeout | timeout |
+| **V2Box** | timeout | timeout |
+| **Hiddify** | timeout | timeout |
+
+All dead.
+
+### Step 3: Reproducing on Mac
+
+Installed the `xray` client on Mac to test the protocols directly:
+
+```bash
+# SS test
+curl -x socks5://127.0.0.1:10808 https://ifconfig.me
+# ❌ Empty response, exit code 52
+
+# VLESS Reality test
+curl -x socks5://127.0.0.1:10809 https://ifconfig.me
+# ✅ Returns VPS IP
+```
+
+**Finding 1**: SS is broken from Mac too — it's a protocol-level issue, not a phone problem.
+
+**Finding 2**: VLESS Reality works perfectly from Mac.
+
+### Step 4: Loopback Test on VPS
+
+Running an xray client on the VPS itself, connecting to its own SS port (bypassing external network):
+
+```bash
+# VPS localhost → localhost:18388 → internet
+curl -x socks5://127.0.0.1:10900 http://httpbin.org/ip
+# ✅ Success
+```
+
+SS works locally but not externally — **the firewall is specifically blocking SS protocol traffic** through deep packet inspection.
+
+### Step 5: Identifying the Phone Issue
+
+VLESS Reality works from Mac but not from phone. What do all three free apps have in common?
+
+**They all use sing-box as their core engine.**
+
+sing-box is an open-source proxy core. But it has compatibility issues with Xray's Reality implementation, specifically the `xtls-rprx-vision` flow.
+
+## The Fix
+
+Bought **Shadowrocket** ($2.99, US App Store). Copied the VLESS Reality link, opened the app, auto-imported. Connected in 30 seconds.
+
+The previous troubleshooting with free apps had taken over two hours.
+
+## Two Key Takeaways
+
+### 1. Shadowsocks Is No Longer Safe
+
+DPI firewalls can now fingerprint and block SS protocol traffic. Symptoms:
+
+- TCP handshake succeeds (port is reachable)
+- But protocol-level data never comes back (empty response)
+- No client can fix this
+
+If you're still using SS, migrate to VLESS Reality or Hysteria2. VLESS Reality disguises traffic as normal HTTPS (SNI points to microsoft.com), which current firewalls can't detect.
+
+### 2. Free iOS Clients Share a Fatal Flaw
+
+| App | Core Engine | VLESS Reality |
+|-----|------------|---------------|
+| Streisand | sing-box | ⚠️ Incompatible |
+| V2Box | sing-box | ⚠️ Incompatible |
+| Hiddify | sing-box | ⚠️ Incompatible |
+| Shadowrocket | Proprietary | ✅ Works |
+| Surge 5 | Proprietary | ✅ Works |
+
+All free apps depend on sing-box, which has compatibility issues with Xray's Reality. It's not any single app's bug — it's a core engine issue. No amount of app-switching helps.
+
+## Full iOS Proxy Client Comparison
+
+| | Shadowrocket | Surge 5 | Streisand | V2Box | Hiddify |
+|---|---|---|---|---|---|
+| **Price** | $2.99 one-time | $49.99/yr | Free | Free | Free/OSS |
+| **Core** | Proprietary | Proprietary | sing-box | sing-box | sing-box |
+| **SS** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **VLESS Reality** | ✅ | ✅ | ⚠️ | ⚠️ | ⚠️ |
+| **Hysteria2** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Stability** | High | High | Medium | Medium | Low |
+| **Rating** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐ | ⭐ |
+
+**Shadowrocket is the best value**: $2.99 one-time purchase, proprietary core, full protocol support, frequent updates. Surge is more powerful but subscription-based.
+
+## Pitfall Checklist
+
+| Pitfall | Symptom | Root Cause | Fix |
+|---------|---------|------------|-----|
+| SS blocked | All clients timeout | DPI firewall blocks SS protocol | Switch to VLESS Reality |
+| Free apps fail on VLESS | Streisand/V2Box/Hiddify timeout | sing-box incompatible with Xray Reality | Use Shadowrocket |
+| Port reachable ≠ proxy works | TCP connects but proxy fails | TCP handshake ≠ protocol works | Test with actual xray client |
+| Hiddify dev broken | Nothing connects | iOS dev build sing-box bug | Don't use dev builds |
+| Xray degrades over time | Misbehaves after 45 days | Process state degradation | Periodic `systemctl restart xray` |
+
+## The Bottom Line
+
+$2.99 on a proxy client isn't wasteful — **it buys back two hours of debugging and the frustration of cycling through three broken apps.**
+
+Free tools aren't bad. But when your server uses a newer protocol like VLESS Reality, their shared core engine becomes the bottleneck. You can't see this from the app's UI — all you get is a meaningless "timeout."
+
+The most expensive cost is never the tool's price tag. It's the time you spend trying to avoid paying it.]]></content:encoded>
+    </item>
+    <item>
+      <title>Ad Monetization for Indie Developers: A Complete Adsterra Integration Guide (With Real Revenue Data)</title>
+      <link>https://bryantchen.cc/en/posts/adsterra-integration-guide</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/adsterra-integration-guide</guid>
+      <pubDate>Thu, 16 Apr 2026 00:30:00 GMT</pubDate>
+      <description>After getting stuck on AdSense phone verification, I switched to Adsterra and had ads running in one evening. Registration, ad format selection, code injection, and placement strategy — all from a real project.</description>
+      <content:encoded><![CDATA[> This article is organized from my actual project conversation with Claude (AI). All data, lessons learned, and code examples are from integrating ads into [AIBT](https://aibtapp.com).
+
+## How AdSense Blocked Me Before I Even Started
+
+My project is [AIBT](https://aibtapp.com) — an MBTI-style personality test for AI. 72 SEO pages, three languages (EN/ZH/JA), deployed on Cloudflare Pages. Content quality wasn't the issue. The issue was AdSense's registration flow.
+
+**Once you pick a payment country, you can't change it.**
+
+I chose Hong Kong (I have an HK bank card), and then the phone verification demanded a +852 number. I only had +86 and a US number. Verification failed. The account was stuck — can't change region, can't delete and restart (one AdSense account per Google account).
+
+If you don't have a phone number that matches your chosen payment country, AdSense might not work for you.
+
+## Why Adsterra
+
+| | Google AdSense | Adsterra |
+|---|---|---|
+| Approval time | 1-4 weeks | **A few hours** |
+| Minimum traffic | No official minimum but low-traffic sites often get rejected | **None** |
+| Phone verification | Must match payment country | **Not required** |
+| Payment threshold | $100 | **$5** (Paxum/USDT) |
+| Payment methods | Bank wire only | PayPal, USDT, Wire, Paxum |
+| Ad quality | High | Medium |
+
+In short: AdSense is enterprise-grade gatekeeping. Adsterra is self-service. For sites with under 100 daily visitors, Adsterra has better ROI — because at least you can get ads running.
+
+## Registration (5 Minutes)
+
+### 1. Create an Account
+
+Go to [Adsterra](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX) → Sign Up → choose **Publisher**.
+
+What you need:
+- **Email**: your regular email
+- **Login**: a username
+- **Messenger**: pick any (Telegram/Twitter/Skype), fill in your handle — they won't actually contact you
+- **Country**: your actual country. **This doesn't lock your payment method** — unlike AdSense, Adsterra lets you choose PayPal/USDT/Wire at any time
+
+No phone number, no bank info, no identity verification. Just email verification.
+
+### 2. Add Your Website
+
+Websites → ADD WEBSITE → enter your domain and category.
+
+Adsterra's categories are rough (Social / Movies / Downloads...) — there's no "Technology" or "Entertainment." Pick **Other** if nothing fits.
+
+**Turn off Adult ads** unless you run an adult site.
+
+### 3. Choose Ad Formats (The Key Decision)
+
+This step determines the balance between revenue and user experience.
+
+**Recommended:**
+
+- **Native Banner** — blends with content, looks like a recommendation widget. Best CTR, lowest visual disruption. Safe for every page
+- **Banner** — traditional display ads. Pick 728x90 (desktop leaderboard) + 300x250 (universal rectangle) + 320x50 (mobile strip)
+
+**Use with caution:**
+
+- **Popunder** — opens a new window when the user closes/switches tabs. CPM is 3-5x higher than banners, but it hurts UX. **Only use on SEO landing pages** (visitors from Google who have no brand loyalty), never on your core experience pages
+
+**Avoid:**
+
+- **Social Bar** — floating notification bar that blocks content
+- **Smartlink** — redirects users to ad pages, completely wrong for content sites
+
+### 4. Wait for Activation
+
+Submit and refresh after 3 minutes. Status changes to **Active**. Faster than making a cup of coffee.
+
+### 5. Get the Code
+
+Each Ad Unit has a **GET CODE** button → copy the HTML/JS snippet.
+
+## Placement Strategy: What Goes Where
+
+**Core principle: the more you need users to share/interact on a page, the fewer ads it should have.**
+
+| Page Type | Native Banner | 300x250 | 728x90 / 320x50 | Popunder |
+|---|---|---|---|---|
+| Homepage | ✅ below footer | ❌ | ❌ | ❌ |
+| Core experience (test results) | ✅ below results | ❌ | ❌ | ❌ |
+| Content detail pages (SEO) | ✅ | ✅ mid-article | ✅ above footer | ✅ |
+| Utility pages (stats/FAQ) | ✅ | ❌ | ✅ above footer | ✅ |
+
+**Why only Native Banner on homepage and results?**
+
+Homepage popunder = user's first visit gets a popup, they leave immediately. Results page is where users screenshot and share — sharing generates free traffic that's worth more than ad revenue. Too many ads kills the sharing impulse.
+
+**Why can detail pages have more?**
+
+These pages get traffic from Google search. Users are "strangers" with high ad tolerance. Long content (1500+ words) has enough space. This is where ad revenue actually comes from.
+
+## Technical Implementation
+
+### Responsive: Different Ads for Desktop and Mobile
+
+```html
+<style>
+.ad-desktop { display: block; }
+.ad-mobile { display: none; }
+@media (max-width: 768px) {
+  .ad-desktop { display: none; }
+  .ad-mobile { display: block; }
+}
+</style>
+
+<!-- Desktop: 728x90 -->
+<div class="ad-desktop"><!-- ad code --></div>
+
+<!-- Mobile: 320x50 -->
+<div class="ad-mobile"><!-- ad code --></div>
+```
+
+### Batch Injection: Don't Add Manually to 200+ Pages
+
+AIBT has 72 personality pages × 3 languages = 216 HTML files. Write a Python script:
+
+```python
+from pathlib import Path
+
+AD_CODE = '''<!-- your ad code -->'''
+
+for html_file in Path('personality').rglob('index.html'):
+    html = html_file.read_text()
+    if 'ad-identifier' not in html:  # idempotency check
+        html = html.replace('<footer>', AD_CODE + '\n<footer>')
+        html_file.write_text(html)
+```
+
+### Dynamic Pages: Inject After JS Render
+
+For SPA or dynamically rendered pages, you can't hardcode ad scripts in the HTML. Inject via JavaScript:
+
+```javascript
+const adContainer = document.getElementById('ad-slot');
+if (adContainer && !adContainer.dataset.loaded) {
+  adContainer.dataset.loaded = '1';
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'your-ad-script-url';
+  adContainer.appendChild(s);
+}
+```
+
+## Update Your Privacy Policy
+
+After adding ads, you **must** disclose this in your privacy policy (GDPR/CCPA compliance). Add to your "Third-Party Services" section:
+
+> **Adsterra**: Display advertising on content pages. Subject to [Adsterra's privacy policy](https://adsterra.com/privacy-policy/).
+
+## Real Revenue Data
+
+Let me set expectations:
+
+**Day 1**: 34 impressions, 0 clicks, $0 revenue, CPM $0.094.
+
+This is normal. Adsterra's algorithm needs days to weeks to learn your traffic quality before it serves higher-CPM ads.
+
+**Realistic expectations:**
+
+| Daily visits | Monthly impressions | Estimated monthly revenue |
+|---|---|---|
+| 100 | 3,000 | $3-10 |
+| 500 | 15,000 | $15-50 |
+| 1,000 | 30,000 | $30-100 |
+
+Quiz/entertainment sites typically see $1-3 CPM. It won't make you rich, but it's **completely passive** — once the code is in, you don't do anything. Traffic comes in, money trickles out.
+
+## FAQ
+
+**Q: Ads added but nothing shows up?**
+Three possibilities: (1) ad blocker in your browser → disable it; (2) new site fill rate takes hours to ramp up → wait; (3) no ad inventory for your region right now.
+
+**Q: Can I run AdSense and Adsterra simultaneously?**
+Yes, but put them on different pages. Same-page competition lowers CPM for both.
+
+**Q: Can I put ads in the blank space on both sides of a centered layout?**
+If you're using a single-column layout (e.g., `max-width: 760px`), the blank sides are just body background. Adding sidebar ads requires restructuring the entire page — not worth it. Consider a sticky bottom banner instead.
+
+**Q: Will Popunder annoy users?**
+Yes. But its CPM is the highest. Compromise: only use it on SEO traffic pages (those users weren't going to become loyal visitors anyway). Never on core pages.
+
+---
+
+*This article was organized from my actual project conversation with Claude (AI). If you're also figuring out ad monetization for an indie project, hope this saves you a few headaches.*
+
+---
+
+If you'd like to try Adsterra, feel free to sign up through [my referral link](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX) — it helps support this blog at no extra cost to you.]]></content:encoded>
+    </item>
+    <item>
+      <title>Read a friend&apos;s essay from three years ago about their hackathon experience. I c…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-15-hackathon-essay-time</guid>
+      <pubDate>Wed, 15 Apr 2026 00:00:00 GMT</pubDate>
+      <description>Read a friend&apos;s essay from three years ago about their hackathon experience. I can&apos;t remember what I felt the first time I read it, but re-reading it last night, a few things stood out:
+
+The technical parts have changed incredibly fast. Some of the stuff I didn&apos;t fully get three ...</description>
+      <content:encoded><![CDATA[Read a friend's essay from three years ago about their hackathon experience. I can't remember what I felt the first time I read it, but re-reading it last night, a few things stood out:
+
+The technical parts have changed incredibly fast. Some of the stuff I didn't fully get three years ago now feels like ancient history.
+
+But what hasn't changed are the product insights — the walks, the background music, the human touches. I still think about those ideas from time to time.
+
+Also, it's wild to think that what six people spent 48 hours building back then could probably be done by one person in an hour today.
+
+A great essay. People should write more. Even if you're not writing history, leaving a small trace of yourself in the human timeline is worth something.]]></content:encoded>
+    </item>
+    <item>
+      <title>I keep talking about the product loop these past few weeks. One real benefit of …</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-15-product-loop-pivot</guid>
+      <pubDate>Wed, 15 Apr 2026 00:00:00 GMT</pubDate>
+      <description>I keep talking about the product loop these past few weeks. One real benefit of closing that loop is that data forces you to either fully let go or pivot. Without it, you always hold onto false hope.</description>
+      <content:encoded><![CDATA[I keep talking about the product loop these past few weeks. One real benefit of closing that loop is that data forces you to either fully let go or pivot. Without it, you always hold onto false hope.]]></content:encoded>
+    </item>
+    <item>
+      <title>Ten years since Kobe&apos;s farewell game. I was a senior in college, watching it in …</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-13-kobe-last-game</guid>
+      <pubDate>Mon, 13 Apr 2026 00:00:00 GMT</pubDate>
+      <description>Ten years since Kobe&apos;s farewell game. I was a senior in college, watching it in the lab. Time flies — another decade gone, and the league scheduled Lakers vs Jazz as the last regular season game this year.
+
+Before bed, I watched &quot;The Bucket List&quot; with Jack Nicholson and Morgan Fr...</description>
+      <content:encoded><![CDATA[Ten years since Kobe's farewell game. I was a senior in college, watching it in the lab. Time flies — another decade gone, and the league scheduled Lakers vs Jazz as the last regular season game this year.
+
+Before bed, I watched "The Bucket List" with Jack Nicholson and Morgan Freeman. Nicholson is a die-hard Lakers and Kobe fan.]]></content:encoded>
+    </item>
+    <item>
+      <title>Milestone: The First Paid Revenue from My Product</title>
+      <link>https://bryantchen.cc/en/posts/milestone-first-paid-revenue</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/milestone-first-paid-revenue</guid>
+      <pubDate>Sat, 11 Apr 2026 16:30:00 GMT</pubDate>
+      <description>The day AIBT launched, I got a $2.99 payment notification while in a taxi. Behind this small number is everything I&apos;ve accumulated over the past month.</description>
+      <content:encoded><![CDATA[## A Notification in the Taxi
+
+After seeing the SBTI project go viral yesterday, an idea I had been sitting on for a while finally lit up — AIBT (AI Behavior Test). I worked through the night. From writing the first line of code to going live took only a few hours.
+
+Then, this afternoon, I had to take a taxi out for something. On the way, my phone buzzed: **You received a payment of $2.99.**
+
+I still remember the surprise in that moment. The amount is small — $2.99 isn't even enough for a cup of coffee — but this is my first paid product revenue as an indie developer. Worth writing down.
+
+## What is AIBT
+
+In short, AIBT is a small tool that lets AI analyze your past conversation history and build a behavioral profile of you. It was inspired by SBTI, but with something I've been researching recently baked in — analyzing the interaction patterns between humans and AI through conversation history.
+
+Honestly, if I were being more opportunistic, I should have just cloned SBTI's content and test format directly — that would probably be the highest-traffic path. But I still wanted to do something different. Riding a trend is fine, but it's better to ride it with something of your own.
+
+A classic "idea in ten seconds, built in a few hours" kind of project.
+
+## Why This Matters to Me
+
+Honestly, the meaning isn't in the $2.99. It's that I saw my own progress from the past month reflected in this project. A kind of unity-of-knowing-and-doing progress.
+
+### 1. The Minimum Viable Loop, Completed for the First Time
+
+A few days ago I wrote a thought: a commercial product is only "done" when it closes the minimum viable loop — demo, login, payment/subscription, landing page, launch, paying user. This time, AIBT went through that loop rigorously:
+
+- Demo done
+- Payment integrated (LemonSqueezy)
+- Dedicated domain
+- Publicly launched
+- First paying user
+
+The gap between "building for myself" and "actually getting users to pay" is something I had been avoiding for a long time. This was the first time I walked the full distance, and the mindset is completely different.
+
+### 2. No Effort Is Wasted
+
+What moved me more is this — AIBT could launch in a few hours because nearly all the infrastructure was already built during other things I'd done recently:
+
+- **LemonSqueezy** was set up for MemoryX's subscription system, but now any project can plug into it.
+- **Cloudflare Pages + domain configuration** became second nature while building bryantchen.cc and memoryx.cc.
+- **SEO basics** is something I only started learning while working on memoryx.cc.
+- **Conversation analysis logic** comes from my memory research.
+
+Each thing, at the time, looked like I was working on something else. But all of them converged on AIBT.
+
+"No effort is wasted" — I think this is what it means. Everything you do is quietly preparing you for some future moment, even if you have no idea at the time.
+
+## Another Signal That Made Me Even Happier
+
+Beyond the $2.99, there was a moment that made me even happier — after I posted AIBT on my WeChat Moments, I started seeing friends spontaneously share their own test results on their Moments, or forward AIBT to other group chats.
+
+This kind of organic sharing matters more than any click count or payment amount. It means the thing resonates with them, that it's worth sharing, that they're willing to attach their name to the product — even if only in a single post.
+
+For an indie developer, this is the most precious signal.
+
+## A Good Start
+
+$2.99 is a small milestone, but it proves one thing: **keep building, keep shipping, accumulate one piece at a time** — it actually works.
+
+Don't rush to build big things. Get a small loop running first. Don't rush to do the right thing. Finish what's in front of you. Infrastructure will activate itself one day. Knowledge will assemble itself one day.
+
+Continuing from here.]]></content:encoded>
+    </item>
+    <item>
+      <title>Everyone has their own understanding of journaling and personal growth. Late at …</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-11-drift</guid>
+      <pubDate>Sat, 11 Apr 2026 00:00:00 GMT</pubDate>
+      <description>Everyone has their own understanding of journaling and personal growth. Late at night I stumbled upon a design I really love, and some ideas suddenly clicked.
+
+Drift</description>
+      <content:encoded><![CDATA[Everyone has their own understanding of journaling and personal growth. Late at night I stumbled upon a design I really love, and some ideas suddenly clicked.
+
+Drift]]></content:encoded>
+    </item>
+    <item>
+      <title>A small, arguably useless milestone: after a few PRs, my avatar now sits alongsi…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-09-codexbar-contributor</guid>
+      <pubDate>Thu, 09 Apr 2026 10:30:00 GMT</pubDate>
+      <description>A small, arguably useless milestone: after a few PRs, my avatar now sits alongside Peter — the creator of OpenClaw — in the Contributors section of his other open-source project, CodexBar.
+
+The logic of GitHub PRs has actually changed in the AI era. When I contribute to open-sour...</description>
+      <content:encoded><![CDATA[A small, arguably useless milestone: after a few PRs, my avatar now sits alongside Peter — the creator of OpenClaw — in the Contributors section of his other open-source project, CodexBar.
+
+The logic of GitHub PRs has actually changed in the AI era. When I contribute to open-source projects, I just fix bugs that I find basic and annoying, purely from a user's perspective.
+
+The code I contribute might be messy (it's not even mine — my Agent writes it, and I just do what a user and product manager should do). But before my messy code arrived, the existing logic wasn't exactly clean either.
+
+All I want to do is contribute from the user's point of view, as best I can.
+
+![codexbar-contributors](https://img.bryantchen.cc/blog/2026-04-09-codexbar-contributors.png)
+
+![my-commits](https://img.bryantchen.cc/blog/2026-04-09-codexbar-my-commits.png)]]></content:encoded>
+    </item>
+    <item>
+      <title>Reflections on a Good Life</title>
+      <link>https://bryantchen.cc/en/posts/reflections-on-a-good-life</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/reflections-on-a-good-life</guid>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 GMT</pubDate>
+      <description>My best week in the past two: a steadier routine, continuous building, clearer positioning, writing, exercise, and remembering AI is a means, not the point of being human.</description>
+      <content:encoded><![CDATA[I often get a lot of thoughts in the shower, then forget them right after. I have to sit down and think again to recall what was actually important.
+
+This week has been my best in the past two weeks, and it feels worth recording. Why?
+
+1. A relatively regular schedule: sleep before 3am, wake at 9am. Eat before 2pm, then walk by the river and in the park. Focus hard on the product in the afternoon. When I get tired around dusk, make some tea. Keep working at night. Around 9:30pm, go run 3km outdoors. Eat dinner at 10pm. (Thinking about it, meal times are still a bit irregular. The rest is okay. I could sleep earlier and wake earlier.)
+
+2. Keep building. Don’t let fear drive the day. Even if fear shows up, work through it by continuing to build and adjusting my mindset, while also studying good products and asking how my own product can be constructed to catch up.
+
+3. Today I snapped back a bit: even if many people are doing similar things, or I started late, that doesn’t mean there’s zero opportunity. I still need to find the right target users, build real differentiation, and think about why someone would choose me. As an indie developer, it’s hard to win by pure speed or resources against teams, but I can be myself.
+
+4. Renovating my personal homepage, and continuously writing these small thoughts, genuinely heals me.
+
+5. What is a good life? Writing, reading, exercising, sunlight, good food, and a good routine. That’s basically it. But so often I forget these because I’m always “on the way” to something else. Distinguishing goals from means matters. AI is a means, not the purpose of being human. Don’t get it backwards. Make good work, and live a good life.]]></content:encoded>
+    </item>
+    <item>
+      <title>The moment I felt AI truly gets me — this screenshot says it all. While writing …</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-08-it-gets-me</guid>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 GMT</pubDate>
+      <description>The moment I felt AI truly gets me — this screenshot says it all. While writing my weekly plan, it warned me:
+
+- Don&apos;t do this week: any new side projects (all frozen), bryantchen.cc feature development (RSS is done, enough), offline social events (unless they directly bring payi...</description>
+      <content:encoded><![CDATA[The moment I felt AI truly gets me — this screenshot says it all. While writing my weekly plan, it warned me:
+
+- Don't do this week: any new side projects (all frozen), bryantchen.cc feature development (RSS is done, enough), offline social events (unless they directly bring paying users)
+
+- One-line goal: 23 days until the end of April. The only thing this week is to get **real users actually using MemoryX**
+
+It really gets me.
+
+![weekly-plan](https://img.bryantchen.cc/blog/2026-04-08-it-gets-me.png)]]></content:encoded>
+    </item>
     <item>
       <title>Building products in the AI era has a sufficient but not necessary condition: fr…</title>
       <link>https://bryantchen.cc/en/thoughts</link>

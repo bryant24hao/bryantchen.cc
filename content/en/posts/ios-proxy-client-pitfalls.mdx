@@ -1,0 +1,144 @@
+---
+title: "iOS Proxy Client Pitfalls: Why Free Apps Failed and $2.99 Saved the Day"
+date: "2026-04-16T12:00:00"
+description: "Self-hosted VPS proxy, phone couldn't connect. Tried 3 free iOS apps — all failed. Turns out it was a core engine compatibility issue. Full troubleshooting journey, 5-app comparison, and a lesson about false economy."
+tags: ["proxy", "ios", "indie-hacking", "build-in-public"]
+draft: false
+---
+
+> Based on my real troubleshooting experience, co-created with Claude (AI). All technical details verified in a live environment.
+
+## Background
+
+I run Xray on a VPS with two proxy protocols:
+
+- **Shadowsocks (SS)**: Classic protocol, port `18388`
+- **VLESS Reality**: Next-gen protocol, port `443`, disguised as normal HTTPS traffic
+
+Mac connects via SSH tunnel — rock solid. Then one day, my phone just stopped connecting. Not "intermittent." Just dead.
+
+## The Investigation
+
+### Step 1: VPS is Fine
+
+SSH in, quick check:
+
+```bash
+systemctl status xray          # ✅ running
+ss -tlnp | grep xray           # ✅ ports 18388, 443 listening
+curl -s https://www.google.com  # ✅ 200
+```
+
+Nothing wrong server-side.
+
+### Step 2: Three Free Apps, Three Failures
+
+Tried every free iOS proxy client I could find:
+
+| App | SS | VLESS Reality |
+|-----|-----|---------------|
+| **Streisand** | timeout | timeout |
+| **V2Box** | timeout | timeout |
+| **Hiddify** | timeout | timeout |
+
+All dead.
+
+### Step 3: Reproducing on Mac
+
+Installed the `xray` client on Mac to test the protocols directly:
+
+```bash
+# SS test
+curl -x socks5://127.0.0.1:10808 https://ifconfig.me
+# ❌ Empty response, exit code 52
+
+# VLESS Reality test
+curl -x socks5://127.0.0.1:10809 https://ifconfig.me
+# ✅ Returns VPS IP
+```
+
+**Finding 1**: SS is broken from Mac too — it's a protocol-level issue, not a phone problem.
+
+**Finding 2**: VLESS Reality works perfectly from Mac.
+
+### Step 4: Loopback Test on VPS
+
+Running an xray client on the VPS itself, connecting to its own SS port (bypassing external network):
+
+```bash
+# VPS localhost → localhost:18388 → internet
+curl -x socks5://127.0.0.1:10900 http://httpbin.org/ip
+# ✅ Success
+```
+
+SS works locally but not externally — **the firewall is specifically blocking SS protocol traffic** through deep packet inspection.
+
+### Step 5: Identifying the Phone Issue
+
+VLESS Reality works from Mac but not from phone. What do all three free apps have in common?
+
+**They all use sing-box as their core engine.**
+
+sing-box is an open-source proxy core. But it has compatibility issues with Xray's Reality implementation, specifically the `xtls-rprx-vision` flow.
+
+## The Fix
+
+Bought **Shadowrocket** ($2.99, US App Store). Copied the VLESS Reality link, opened the app, auto-imported. Connected in 30 seconds.
+
+The previous troubleshooting with free apps had taken over two hours.
+
+## Two Key Takeaways
+
+### 1. Shadowsocks Is No Longer Safe
+
+DPI firewalls can now fingerprint and block SS protocol traffic. Symptoms:
+
+- TCP handshake succeeds (port is reachable)
+- But protocol-level data never comes back (empty response)
+- No client can fix this
+
+If you're still using SS, migrate to VLESS Reality or Hysteria2. VLESS Reality disguises traffic as normal HTTPS (SNI points to microsoft.com), which current firewalls can't detect.
+
+### 2. Free iOS Clients Share a Fatal Flaw
+
+| App | Core Engine | VLESS Reality |
+|-----|------------|---------------|
+| Streisand | sing-box | ⚠️ Incompatible |
+| V2Box | sing-box | ⚠️ Incompatible |
+| Hiddify | sing-box | ⚠️ Incompatible |
+| Shadowrocket | Proprietary | ✅ Works |
+| Surge 5 | Proprietary | ✅ Works |
+
+All free apps depend on sing-box, which has compatibility issues with Xray's Reality. It's not any single app's bug — it's a core engine issue. No amount of app-switching helps.
+
+## Full iOS Proxy Client Comparison
+
+| | Shadowrocket | Surge 5 | Streisand | V2Box | Hiddify |
+|---|---|---|---|---|---|
+| **Price** | $2.99 one-time | $49.99/yr | Free | Free | Free/OSS |
+| **Core** | Proprietary | Proprietary | sing-box | sing-box | sing-box |
+| **SS** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **VLESS Reality** | ✅ | ✅ | ⚠️ | ⚠️ | ⚠️ |
+| **Hysteria2** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Stability** | High | High | Medium | Medium | Low |
+| **Rating** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐ | ⭐ |
+
+**Shadowrocket is the best value**: $2.99 one-time purchase, proprietary core, full protocol support, frequent updates. Surge is more powerful but subscription-based.
+
+## Pitfall Checklist
+
+| Pitfall | Symptom | Root Cause | Fix |
+|---------|---------|------------|-----|
+| SS blocked | All clients timeout | DPI firewall blocks SS protocol | Switch to VLESS Reality |
+| Free apps fail on VLESS | Streisand/V2Box/Hiddify timeout | sing-box incompatible with Xray Reality | Use Shadowrocket |
+| Port reachable ≠ proxy works | TCP connects but proxy fails | TCP handshake ≠ protocol works | Test with actual xray client |
+| Hiddify dev broken | Nothing connects | iOS dev build sing-box bug | Don't use dev builds |
+| Xray degrades over time | Misbehaves after 45 days | Process state degradation | Periodic `systemctl restart xray` |
+
+## The Bottom Line
+
+$2.99 on a proxy client isn't wasteful — **it buys back two hours of debugging and the frustration of cycling through three broken apps.**
+
+Free tools aren't bad. But when your server uses a newer protocol like VLESS Reality, their shared core engine becomes the bottleneck. You can't see this from the app's UI — all you get is a meaningless "timeout."
+
+The most expensive cost is never the tool's price tag. It's the time you spend trying to avoid paying it.

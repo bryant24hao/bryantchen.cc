@@ -7,8 +7,586 @@
     <link>https://bryantchen.cc/zh</link>
     <description>Bryant 的个人网站 — 独立开发、AI、产品思考</description>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 07 Apr 2026 15:44:53 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 16 Apr 2026 04:35:05 GMT</lastBuildDate>
     <atom:link href="https://bryantchen.cc/zh/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>iOS 翻墙客户端避坑：为什么免费 App 全军覆没，$2.99 就解决了</title>
+      <link>https://bryantchen.cc/zh/posts/ios-proxy-client-pitfalls</link>
+      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/ios-proxy-client-pitfalls</guid>
+      <pubDate>Thu, 16 Apr 2026 12:00:00 GMT</pubDate>
+      <description>VPS 自建代理，手机端连不上。换了 3 个免费 App 都失败，最后发现是底层核心的兼容性问题。完整排查过程、5 款 iOS 客户端对比、以及一个关于「该省的钱」的教训。</description>
+      <content:encoded><![CDATA[> 本文基于我的实际踩坑经验，由我和 Claude（AI）共创完成。技术细节均来自实际环境验证。
+
+## 背景
+
+我在 VPS 上用 Xray 搭了代理，提供两种协议：
+
+- **Shadowsocks**（SS）：经典方案，端口 `18388`
+- **VLESS Reality**：新一代方案，端口 `443`，伪装成正常 HTTPS 流量
+
+Mac 端通过 SSH 隧道连接，一直很稳。但某天发现手机突然连不上了——而且是「一直都连不上」的那种。
+
+## 排查过程
+
+### 第一步：确认 VPS 没问题
+
+SSH 登录 VPS，检查三件事：
+
+```bash
+# Xray 在运行吗？
+systemctl status xray
+# ✅ active (running)
+
+# 端口在监听吗？
+ss -tlnp | grep xray
+# ✅ 18388 和 443 都在
+
+# VPS 能上网吗？
+curl -s -o /dev/null -w '%{http_code}' https://www.google.com
+# ✅ 200
+```
+
+VPS 没问题。
+
+### 第二步：免费 App 轮番上阵
+
+手机上依次试了三个免费客户端：
+
+| App | 结果 |
+|-----|------|
+| **Streisand** | SS 超时，VLESS 超时 |
+| **V2Box** | SS 超时，VLESS 超时 |
+| **Hiddify** | SS 超时，VLESS 超时 |
+
+全军覆没。
+
+### 第三步：Mac 上复现
+
+我在 Mac 上装了 `xray` 客户端，直接测试代理是否能通：
+
+```bash
+# 测试 SS
+xray run -config ss-client.json &
+curl -x socks5://127.0.0.1:10808 https://ifconfig.me
+# ❌ 空响应，exit code 52
+
+# 测试 VLESS Reality
+xray run -config vless-client.json &
+curl -x socks5://127.0.0.1:10809 https://ifconfig.me
+# ✅ 返回 VPS IP
+```
+
+**发现一**：SS 从 Mac 也不通——说明是协议层面的问题，不是手机的问题。
+
+**发现二**：VLESS Reality 从 Mac 完全正常。
+
+### 第四步：VPS 本地环回测试
+
+在 VPS 上跑一个 xray 客户端，连自己的 SS 端口（绕过外部网络）：
+
+```bash
+# VPS 本地 → localhost:18388 → 出口
+curl -x socks5://127.0.0.1:10900 http://httpbin.org/ip
+# ✅ 成功
+```
+
+VPS 本地 SS 是通的，但从外部连就不通——**GFW 精准拦截了 SS 协议流量。**
+
+### 第五步：定位 VLESS 的手机端问题
+
+VLESS Reality 从 Mac 通，从手机不通。三个免费 App 有什么共同点？
+
+**它们都用 sing-box 作为底层核心。**
+
+sing-box 是一个开源的代理内核，支持多种协议。但它对 Xray 的 Reality 实现存在兼容性问题，尤其是 `xtls-rprx-vision` 这个 flow 参数。
+
+## 最终解决
+
+换了 **Shadowrocket**（$2.99，美区 App Store），复制 VLESS Reality 链接，打开 App 自动导入，秒连。
+
+整个过程花了不到 30 秒。
+
+而之前折腾免费 App 花了两个多小时。
+
+## 两个核心结论
+
+### 1. Shadowsocks 已经不安全了
+
+GFW 能精准识别 SS 协议特征并拦截。表现为：
+
+- TCP 握手成功（端口是通的）
+- 但协议层数据回不来（空响应）
+- 换任何客户端都一样
+
+如果你还在用 SS，建议尽快迁移到 VLESS Reality 或 Hysteria2。VLESS Reality 伪装成正常的 HTTPS 流量（SNI 指向 microsoft.com 等大站），目前 GFW 无法识别。
+
+### 2. 免费 iOS 客户端共享一个致命缺陷
+
+市面上主流免费客户端的底层核心对比：
+
+| App | 底层核心 | VLESS Reality 兼容性 |
+|-----|---------|---------------------|
+| Streisand | sing-box | ⚠️ 不兼容 |
+| V2Box | sing-box | ⚠️ 不兼容 |
+| Hiddify | sing-box | ⚠️ 不兼容 |
+| Shadowrocket | 自研 | ✅ 完美 |
+| Surge 5 | 自研 | ✅ 完美 |
+
+所有免费 App 都依赖 sing-box，而 sing-box 与 Xray 的 Reality 实现有兼容性问题。这不是某个 App 的 bug——是核心层面的问题，换再多免费 App 也一样。
+
+## 5 款 iOS 代理客户端全对比
+
+| | Shadowrocket | Surge 5 | Streisand | V2Box | Hiddify |
+|---|---|---|---|---|---|
+| **价格** | $2.99 买断 | $49.99/年 | 免费 | 免费 | 免费开源 |
+| **底层核心** | 自研 | 自研 | sing-box | sing-box | sing-box |
+| **SS** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **VLESS Reality** | ✅ | ✅ | ⚠️ | ⚠️ | ⚠️ |
+| **Hysteria2** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **稳定性** | 高 | 高 | 中 | 中 | 低 |
+| **推荐度** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐ | ⭐ |
+
+**Shadowrocket 是性价比之王**：$2.99 一次性买断，自研核心，协议支持全面，更新频繁。Surge 功能更强但订阅制，适合重度用户。
+
+## 踩坑清单
+
+| 坑 | 表现 | 真实原因 | 解决方案 |
+|----|------|----------|----------|
+| SS 全面超时 | 所有客户端连不上 | GFW 识别 SS 协议拦截 | 弃用 SS，改用 VLESS Reality |
+| 免费 App VLESS 超时 | Streisand/V2Box/Hiddify 全不行 | sing-box 核心与 Xray Reality 不兼容 | 换 Shadowrocket |
+| `curl` 测端口通 ≠ 代理可用 | TCP 连接成功但代理不通 | TCP 握手不代表协议层正常 | 用 xray 客户端实际测代理 |
+| Hiddify dev 版完全不可用 | 任何配置都连不上 | iOS dev 版 sing-box 核心有 bug | 不要用 dev 版 |
+| Xray 长时间运行退化 | 跑了 45 天后行为异常 | 进程状态退化 | 定期 `systemctl restart xray` |
+
+## 推荐配置方案
+
+### 服务端
+
+- **协议**：VLESS + Reality（Xray 最新版）
+- **伪装**：SNI 指向 `www.microsoft.com`
+- **端口**：443（看起来就是正常 HTTPS）
+
+### 客户端
+
+- **Mac**：SSH 隧道 (`ssh -D 1080`) 或 xray 客户端
+- **iOS**：Shadowrocket，导入 `vless://` 链接即可
+
+### 导入方式
+
+配置好服务端后，生成 `vless://` 分享链接。iOS 端复制链接，打开 Shadowrocket 自动识别导入。具体参数：
+
+```
+协议：VLESS
+安全：Reality
+传输：TCP
+Flow：xtls-rprx-vision
+SNI：www.microsoft.com
+Fingerprint：chrome
+```
+
+## 写在最后
+
+在翻墙工具上花 $2.99 不是浪费——**它省掉的是两小时的排查时间和三个不同 App 之间反复横跳的挫败感**。
+
+免费工具不是不好用，而是当你的服务端用了较新的协议（比如 VLESS Reality），它们共享的底层核心就可能成为瓶颈。这种问题从 App 的界面上完全看不出来，只会显示一个毫无信息量的「超时」。
+
+最贵的成本从来不是工具本身的价格，而是你为了「省这点钱」花掉的时间。]]></content:encoded>
+    </item>
+    <item>
+      <title>独立开发者广告变现：Adsterra 接入完整指南（附真实收入数据）</title>
+      <link>https://bryantchen.cc/zh/posts/adsterra-integration-guide</link>
+      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/adsterra-integration-guide</guid>
+      <pubDate>Thu, 16 Apr 2026 00:30:00 GMT</pubDate>
+      <description>AdSense 注册卡在手机验证，转投 Adsterra 一个晚上搞定。从选型踩坑、注册流程、广告格式选择、代码批量注入到投放策略，基于 AIBT 项目的真实接入全记录。</description>
+      <content:encoded><![CDATA[> 本文根据我和 Claude（AI）的实际项目对话记录整理而成。所有数据、踩坑经验、代码示例均来自 [AIBT](https://aibtapp.com) 的真实接入过程。
+
+## 先说结论：AdSense 怎么把我卡住的
+
+我的项目是 [AIBT](https://aibtapp.com)——一个 AI 版 MBTI 性格测试，72 个 SEO 页面、三语支持（中英日）、Cloudflare Pages 部署。按理说内容质量不差，但注册 AdSense 的时候遇到了一个致命问题：
+
+**付款地区一旦选了就不能改。**
+
+我选了 Hong Kong（因为有港卡），结果手机验证要求 +852 号码。我手上只有 +86 和美国号，验证过不了。这个 AdSense 账号就废了——不能改地区，不能删账号重来（同一个 Google 账号只能开一个 AdSense）。
+
+如果你也没有对应地区的手机号，AdSense 这条路可能走不通。
+
+## 为什么转向 Adsterra
+
+| | Google AdSense | Adsterra |
+|---|---|---|
+| 审批时间 | 1-4 周 | **几小时** |
+| 最低流量要求 | 无官方要求但低流量常被拒 | **无要求** |
+| 手机号验证 | 必须匹配付款地区 | **不需要** |
+| 付款门槛 | $100 | **$5**（Paxum/USDT） |
+| 付款方式 | 仅银行电汇 | PayPal、USDT、Wire、Paxum |
+| 广告质量 | 高 | 中等 |
+
+一句话：AdSense 是"大厂审批制"，Adsterra 是"自助服务制"。对于日活百级的小站，Adsterra 的 ROI 更高——因为你至少能接上。
+
+## 注册流程（5 分钟）
+
+### 1. 创建账号
+
+打开 [Adsterra](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX) → Sign Up → 选 **Publisher**。
+
+需要填的：
+- **E-mail**：常用邮箱
+- **Login**：用户名
+- **Messenger**：随便选一个填社交账号（不会真的联系你）
+- **Country**：选你实际所在的国家。**这个不影响收款**——不像 AdSense 会锁死，Adsterra 后面随时可以选 PayPal/USDT 等方式收款
+
+不需要手机号，不需要银行信息，不需要身份验证。
+
+### 2. 添加网站
+
+Websites → ADD WEBSITE → 填域名和分类。
+
+Adsterra 的分类很粗（Social / Movies / Downloads...），没有 Technology 或 Entertainment。选 **Other** 最安全。
+
+**Adult ads 一定要关掉**——除非你是成人内容站。
+
+### 3. 选广告格式（最关键的决策）
+
+这步决定了你的收入水平和用户体验之间的平衡。
+
+**推荐选的：**
+
+- **Native Banner** — 和内容混排，看起来像推荐内容，CTR 最高。每个页面都可以放
+- **Banner** — 传统展示广告。选 728x90（桌面横幅）+ 300x250（通用方块）+ 320x50（手机横条）三个尺寸就够
+
+**看情况选的：**
+
+- **Popunder** — 用户关闭/切换页面时弹窗。CPM 是 Banner 的 3-5 倍，但影响体验。**建议只在 SEO 流量页放**（搜索来的路人），核心体验页不放
+
+**不要选的：**
+
+- **Social Bar** — 浮动通知条，遮挡内容
+- **Smartlink** — 跳转广告页，完全不适合
+
+### 4. 等待激活
+
+提交后 3 分钟刷新页面，状态变成 Active。比泡一杯咖啡还快。
+
+### 5. 获取代码
+
+每个 Ad Unit 右侧 GET CODE → 复制 HTML/JS 代码。
+
+## 投放策略：哪些页面放什么广告
+
+**核心原则：越是需要用户分享/互动的页面，广告越要克制。**
+
+| 页面类型 | Native Banner | 300x250 | 728x90 / 320x50 | Popunder |
+|---|---|---|---|---|
+| 首页 | ✅ footer 下方 | ❌ | ❌ | ❌ |
+| 核心体验页（测试结果） | ✅ 结果下方 | ❌ | ❌ | ❌ |
+| 内容详情页（SEO 页） | ✅ | ✅ 文章中间 | ✅ footer 上方 | ✅ |
+| 工具页（统计/FAQ） | ✅ | ❌ | ✅ footer 上方 | ✅ |
+
+**为什么首页和结果页只放 Native Banner？**
+
+首页弹窗 = 用户第一次来就被弹，直接走人。结果页是用户截图分享的页面——分享带来的免费流量，比那点广告收入值钱得多。
+
+**为什么详情页可以多放？**
+
+这些页面的流量来自 Google 搜索，用户是"路人"，对广告容忍度高，是广告变现的主力。
+
+## 技术实现
+
+### 响应式：桌面和手机显示不同广告
+
+```html
+<style>
+.ad-desktop { display: block; }
+.ad-mobile { display: none; }
+@media (max-width: 768px) {
+  .ad-desktop { display: none; }
+  .ad-mobile { display: block; }
+}
+</style>
+
+<!-- 桌面：728x90 -->
+<div class="ad-desktop"><!-- 广告代码 --></div>
+
+<!-- 手机：320x50 -->
+<div class="ad-mobile"><!-- 广告代码 --></div>
+```
+
+### 批量注入：几十个页面不用手动加
+
+AIBT 有 72 个 personality 页面 × 3 语言 = 216 个 HTML 文件。手动加太慢，写个 Python 脚本：
+
+```python
+from pathlib import Path
+
+AD_CODE = '''<!-- 你的广告代码 -->'''
+
+for html_file in Path('personality').rglob('index.html'):
+    html = html_file.read_text()
+    if '广告标识' not in html:  # 幂等检查，避免重复注入
+        html = html.replace('<footer>', AD_CODE + '\n<footer>')
+        html_file.write_text(html)
+```
+
+### 动态页面：JS 渲染后注入
+
+SPA 或动态渲染的页面不能直接在 HTML 里写广告代码。用 JS 动态创建：
+
+```javascript
+const adContainer = document.getElementById('ad-slot');
+if (adContainer && !adContainer.dataset.loaded) {
+  adContainer.dataset.loaded = '1';
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = '你的广告脚本URL';
+  adContainer.appendChild(s);
+}
+```
+
+## 别忘了更新隐私政策
+
+接入广告后必须在隐私政策里披露，否则可能违反 GDPR/CCPA。在"第三方服务"部分加一行：
+
+> **Adsterra**：内容页面的展示广告。适用 [Adsterra 的隐私政策](https://adsterra.com/privacy-policy/)。
+
+## 真实收入数据
+
+**第一天**：34 次展示、0 次点击、$0 收入、CPM $0.094。
+
+别慌——新站就是这样。Adsterra 的算法需要几天到几周来学习你的流量质量，然后才会分配更高 CPM 的广告。
+
+**合理预期：**
+
+| 日均访问 | 月展示量 | 预估月收入 |
+|---|---|---|
+| 100 | 3,000 | $3-10 |
+| 500 | 15,000 | $15-50 |
+| 1,000 | 30,000 | $30-100 |
+
+测试/娱乐类站点 CPM 通常在 $1-3。不会让你暴富，但**完全被动**——代码接好之后你不需要做任何事，流量来了就自动产生收入。
+
+## 常见问题
+
+**Q: 广告加了但看不到？**
+三种可能：(1) 广告拦截器 → 关掉；(2) 新站填充率需要时间 → 等几小时；(3) 你的地区暂时没广告库存。
+
+**Q: 可以同时接 AdSense 和 Adsterra 吗？**
+可以，但建议不同页面放不同家的广告，避免同页面抢资源拉低 CPM。
+
+**Q: 网站两侧空白能放广告吗？**
+单栏布局的两侧空白是 body 背景，要放广告需要改整个页面结构，成本远大于收益。考虑底部悬浮横幅作为替代。
+
+**Q: Popunder 会不会让用户反感？**
+会。但它 CPM 最高。折中方案：只在 SEO 流量页放，核心页不放。
+
+---
+
+*本文整理自我和 Claude（AI）的实际项目对话记录。如果你也在做独立项目的广告变现，希望这篇能帮你少踩几个坑。*
+
+---
+
+如果你也想试试 Adsterra，欢迎通过[我的邀请链接](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX)注册——对你没有任何额外费用，也是对本博客的一点支持。]]></content:encoded>
+    </item>
+    <item>
+      <title>读朋友三年前写的一篇关于黑客松参赛感悟的文章。我上次读这篇文章的感受已经记不起来了，不过昨晚再读的时候，有些地方挺有趣的：
+
+会发现里面技术的部分变化的真快，我…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-04-15-hackathon-essay-time</guid>
+      <pubDate>Wed, 15 Apr 2026 00:00:00 GMT</pubDate>
+      <description>读朋友三年前写的一篇关于黑客松参赛感悟的文章。我上次读这篇文章的感受已经记不起来了，不过昨晚再读的时候，有些地方挺有趣的：
+
+会发现里面技术的部分变化的真快，我三年前读的时候有些其实都没太 get，现在看，觉得这些技术都是上个世纪的东西了。
+
+但不变的是，关于产品的洞察、比如散步、BGM、一些人文的东西，我觉得现在都还是有意义的，我也会时不时想到这些 idea。
+
+另外就是说，很难想象三年前大家用了 6 个人做了 48 小时的东西，在今天可能一个人一小时就可以做出来了。
+
+很好的一篇文章。人就是要多写，即便书写的不是历史，在人类的长河中留下自己的一点痕迹...</description>
+      <content:encoded><![CDATA[读朋友三年前写的一篇关于黑客松参赛感悟的文章。我上次读这篇文章的感受已经记不起来了，不过昨晚再读的时候，有些地方挺有趣的：
+
+会发现里面技术的部分变化的真快，我三年前读的时候有些其实都没太 get，现在看，觉得这些技术都是上个世纪的东西了。
+
+但不变的是，关于产品的洞察、比如散步、BGM、一些人文的东西，我觉得现在都还是有意义的，我也会时不时想到这些 idea。
+
+另外就是说，很难想象三年前大家用了 6 个人做了 48 小时的东西，在今天可能一个人一小时就可以做出来了。
+
+很好的一篇文章。人就是要多写，即便书写的不是历史，在人类的长河中留下自己的一点痕迹也是不错的。]]></content:encoded>
+    </item>
+    <item>
+      <title>前几周我总说产品闭环，产品闭环的一个好处就是用数据来让你自己彻底死心或者 pivot，不然你总是心存侥幸。</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-04-15-product-loop-pivot</guid>
+      <pubDate>Wed, 15 Apr 2026 00:00:00 GMT</pubDate>
+      <description>前几周我总说产品闭环，产品闭环的一个好处就是用数据来让你自己彻底死心或者 pivot，不然你总是心存侥幸。</description>
+      <content:encoded><![CDATA[前几周我总说产品闭环，产品闭环的一个好处就是用数据来让你自己彻底死心或者 pivot，不然你总是心存侥幸。]]></content:encoded>
+    </item>
+    <item>
+      <title>科比退役之战十周年，那一年我大四，在实验室里看完了这场比赛。时间过得太快了，转眼十年又过去了，联盟又安排了湖人 vs 爵士作为这个赛季常规赛的最后一场。
+
+睡前…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-04-13-kobe-last-game</guid>
+      <pubDate>Mon, 13 Apr 2026 00:00:00 GMT</pubDate>
+      <description>科比退役之战十周年，那一年我大四，在实验室里看完了这场比赛。时间过得太快了，转眼十年又过去了，联盟又安排了湖人 vs 爵士作为这个赛季常规赛的最后一场。
+
+睡前看了尼克尔森和摩根弗里曼的《遗愿清单》，尼克尔森是湖人和科比的死忠粉丝。</description>
+      <content:encoded><![CDATA[科比退役之战十周年，那一年我大四，在实验室里看完了这场比赛。时间过得太快了，转眼十年又过去了，联盟又安排了湖人 vs 爵士作为这个赛季常规赛的最后一场。
+
+睡前看了尼克尔森和摩根弗里曼的《遗愿清单》，尼克尔森是湖人和科比的死忠粉丝。]]></content:encoded>
+    </item>
+    <item>
+      <title>里程碑：产品的第一笔付费收入</title>
+      <link>https://bryantchen.cc/zh/posts/milestone-first-paid-revenue</link>
+      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/milestone-first-paid-revenue</guid>
+      <pubDate>Sat, 11 Apr 2026 16:30:00 GMT</pubDate>
+      <description>AIBT 上线那天，打车路上收到第一笔 2.99 美元的付款通知。这笔小钱背后，是过去一个月所有积累的回响。</description>
+      <content:encoded><![CDATA[## 打车路上的那条通知
+
+昨天看到 SBTI 项目爆火之后，我脑子里一个想了很久的念头被点燃了——AIBT（AI Behavior Test）。连夜开工，从开始写代码到上线，只花了几个小时。
+
+然后，今天下午临时有事打车出门，就在车上，手机震了一下：**你收到了一笔 2.99 美元的付款。**
+
+那一瞬间的惊讶我现在还记得。金额很小，2.99 美元甚至都不够一杯咖啡，但这是我作为独立开发者的第一笔产品付费收入，值得写下来。
+
+## 什么是 AIBT
+
+简单说，AIBT 是一个让 AI 通过分析你过去的对话历史，来给你做行为画像的小工具。灵感来自 SBTI，但加入了我最近一直在研究的东西——通过历史对话分析人和 AI 的交互模式。
+
+其实如果更功利一点，我应该直接复刻 SBTI 的内容和测试形式，那或许是流量最大的一条路。但我还是想做点不一样的——蹭热点可以，但最好蹭得有自己的东西。
+
+一个典型的「十几秒 idea，几小时实现」的项目。
+
+## 为什么这件事对我意义重大
+
+说实话，意义不在那 2.99 美元，而在于——我在这个项目里看到了自己过去一个月的进步。一种知行合一的进步。
+
+### 一、最小闭环原则，第一次跑通
+
+前几天写过一条碎碎念：商业产品的最小闭环才算开发完成——demo、登录、支付订阅、官网、发布、有付费用户。这次 AIBT 严格按这个闭环走了一遍：
+
+- Demo 做完
+- 支付接好（LemonSqueezy）
+- 独立域名
+- 对外发布
+- 第一个付费用户
+
+从「自嗨做产品」到「真的让用户掏钱」，这中间有一道我之前一直绕着走的坎。这次第一次完整走完，心态完全不同。
+
+### 二、功不唐捐
+
+更让我感慨的是——AIBT 能在几小时内上线，几乎所有基础设施都是我之前做别的事情时顺手搭的：
+
+- **LemonSqueezy** 是为 MemoryX 的订阅系统申请的，但现在任何项目都能直接用
+- **Cloudflare Pages + 域名配置** 在做 bryantchen.cc 和 memoryx.cc 时变熟练了
+- **SEO 基础** 是最近做 memoryx.cc 才开始学的
+- **历史对话分析逻辑** 是我研究 memory 积累的东西
+
+每件事当时看都在做别的，但这些东西最后都在 AIBT 上汇合了。
+
+「功不唐捐」——大概就是这个意思吧。你做的每一件事都在为某个未来的时刻做准备，哪怕当下完全没意识到。
+
+## 另一个更让我开心的信号
+
+除了那 2.99 美元，还有一个让我更开心的时刻——我发完朋友圈之后，陆陆续续看到一些朋友自发地把自己的测试结果发到朋友圈，或者把 AIBT 分享到其他群里。
+
+这种自发的传播，比任何点击量和付费金额都更让人心安。它说明这个东西对他们来说是有趣的、值得分享的，他们愿意把自己的名字和这个产品绑在一起，哪怕只是一条朋友圈。
+
+对独立开发者来说，这是最珍贵的信号。
+
+## 一个好的开始
+
+2.99 美元是一个小里程碑，但它证明了一件事：**持续 build、持续输出、一点点积累**，是有用的。
+
+不用急着造大东西，先把小的闭环跑通。不用急着做对的事，先把手边能做的事做完。基础设施会在某一天自动发挥作用，知识会在某一天自动拼起来。
+
+接下来继续。]]></content:encoded>
+    </item>
+    <item>
+      <title>每个人对于日记、成长的理解都不一样，深夜突然看到了一个自己特别喜欢的设计，有一些想法好像打通了。
+
+Drift</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-04-11-drift</guid>
+      <pubDate>Sat, 11 Apr 2026 00:00:00 GMT</pubDate>
+      <description>每个人对于日记、成长的理解都不一样，深夜突然看到了一个自己特别喜欢的设计，有一些想法好像打通了。
+
+Drift</description>
+      <content:encoded><![CDATA[每个人对于日记、成长的理解都不一样，深夜突然看到了一个自己特别喜欢的设计，有一些想法好像打通了。
+
+Drift]]></content:encoded>
+    </item>
+    <item>
+      <title>一个没什么用的小里程碑达成了：通过贡献了几次 PR，和 OpenClaw 之父 Peter 在他的另一个开源项目 CodexBar 的 Contributors…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-04-09-codexbar-contributor</guid>
+      <pubDate>Thu, 09 Apr 2026 10:30:00 GMT</pubDate>
+      <description>一个没什么用的小里程碑达成了：通过贡献了几次 PR，和 OpenClaw 之父 Peter 在他的另一个开源项目 CodexBar 的 Contributors 头像同框了。
+
+AI 时代 GitHub 的 PR 逻辑其实变了。参与开源项目，我只是从使用者的角度，修复一些我觉得很基础且不好用的 Bug。
+
+可能贡献的是一些屎山代码（因为也不是我写的，都是我的 Agent 写的，我只做作为用户和产品经理该做的事情），但是在我贡献屎山代码前，这个基础的功能/逻辑设计的也和屎没啥区别。
+
+我要做的就是尽量从用户视角为这个产品贡献自己的一份力量。
+
+![code...</description>
+      <content:encoded><![CDATA[一个没什么用的小里程碑达成了：通过贡献了几次 PR，和 OpenClaw 之父 Peter 在他的另一个开源项目 CodexBar 的 Contributors 头像同框了。
+
+AI 时代 GitHub 的 PR 逻辑其实变了。参与开源项目，我只是从使用者的角度，修复一些我觉得很基础且不好用的 Bug。
+
+可能贡献的是一些屎山代码（因为也不是我写的，都是我的 Agent 写的，我只做作为用户和产品经理该做的事情），但是在我贡献屎山代码前，这个基础的功能/逻辑设计的也和屎没啥区别。
+
+我要做的就是尽量从用户视角为这个产品贡献自己的一份力量。
+
+![codexbar-contributors](https://img.bryantchen.cc/blog/2026-04-09-codexbar-contributors.png)
+
+![my-commits](https://img.bryantchen.cc/blog/2026-04-09-codexbar-my-commits.png)]]></content:encoded>
+    </item>
+    <item>
+      <title>关于良好生活的反思</title>
+      <link>https://bryantchen.cc/zh/posts/reflections-on-a-good-life</link>
+      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/reflections-on-a-good-life</guid>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 GMT</pubDate>
+      <description>最近两周状态最好的一周，我试着把原因写下来：作息、持续 build、目标用户、写作与运动，以及记得把 AI 当作手段而不是目的。</description>
+      <content:encoded><![CDATA[洗澡的时候有很多想法，洗完全都忘了，得再仔细想想才想起来。
+
+今天是最近两周以来状态最好的一周，值得记录一下。仔细想了想，为什么？
+
+1. 相对规律的作息，在凌晨三点前睡，早上九点起床。中午两点前吃饭，吃完饭在河边和公园里散步，下午全力做产品。傍晚乏了泡个茶，晚上继续干活。干到九点半，去户外跑步三公里。十点吃晚饭。（想了下，吃饭的时间有点不规律哈，其他都还行，可以睡的更早点，起的也更早一点）
+
+2. 持续 build，不要有任何畏惧情绪、即便有，通过持续 build 和调整心态、一边看其他好的产品一边想自己的产品要怎么构建来弥补。
+
+3. 今天我有点回过神来，即便有很多人做类似的事情，或者说我做的慢了，但不代表一点机会都没有，还是得找准目标用户、做出差异化、想想别人为什么选择你…独立开发者，好像很难通过拼速度拼资源拼得过团队，但是我可以做我自己。
+
+4. 装修自己的个人主页、不停地写自己的碎碎念真的可以治愈自己啊。
+
+5. 何为良好生活啊？写字、读书、运动、晒太阳、良好的饮食和作息。如此而已，但不少时间我总是因为在路上而忘了这些啊。区别目标和手段很重要，AI 其实就是手段，并不是我生而为人的目的啊。别本末倒置了，做出好的作品、过良好的生活。]]></content:encoded>
+    </item>
+    <item>
+      <title>什么时候我觉得 AI 真的懂我，上面这张图能说明一切，在给我写周计划的时候告诫我：
+
+- 本周不做：任何新 side project（全部冻结）、bryantc…</title>
+      <link>https://bryantchen.cc/zh/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/zh/thoughts/2026-04-08-it-gets-me</guid>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 GMT</pubDate>
+      <description>什么时候我觉得 AI 真的懂我，上面这张图能说明一切，在给我写周计划的时候告诫我：
+
+- 本周不做：任何新 side project（全部冻结）、bryantchen.cc 功能开发（RSS 已加，够了）、线下社交活动（除非直接带来付费用户）
+
+- 一句话目标：距离 4 月底还有 23 天，本周唯一的事是让 **MemoryX 被真实用户用起来**
+
+它真的太懂我了。
+
+![weekly-plan](https://img.bryantchen.cc/blog/2026-04-08-it-gets-me.png)</description>
+      <content:encoded><![CDATA[什么时候我觉得 AI 真的懂我，上面这张图能说明一切，在给我写周计划的时候告诫我：
+
+- 本周不做：任何新 side project（全部冻结）、bryantchen.cc 功能开发（RSS 已加，够了）、线下社交活动（除非直接带来付费用户）
+
+- 一句话目标：距离 4 月底还有 23 天，本周唯一的事是让 **MemoryX 被真实用户用起来**
+
+它真的太懂我了。
+
+![weekly-plan](https://img.bryantchen.cc/blog/2026-04-08-it-gets-me.png)]]></content:encoded>
+    </item>
     <item>
       <title>AI 时代构建产品有一个充分不必要条件：在做产品的第一天，可能你就得想好如何打造“产品奇观”。
 
