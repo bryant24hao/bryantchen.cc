@@ -37,8 +37,8 @@ export const projects: Project[] = [
   {
     name: "AIBT",
     description: {
-      zh: "AI Behavior Test — 让 AI 通过分析你的对话历史，给你做一份行为画像。",
-      en: "AI Behavior Test — AI analyzes your conversation history to build a behavioral profile of you.",
+      zh: "AI Behavior Test — 让 AI 通过分析你的对话历史，给你做一份行为画像。[查看介绍](https://img.bryantchen.cc/slides/aibt-intro)",
+      en: "AI Behavior Test — AI analyzes your conversation history to build a behavioral profile of you. [View intro](https://img.bryantchen.cc/slides/aibt-intro)",
     },
     url: "https://aibtapp.com",
     tags: ["Web", "AI"],
