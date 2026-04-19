@@ -1,24 +1,28 @@
 ---
 title: "Ad Monetization for Indie Developers: A Complete Adsterra Integration Guide (With Real Revenue Data)"
 date: "2026-04-16T00:30:00"
-description: "After getting stuck on AdSense phone verification, I switched to Adsterra and had ads running in one evening. Registration, ad format selection, code injection, and placement strategy — all from a real project."
+description: "After getting stuck on AdSense phone verification, I switched to Adsterra and had ads running in one evening; later I found the ads caused forced redirects on the user side, so I turned them off and started rethinking AdSense."
 tags: ["indie-hacking", "monetization", "build-in-public", "adsterra"]
 draft: false
 ---
 
 > This article is organized from my actual project conversation with Claude (AI). All data, lessons learned, and code examples are from integrating ads into [AIBT](https://aibtapp.com).
 
+> **Update, afternoon of April 16, 2026**: After shipping this, I found that the ads added through this approach kept triggering forced redirects on the user side. I am still not sure whether I configured something incorrectly, or whether this is caused by the ad format / ad network itself. Either way, it clearly hurt the user experience, so I turned this ad setup off for now.  
+>  
+> My conclusion has changed after this: Adsterra is fast to integrate and useful for validating the ad monetization pipeline, but if user experience is the priority, the better long-term path is still to get Google AdSense working.
+
 ## How AdSense Blocked Me Before I Even Started
 
-My project is [AIBT](https://aibtapp.com) — an MBTI-style personality test for AI. 72 SEO pages, three languages (EN/ZH/JA), deployed on Cloudflare Pages. Content quality wasn't the issue. The issue was AdSense's registration flow.
+My project is [AIBT](https://aibtapp.com), an MBTI-style personality test for AI. 72 SEO pages, three languages (EN/ZH/JA), deployed on Cloudflare Pages. Content quality wasn't the issue. The issue was AdSense's registration flow.
 
 **Once you pick a payment country, you can't change it.**
 
-I chose Hong Kong (I have an HK bank card), and then the phone verification demanded a +852 number. I only had +86 and a US number. Verification failed. The account was stuck — can't change region, can't delete and restart (one AdSense account per Google account).
+I chose Hong Kong (I have an HK bank card), and then the phone verification demanded a +852 number. I only had +86 and a US number. Verification failed. The account was stuck: I couldn't change region, couldn't delete and restart (one AdSense account per Google account).
 
 If you don't have a phone number that matches your chosen payment country, AdSense might not work for you.
 
-## Why Adsterra
+## Why I Turned to Adsterra at the Time
 
 | | Google AdSense | Adsterra |
 |---|---|---|
@@ -27,9 +31,11 @@ If you don't have a phone number that matches your chosen payment country, AdSen
 | Phone verification | Must match payment country | **Not required** |
 | Payment threshold | $100 | **$5** (Paxum/USDT) |
 | Payment methods | Bank wire only | PayPal, USDT, Wire, Paxum |
-| Ad quality | High | Medium |
+| Ad quality | High | Medium, and redirect-style UX issues need extra caution |
 
-In short: AdSense is enterprise-grade gatekeeping. Adsterra is self-service. For sites with under 100 daily visitors, Adsterra has better ROI — because at least you can get ads running.
+My original judgment was: AdSense is enterprise-grade gatekeeping. Adsterra is self-service. For a small site with under 100 daily visitors, Adsterra looked like the better short-term ROI because at least you could get ads running.
+
+But that was only true if the question was "Can I quickly make the ad pipeline work?" If user experience matters, especially for a product that needs users to stay, share, and return, forced redirects can cost far more than the tiny amount of ad revenue they bring in.
 
 ## Registration (5 Minutes)
 
@@ -40,8 +46,8 @@ Go to [Adsterra](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX) → S
 What you need:
 - **Email**: your regular email
 - **Login**: a username
-- **Messenger**: pick any (Telegram/Twitter/Skype), fill in your handle — they won't actually contact you
-- **Country**: your actual country. **This doesn't lock your payment method** — unlike AdSense, Adsterra lets you choose PayPal/USDT/Wire at any time
+- **Messenger**: pick any (Telegram/Twitter/Skype), fill in your handle. They won't actually contact you
+- **Country**: your actual country. **This doesn't lock your payment method**. Unlike AdSense, Adsterra lets you choose PayPal/USDT/Wire at any time
 
 No phone number, no bank info, no identity verification. Just email verification.
 
@@ -49,7 +55,7 @@ No phone number, no bank info, no identity verification. Just email verification
 
 Websites → ADD WEBSITE → enter your domain and category.
 
-Adsterra's categories are rough (Social / Movies / Downloads...) — there's no "Technology" or "Entertainment." Pick **Other** if nothing fits.
+Adsterra's categories are rough (Social / Movies / Downloads...). There is no "Technology" or "Entertainment." Pick **Other** if nothing fits.
 
 **Turn off Adult ads** unless you run an adult site.
 
@@ -57,19 +63,21 @@ Adsterra's categories are rough (Social / Movies / Downloads...) — there's no 
 
 This step determines the balance between revenue and user experience.
 
-**Recommended:**
+**Relatively restrained:**
 
-- **Native Banner** — blends with content, looks like a recommendation widget. Best CTR, lowest visual disruption. Safe for every page
-- **Banner** — traditional display ads. Pick 728x90 (desktop leaderboard) + 300x250 (universal rectangle) + 320x50 (mobile strip)
+- **Native Banner**: blends with content and looks like a recommendation widget. CTR is relatively good, and visual disruption is lower
+- **Banner**: traditional display ads. Pick 728x90 (desktop leaderboard) + 300x250 (universal rectangle) + 320x50 (mobile strip)
 
-**Use with caution:**
+**Now I would be extremely cautious with:**
 
-- **Popunder** — opens a new window when the user closes/switches tabs. CPM is 3-5x higher than banners, but it hurts UX. **Only use on SEO landing pages** (visitors from Google who have no brand loyalty), never on your core experience pages
+- **Popunder**: opens a new window when the user closes/switches tabs. CPM is 3-5x higher than banners, but it hurts UX. I used to think it could be limited to SEO landing pages. Now I would be more conservative: if the product is early and user trust is still fragile, don't use it
 
 **Avoid:**
 
-- **Social Bar** — floating notification bar that blocks content
-- **Smartlink** — redirects users to ad pages, completely wrong for content sites
+- **Social Bar**: floating notification bar that blocks content
+- **Smartlink**: redirects users to ad pages, completely wrong for content sites
+
+The problem I ran into was this: even without intentionally adding a redirect page, users still saw forced redirects. That does not prove every Adsterra setup behaves this way, but it does prove one thing: after adding ads, test the site yourself on real devices. Especially test mobile, incognito windows, different network regions, and first-visit behavior.
 
 ### 4. Wait for Activation
 
@@ -85,18 +93,22 @@ Each Ad Unit has a **GET CODE** button → copy the HTML/JS snippet.
 
 | Page Type | Native Banner | 300x250 | 728x90 / 320x50 | Popunder |
 |---|---|---|---|---|
-| Homepage | ✅ below footer | ❌ | ❌ | ❌ |
-| Core experience (test results) | ✅ below results | ❌ | ❌ | ❌ |
-| Content detail pages (SEO) | ✅ | ✅ mid-article | ✅ above footer | ✅ |
-| Utility pages (stats/FAQ) | ✅ | ❌ | ✅ above footer | ✅ |
+| Homepage | Use cautiously | ❌ | ❌ | ❌ |
+| Core experience (test results) | Use cautiously | ❌ | ❌ | ❌ |
+| Content detail pages (SEO) | Testable | Testable | Testable | Not recommended |
+| Utility pages (stats/FAQ) | Testable | ❌ | Testable | Not recommended |
 
-**Why only Native Banner on homepage and results?**
+**Why be cautious even on the homepage and results page?**
 
-Homepage popunder = user's first visit gets a popup, they leave immediately. Results page is where users screenshot and share — sharing generates free traffic that's worth more than ad revenue. Too many ads kills the sharing impulse.
+Homepage popunder = user's first visit gets a popup, they leave immediately. Results page is where users screenshot and share. Sharing generates free traffic that is worth more than ad revenue. Too many ads kill the sharing impulse.
 
-**Why can detail pages have more?**
+After running into forced redirects, I am more convinced of this: early products should not trade first impressions for a few cents of revenue. You can add ads later. Lost trust is much harder to recover.
 
-These pages get traffic from Google search. Users are "strangers" with high ad tolerance. Long content (1500+ words) has enough space. This is where ad revenue actually comes from.
+**Why can detail pages be tested?**
+
+These pages get traffic from Google search. Users are "strangers" with higher ad tolerance. Long content has enough space. This is where ad revenue usually comes from.
+
+But "testable" does not mean "acceptable at any UX cost." The smallest viable approach is to place one restrained display ad first, watch user paths, bounce rate, and whether any abnormal redirects appear, then decide whether to expand.
 
 ## Technical Implementation
 
@@ -150,11 +162,25 @@ if (adContainer && !adContainer.dataset.loaded) {
 }
 ```
 
+### Do a UX Regression Pass After Launch
+
+Ad code is not a normal static component. It loads third-party scripts and may return different behavior depending on region, device, and ad inventory. After adding ads, check at least:
+
+- Whether first visits trigger automatic redirects
+- Whether mobile ads cover core buttons
+- Whether going back, closing tabs, or switching tabs causes popups
+- Whether incognito and logged-out states behave differently
+- Whether anything abnormal appears when ad blockers are disabled
+
+I did not do this thoroughly enough the first time. I only noticed the forced redirects on the user side on Thursday afternoon. Going forward, I will treat this as a required pre-release checklist for any ad integration.
+
 ## Update Your Privacy Policy
 
 After adding ads, you **must** disclose this in your privacy policy (GDPR/CCPA compliance). Add to your "Third-Party Services" section:
 
 > **Adsterra**: Display advertising on content pages. Subject to [Adsterra's privacy policy](https://adsterra.com/privacy-policy/).
+
+If, like me, you later turn ads off temporarily, also review the privacy policy and any ad disclosures on the site so the wording still matches actual behavior.
 
 ## Real Revenue Data
 
@@ -172,7 +198,9 @@ This is normal. Adsterra's algorithm needs days to weeks to learn your traffic q
 | 500 | 15,000 | $15-50 |
 | 1,000 | 30,000 | $30-100 |
 
-Quiz/entertainment sites typically see $1-3 CPM. It won't make you rich, but it's **completely passive** — once the code is in, you don't do anything. Traffic comes in, money trickles out.
+Quiz/entertainment sites typically see $1-3 CPM. It won't make you rich. But if the ad experience is not controllable, "completely passive income" can turn into "completely passive damage to user experience."
+
+So my current judgment is more conservative: Adsterra can be useful for validating the ad pipeline early, but I would not treat it as the default long-term option. If user experience and brand trust matter, you eventually need to solve AdSense, or at least pick a more controllable ad network.
 
 ## FAQ
 
@@ -183,10 +211,13 @@ Three possibilities: (1) ad blocker in your browser → disable it; (2) new site
 Yes, but put them on different pages. Same-page competition lowers CPM for both.
 
 **Q: Can I put ads in the blank space on both sides of a centered layout?**
-If you're using a single-column layout (e.g., `max-width: 760px`), the blank sides are just body background. Adding sidebar ads requires restructuring the entire page — not worth it. Consider a sticky bottom banner instead.
+If you're using a single-column layout (e.g., `max-width: 760px`), the blank sides are just body background. Adding sidebar ads requires restructuring the entire page, which usually is not worth it. Consider a sticky bottom banner instead.
 
 **Q: Will Popunder annoy users?**
-Yes. But its CPM is the highest. Compromise: only use it on SEO traffic pages (those users weren't going to become loyal visitors anyway). Never on core pages.
+Yes, and in my case the impact was larger than I expected. My current recommendation: don't use Popunder in an early product. Even on SEO pages, wait until traffic is more stable and analytics are more complete, then test in a small scope.
+
+**Q: Do I still recommend Adsterra after this?**
+If your goal is "quickly connect ads and see whether the revenue pipeline works," it can be worth trying. If your goal is "long-term monetization without obviously hurting user experience," I would prioritize AdSense now. Adsterra's low barrier is useful, but low barrier does not mean low risk.
 
 ---
 
@@ -194,4 +225,4 @@ Yes. But its CPM is the highest. Compromise: only use it on SEO traffic pages (t
 
 ---
 
-If you'd like to try Adsterra, feel free to sign up through [my referral link](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX) — it helps support this blog at no extra cost to you.
+If you'd like to try Adsterra, feel free to sign up through [my referral link](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX). It helps support this blog at no extra cost to you. Based on my actual experience this time, I recommend testing it in a small scope first instead of enabling it across core pages immediately.
