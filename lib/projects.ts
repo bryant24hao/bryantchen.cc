@@ -14,6 +14,17 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: "deskpet-firmware",
+    description: {
+      zh: "M5 Cardputer 上的像素桌面宠物，通过 BLE 实时响应 Claude Code 的编码状态。基于 anthropics/claude-desktop-buddy 的社区移植版。[查看演示](https://x.com/bryantChenzh/status/2045789893931282475)",
+      en: "Pixel desk pet on M5 Cardputer that reacts to Claude Code activity over BLE. Community port of anthropics/claude-desktop-buddy. [View demo](https://x.com/bryantChenzh/status/2045789893931282475)",
+    },
+    repo: "https://github.com/bryant24hao/deskpet-firmware",
+    stars: 9,
+    tags: ["C++", "ESP32", "BLE"],
+    status: "live",
+  },
+  {
     name: "ClawPuter",
     description: {
       zh: "M5Stack Cardputer（ESP32-S3）上的像素桌面伙伴。AI 聊天、语音输入、实时天气、macOS 桌面宠物同步。[查看演示](https://img.bryantchen.cc/slides/clawputer-story)",
