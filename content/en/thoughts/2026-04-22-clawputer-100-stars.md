@@ -2,7 +2,7 @@
 date: "2026-04-22T12:00:00"
 tags: ["milestone", "open-source", "clawputer"]
 ---
-![ClawPuter star history](/images/thoughts/2026-04-22-clawputer-100-stars.png)
+![ClawPuter star history](/images/thoughts/2026-04-22-clawputer-100-stars.svg)
 
 ClawPuter officially crossed 100 GitHub stars today. I just kept shipping casually, and the milestone quietly arrived on its own.
 
