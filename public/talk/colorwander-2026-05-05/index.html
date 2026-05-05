@@ -268,6 +268,47 @@ a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
 .gallery figcaption .en a { color: var(--ink-faint); }
 .gallery figcaption .en a:hover { color: var(--dusk); }
 
+/* Contact cards on Thanks slide */
+.contact-row {
+  display: flex;
+  gap: 36px;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 28px;
+}
+.contact-card {
+  background: #fff;
+  padding: 14px 14px 18px;
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.contact-card img {
+  width: 224px;
+  height: 224px;
+  object-fit: contain;
+  display: block;
+  cursor: zoom-in;
+}
+.contact-card .label {
+  font-family: var(--serif-cn);
+  font-size: 16px;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.4;
+}
+.contact-card .label .en {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  display: block;
+  margin-top: 2px;
+}
+
 /* Quote slide */
 .quote-slide { background: linear-gradient(180deg, var(--dawn) 0%, var(--dawn) 50%, var(--dusk) 50%, var(--dusk) 100%); }
 .quote-slide .slide-inner {
@@ -632,19 +673,37 @@ a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
   </div>
 </section>
 
-<!-- ░░░ 12. 谢谢 ░░░ -->
+<!-- ░░░ 12. 谢谢 + 联系方式 ░░░ -->
 <section class="slide cover" data-slide="thanks">
-  <div class="slide-inner" style="align-items: center; text-align: center;">
-    <div class="row" style="justify-content: center;">
-      <img src="brand/colorwander-marketing-logo.webp" alt="ColorWander logo" class="logomark" />
+  <div class="slide-inner" style="align-items: center; text-align: center; gap: 0;">
+    <div class="row" style="justify-content: center; gap: 32px;">
+      <img src="brand/colorwander-marketing-logo.webp" alt="ColorWander logo" class="logomark" style="width: 160px;" />
       <div style="text-align: left;">
-        <div class="title-en" style="font-size: 84px;">Thanks</div>
-        <div class="title-cn" style="font-size: 48px; margin-top: 8px;">朝色夕拾 · ColorWander</div>
-        <div class="subtitle" style="font-size: 22px; margin-top: 16px;">a photo, a color, a day.</div>
+        <div class="title-en" style="font-size: 64px;">Thanks</div>
+        <div class="title-cn" style="font-size: 36px; margin-top: 6px;">朝色夕拾 · ColorWander</div>
+        <div class="subtitle" style="font-size: 18px; margin-top: 10px;">a photo, a color, a day.</div>
       </div>
     </div>
-    <div class="meta" style="margin-top: 32px;">
-      Q &nbsp;&amp;&nbsp; A
+
+    <div class="contact-row">
+      <div class="contact-card">
+        <img src="assets/1777959193520-7be0.webp" alt="ColorWander 用户群 微信二维码" />
+        <div class="label">
+          ColorWander 用户群
+          <span class="en">WeChat group · 5月12日前有效</span>
+        </div>
+      </div>
+      <div class="contact-card">
+        <img src="assets/1777959200023-d616.webp" alt="小红书 @噗大可 二维码" />
+        <div class="label">
+          小红书 @ 噗大可
+          <span class="en">Xiaohongshu · 634901668</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="meta" style="margin-top: 22px;">
+      Q &nbsp;&amp;&nbsp; A &nbsp;&middot;&nbsp; 扫码加群 / 关注
     </div>
   </div>
 </section>
