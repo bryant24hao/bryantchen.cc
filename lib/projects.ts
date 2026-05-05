@@ -27,8 +27,8 @@ export const projects: Project[] = [
   {
     name: "ClawPuter",
     description: {
-      zh: "M5Stack Cardputer（ESP32-S3）上的像素桌面伙伴。AI 聊天、语音输入、实时天气、macOS 桌面宠物同步。[查看演示](https://img.bryantchen.cc/slides/clawputer-story)",
-      en: "Pixel desktop companion for M5Stack Cardputer (ESP32-S3). AI chat, voice input, real-time weather, synced macOS desktop pet. [View slides](https://img.bryantchen.cc/slides/clawputer-story)",
+      zh: "M5Stack Cardputer（ESP32-S3）上的像素桌面伙伴。AI 聊天、语音输入、实时天气、macOS 桌面宠物同步。[查看演示](https://bryantchen.cc/talk/clawputer-story/)",
+      en: "Pixel desktop companion for M5Stack Cardputer (ESP32-S3). AI chat, voice input, real-time weather, synced macOS desktop pet. [View slides](https://bryantchen.cc/talk/clawputer-story/)",
     },
     repo: "https://github.com/bryant24hao/ClawPuter",
     stars: 100,
@@ -48,8 +48,8 @@ export const projects: Project[] = [
   {
     name: "AIBT",
     description: {
-      zh: "AI Behavior Test — 让 AI 通过分析你的对话历史，给你做一份行为画像。[查看介绍](https://img.bryantchen.cc/slides/aibt-intro)",
-      en: "AI Behavior Test — AI analyzes your conversation history to build a behavioral profile of you. [View intro](https://img.bryantchen.cc/slides/aibt-intro)",
+      zh: "AI Behavior Test — 让 AI 通过分析你的对话历史，给你做一份行为画像。[查看介绍](https://bryantchen.cc/talk/aibt-intro/)",
+      en: "AI Behavior Test — AI analyzes your conversation history to build a behavioral profile of you. [View intro](https://bryantchen.cc/talk/aibt-intro/)",
     },
     url: "https://aibtapp.com",
     tags: ["Web", "AI"],

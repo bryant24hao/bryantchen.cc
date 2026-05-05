@@ -27,6 +27,40 @@ export const talks: TalkEntry[] = [
       en: "From idea to launch — prototyping, validating, polishing, and shipping a vibe-coded iOS app.",
     },
   },
+  {
+    slug: "aibt-intro",
+    date: "2026-04-21",
+    url: "/talk/aibt-intro/",
+    title: {
+      zh: "AIBT — 一个晚上做出来的 AI 性格测试",
+      en: "AIBT — building an AI personality test in one night",
+    },
+    venue: {
+      zh: "产品介绍 · aibtapp.com",
+      en: "Product intro · aibtapp.com",
+    },
+    description: {
+      zh: "AI Behavior Test 的诞生过程：从 idea 到上线只用了一晚，让 AI 通过对话历史给你做一份行为画像。",
+      en: "How AI Behavior Test went from idea to launch in one night — AI builds a behavioral profile from your chat history.",
+    },
+  },
+  {
+    slug: "clawputer-story",
+    date: "2026-03-27",
+    url: "/talk/clawputer-story/",
+    title: {
+      zh: "把虾装进硬件：ClawPuter 的诞生故事",
+      en: "Putting the shrimp in hardware: the ClawPuter story",
+    },
+    venue: {
+      zh: "养虾故事大会 · 豪大·OPC",
+      en: "OpenClaw Story Conference · 豪大·OPC",
+    },
+    description: {
+      zh: "M5 Cardputer 上的像素桌面伙伴 ClawPuter 如何从一个想法长成开源项目，并积累 100+ stars。",
+      en: "How ClawPuter — a pixel desktop companion for M5 Cardputer — grew from an idea into a 100+ star open source project.",
+    },
+  },
 ];
 
 export function getTalks(): TalkEntry[] {

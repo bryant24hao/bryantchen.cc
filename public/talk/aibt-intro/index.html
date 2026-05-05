@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIBT — 一个晚上做出来的 AI 性格测试</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0a;
+    --green: #00ff41;
+    --green-dim: #0a3d0a;
+    --green-mid: #66ff66;
+    --green-muted: #80c080;
+    --text: #b0ffb0;
+    --card: rgba(0,17,0,0.85);
+    --border: #1a3a1a;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Courier New', monospace;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Scanline overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .stage {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 120px;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+  }
+
+  /* Typography */
+  h1 {
+    font-size: 72px;
+    color: var(--green);
+    text-shadow: 0 0 20px var(--green), 0 0 60px rgba(0,255,65,0.3);
+    text-align: center;
+    font-weight: normal;
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 48px;
+    color: var(--green);
+    text-shadow: 0 0 15px var(--green);
+    text-align: center;
+    font-weight: normal;
+    margin-bottom: 48px;
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-size: 32px;
+    color: var(--green-mid);
+    text-align: center;
+    font-weight: normal;
+    margin-bottom: 24px;
+  }
+
+  p, li {
+    font-size: 28px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .subtitle {
+    font-size: 32px;
+    color: var(--green-muted);
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .big-quote {
+    font-size: 40px;
+    color: var(--green);
+    text-shadow: 0 0 10px var(--green);
+    text-align: center;
+    font-style: italic;
+    max-width: 900px;
+    line-height: 1.5;
+    padding: 40px;
+    border-left: 4px solid var(--green);
+    background: rgba(0,255,65,0.03);
+  }
+
+  .section-num {
+    font-size: 120px;
+    color: var(--green);
+    text-shadow: 0 0 40px var(--green);
+    opacity: 0.3;
+    position: absolute;
+    top: 60px;
+    left: 80px;
+  }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .card-grid-2 { grid-template-columns: 1fr 1fr; }
+  .card-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px;
+  }
+
+  .card h3 {
+    text-align: left;
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .card p {
+    font-size: 22px;
+    color: var(--green-muted);
+  }
+
+  /* VS comparison */
+  .vs-container {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .vs-card {
+    background: var(--card);
+    border-radius: 8px;
+    padding: 40px;
+  }
+
+  .vs-bad { border: 2px solid #ff4444; }
+  .vs-good { border: 2px solid var(--green); }
+  .vs-label { text-align: center; font-size: 32px; color: #555; }
+
+  .vs-card h3 {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .vs-card p {
+    font-size: 20px;
+    color: var(--green-muted);
+    line-height: 1.5;
+  }
+
+  /* Key list */
+  .key-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .key-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .key-item .key {
+    font-size: 18px;
+    color: var(--green);
+    text-shadow: 0 0 8px var(--green);
+    background: rgba(0,255,65,0.1);
+    border: 1px solid var(--green);
+    padding: 8px 14px;
+    border-radius: 4px;
+    white-space: nowrap;
+    min-width: 140px;
+    text-align: center;
+  }
+
+  .key-item .desc {
+    font-size: 22px;
+    color: var(--green-muted);
+  }
+
+  /* Stats */
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 900px;
+    padding: 8px 0;
+  }
+
+  .stat-label {
+    width: 200px;
+    font-size: 22px;
+    color: var(--green-mid);
+  }
+
+  .stat-bar {
+    flex: 1;
+    height: 24px;
+    background: var(--green-dim);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .stat-fill {
+    height: 100%;
+    background: var(--green);
+    box-shadow: 0 0 10px rgba(0,255,65,0.5);
+  }
+
+  .stat-val {
+    width: 60px;
+    text-align: right;
+    font-size: 22px;
+    color: var(--green-muted);
+  }
+
+  /* Bullet list */
+  .bullet-list {
+    list-style: none;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .bullet-list li {
+    padding: 12px 0;
+    font-size: 26px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bullet-list li::before {
+    content: '>';
+    color: var(--green);
+    margin-right: 12px;
+    text-shadow: 0 0 5px var(--green);
+  }
+
+  .bullet-list li strong {
+    color: var(--green-mid);
+  }
+
+  /* Check / Cross list */
+  .check-list {
+    list-style: none;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .check-list li {
+    padding: 14px 0;
+    font-size: 26px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Number highlight */
+  .big-num {
+    font-size: 80px;
+    color: var(--green);
+    text-shadow: 0 0 30px var(--green);
+    text-align: center;
+    line-height: 1;
+  }
+
+  .big-num-label {
+    font-size: 24px;
+    color: var(--green-muted);
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .num-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  /* Glitch animation for cover */
+  .glitch {
+    animation: glitch 3s infinite;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { text-shadow: 0 0 20px var(--green), 0 0 60px rgba(0,255,65,0.3); transform: translate(0); }
+    91% { text-shadow: -3px 0 #ff0040, 3px 0 #0ff; transform: translate(3px, -1px); }
+    93% { text-shadow: 3px 0 #ff0040, -3px 0 #0ff; transform: translate(-3px, 1px); }
+    95% { text-shadow: 0 0 20px var(--green); transform: translate(0); }
+  }
+
+  /* Navigation */
+  .controls {
+    position: fixed;
+    bottom: 30px;
+    right: 40px;
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+  }
+
+  .controls button {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--green-muted);
+    font-family: monospace;
+    font-size: 18px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+
+  .controls button:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(0,255,65,0.05);
+  }
+
+  .slide-counter {
+    position: fixed;
+    bottom: 36px;
+    left: 40px;
+    font-size: 16px;
+    color: #3a5a3a;
+    z-index: 100;
+  }
+
+  /* URL tag */
+  .url-tag {
+    position: fixed;
+    top: 30px;
+    right: 40px;
+    font-size: 16px;
+    color: #2a4a2a;
+    z-index: 100;
+  }
+</style>
+</head>
+<body><a href="https://img.bryantchen.cc/cdn-cgi/content?id=jV0uedPFDE68Z.G.KMVhGL_1uRpSzgTe1sxtE1Kny_c-1777960295.2141392-1.0.1.1-AUBLpsKDfAB4sPXRIowrHEeSw09xFZc2sVEdWu1ZKs4" aria-hidden="true" rel="nofollow noopener" style="display: none !important; visibility: hidden !important"></a>
+
+<div class="stage">
+
+<!-- Slide 1: Cover -->
+<div class="slide active" id="s1">
+  <h1 class="glitch" style="font-size:96px;letter-spacing:8px">AIBT</h1>
+  <p class="subtitle" style="margin-top:32px;font-size:36px;color:var(--green-mid)">一个晚上做出来的 AI 性格测试</p>
+  <p class="subtitle" style="font-size:22px;margin-top:48px;color:#3a6a3a">aibtapp.com · 2026.04</p>
+</div>
+
+<!-- Slide 2: 起因 -->
+<div class="slide" id="s2">
+  <span class="section-num">01</span>
+  <h2>为什么做这个？</h2>
+  <div class="big-quote">
+    SBTI 爆火的那天晚上，我想：<br>能不能做一个给 AI 测 MBTI 的版本？
+  </div>
+  <p style="margin-top:40px;font-size:24px;color:var(--green-muted);text-align:center">不是"想了很久终于动手"<br>是当晚就开始写代码</p>
+</div>
+
+<!-- Slide 3: 核心设计 -->
+<div class="slide" id="s3">
+  <span class="section-num">01</span>
+  <h2>核心设计：不让用户填问卷</h2>
+  <ul class="bullet-list">
+    <li>传统性格测试让你自己回答 30 题——<strong>但人对自己的判断往往不准</strong></li>
+    <li>你和 AI 已经有几百轮真实对话——<strong>这些对话就是最真实的行为数据</strong></li>
+    <li>AIBT 的做法：复制一段 prompt 丢给你的 AI，<strong>让它翻聊天记录给你打分</strong></li>
+    <li>prompt 灵感来自 <strong>Claude 的 memory 迁移</strong>——结构化提取对话信息</li>
+  </ul>
+</div>
+
+<!-- Slide 4: VS 对比 -->
+<div class="slide" id="s4">
+  <span class="section-num">01</span>
+  <h2 style="margin-bottom:40px">传统问卷 vs Quick Scan</h2>
+  <div class="vs-container">
+    <div class="vs-card vs-bad">
+      <h3 style="color:#ff6666">❌ 传统方式</h3>
+      <p>自己回答 30 个问题</p>
+      <p style="margin-top:12px">"你觉得你是那种人吗？"</p>
+      <p style="margin-top:12px;color:#ff6666">→ 自我美化、不准</p>
+    </div>
+    <div class="vs-label">VS</div>
+    <div class="vs-card vs-good">
+      <h3 style="color:var(--green)">✅ Quick Scan</h3>
+      <p>AI 分析你的真实对话历史</p>
+      <p style="margin-top:12px">"你实际上做了什么？"</p>
+      <p style="margin-top:12px;color:var(--green)">→ 行为数据、更真实</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: 键盘命名 -->
+<div class="slide" id="s5">
+  <span class="section-num">01</span>
+  <h2>为什么用键盘按键命名？</h2>
+  <p style="font-size:26px;color:var(--green-muted);text-align:center;margin-bottom:36px">你和 AI 互动最多的介质就是键盘<br>每个键天然对应一种使用习惯</p>
+  <div class="key-grid">
+    <div class="key-item">
+      <span class="key">CTRL+V</span>
+      <span class="desc">复读机 · AI 说什么直接粘贴</span>
+    </div>
+    <div class="key-item">
+      <span class="key">BACKSPACE</span>
+      <span class="desc">完美主义 · prompt 比代码还认真</span>
+    </div>
+    <div class="key-item">
+      <span class="key">HOME</span>
+      <span class="desc">赛博恋人 · 睡前和 AI 说晚安</span>
+    </div>
+    <div class="key-item">
+      <span class="key">NUM LOCK</span>
+      <span class="desc">效率锁 · 不聊天不闲扯出活就行</span>
+    </div>
+    <div class="key-item">
+      <span class="key">PRINT SCREEN</span>
+      <span class="desc">截图党 · AI 说啥有趣的就截图</span>
+    </div>
+    <div class="key-item">
+      <span class="key">CAPS LOCK</span>
+      <span class="desc">吵架王 · 会跟 AI 据理力争</span>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 6: 传播性 -->
+<div class="slide" id="s6">
+  <span class="section-num">01</span>
+  <div class="big-quote" style="border-left:none;font-size:52px;font-style:normal">
+    "你是哪个键？"
+  </div>
+  <p style="margin-top:40px;font-size:28px;color:var(--green-muted);text-align:center">
+    比 "你是什么 MBTI 类型" 好传 10 倍<br><br>
+    用户会自发说 "我是效率锁" "我是截图党"<br>
+    <span style="color:var(--green)">命名本身就是传播</span>
+  </p>
+</div>
+
+<!-- Slide 7: 怎么做 -->
+<div class="slide" id="s7">
+  <span class="section-num">02</span>
+  <h2>怎么做的</h2>
+  <div class="card-grid card-grid-3" style="margin-top:20px">
+    <div class="card" style="text-align:center">
+      <h3 style="text-align:center;color:var(--green)">工具</h3>
+      <p style="font-size:28px;color:var(--green)">Claude Code</p>
+      <p style="margin-top:8px">全程 AI 辅助开发</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <h3 style="text-align:center;color:var(--green)">速度</h3>
+      <p style="font-size:28px;color:var(--green)">一个晚上</p>
+      <p style="margin-top:8px">从 0 到 MVP 上线</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <h3 style="text-align:center;color:var(--green)">规模</h3>
+      <p style="font-size:28px;color:var(--green)">72 页 × 3 语言</p>
+      <p style="margin-top:8px">一周内 Google 收录</p>
+    </div>
+  </div>
+  <p style="margin-top:48px;font-size:30px;text-align:center;color:var(--green)">
+    速度 > 完美
+  </p>
+  <p style="font-size:22px;text-align:center;color:var(--green-muted);margin-top:8px">
+    SBTI 热度窗口可能只有一两周
+  </p>
+</div>
+
+<!-- Slide 8: Reddit -->
+<div class="slide" id="s8">
+  <span class="section-num">02</span>
+  <h2 style="margin-bottom:36px">Reddit 分发：反营销写法</h2>
+  <div class="vs-container">
+    <div class="vs-card vs-bad">
+      <h3 style="color:#ff6666">❌ 广告感</h3>
+      <p style="font-size:22px">"I built an AI personality test, check it out"</p>
+    </div>
+    <div class="vs-label">VS</div>
+    <div class="vs-card vs-good">
+      <h3 style="color:var(--green)">✅ 个人体验</h3>
+      <p style="font-size:22px">"I had ChatGPT analyze my conversation history. Turns out I'm NUM LOCK — zero emotional attachment to AI."</p>
+    </div>
+  </div>
+  <ul class="bullet-list" style="margin-top:32px;max-width:800px">
+    <li><strong>不在正文放链接</strong>，等评论区有人问再贴</li>
+    <li>有用户<strong>主动回帖贴了自己的结果</strong>——比自己推广强 10 倍</li>
+  </ul>
+</div>
+
+<!-- Slide 9: 数据 -->
+<div class="slide" id="s9">
+  <span class="section-num">03</span>
+  <h2 style="margin-bottom:32px">一周的数据</h2>
+  <div class="num-grid">
+    <div>
+      <div class="big-num">268</div>
+      <div class="big-num-label">测试总数</div>
+    </div>
+    <div>
+      <div class="big-num">$2.99</div>
+      <div class="big-num-label">第一笔付费 · 上线当天</div>
+    </div>
+    <div>
+      <div class="big-num">3</div>
+      <div class="big-num-label">语言 · 中英日</div>
+    </div>
+  </div>
+  <div style="margin-top:48px;width:100%;max-width:700px">
+    <div class="stat-row">
+      <span class="stat-label">🇺🇸 US</span>
+      <div class="stat-bar"><div class="stat-fill" style="width:40%"></div></div>
+      <span class="stat-val">40%</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">🇨🇳 CN</span>
+      <div class="stat-bar"><div class="stat-fill" style="width:31%"></div></div>
+      <span class="stat-val">31%</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">🇯🇵 JP</span>
+      <div class="stat-bar"><div class="stat-fill" style="width:14%"></div></div>
+      <span class="stat-val">14%</span>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 10: 做对 vs 做错 -->
+<div class="slide" id="s10">
+  <span class="section-num">03</span>
+  <h2 style="margin-bottom:36px">做对了 vs 做错了</h2>
+  <div class="card-grid card-grid-2">
+    <div class="card" style="border-color:var(--green)">
+      <h3 style="color:var(--green)">✅ 做对了</h3>
+      <ul class="check-list">
+        <li>Quick Scan 是真正的产品<br><span style="font-size:20px;color:var(--green-muted)">30 题问卷几乎没人用</span></li>
+        <li>键盘命名自带传播性<br><span style="font-size:20px;color:var(--green-muted)">"你是哪个键" 自发传播</span></li>
+        <li>一个晚上出 MVP<br><span style="font-size:20px;color:var(--green-muted)">先发再迭代，赶上热度</span></li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:#ff4444">
+      <h3 style="color:#ff6666">❌ 做错了</h3>
+      <ul class="check-list">
+        <li>花太多时间写 144 页内容<br><span style="font-size:20px;color:var(--green-muted)">大部分用户只看自己的结果</span></li>
+        <li>应该更早分发<br><span style="font-size:20px;color:var(--green-muted)">不是追求内容完美</span></li>
+        <li>广告变现太早<br><span style="font-size:20px;color:var(--green-muted)">流量小时接广告 = 0 收入 + 坏体验</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 11: 一句话 -->
+<div class="slide" id="s11">
+  <div class="big-quote" style="font-size:44px;border-left:4px solid var(--green);max-width:800px">
+    让 AI 看你做了什么，<br>
+    比让你自己说你是什么人，<br>
+    准确得多。
+  </div>
+</div>
+
+<!-- Slide 12: Q&A -->
+<div class="slide" id="s12">
+  <h1 class="glitch" style="font-size:80px">Q&A</h1>
+  <p class="subtitle" style="margin-top:32px">aibtapp.com</p>
+  <p class="subtitle" style="font-size:20px;margin-top:24px;color:#3a6a3a">来测测你是哪个键 ⌨️</p>
+</div>
+
+</div><!-- /stage -->
+
+<div class="slide-counter"><span id="current">1</span> / <span id="total">12</span></div>
+<span class="url-tag">aibtapp.com</span>
+
+<div class="controls">
+  <button onclick="prev()">← Prev</button>
+  <button onclick="next()">Next →</button>
+</div>
+
+<script>
+let idx = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+document.getElementById('total').textContent = total;
+
+function show(n) {
+  slides.forEach((s, i) => s.classList.toggle('active', i === n));
+  document.getElementById('current').textContent = n + 1;
+}
+
+function next() { if (idx < total - 1) { idx++; show(idx); } }
+function prev() { if (idx > 0) { idx--; show(idx); } }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+});
+</script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f6d796518a0f317',t:'MTc3Nzk2MDI5NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
