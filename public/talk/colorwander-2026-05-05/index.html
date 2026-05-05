@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>从颜色看世界 — ColorWander · 2026-05-05</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600;1,700&family=Inter:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --cream: #F0EEE9;
+  --ink: #1A1A1A;
+  --ink-soft: rgba(60,50,40,0.7);
+  --ink-faint: rgba(60,50,40,0.4);
+  --dawn: #F4B89D;
+  --dusk: #5C6E8A;
+  --hint: #FEF4A8;
+  --serif-en: "Cormorant Garamond", Georgia, "Songti SC", serif;
+  --serif-cn: "Songti SC", "STSong", Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Inter", "Helvetica Neue", sans-serif;
+  --mono: "Courier Prime", "Courier New", monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--sans);
+  height: 100%;
+  overflow: hidden;
+}
+
+#deck {
+  position: fixed;
+  inset: 0;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  padding: 80px 96px;
+  overflow: hidden;
+}
+.slide.active { display: flex; }
+
+.slide-inner {
+  margin: auto;
+  width: 100%;
+  max-width: 1120px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Reusable type */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.eyebrow .dot { color: var(--dawn); }
+
+.title-en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 96px;
+  line-height: 0.95;
+  letter-spacing: -2px;
+}
+.title-cn {
+  font-family: var(--serif-cn);
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+}
+.subtitle {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 28px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+h2 {
+  font-family: var(--serif-cn);
+  font-weight: 400;
+  font-size: 48px;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+h2 .en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 28px;
+  margin-left: 16px;
+}
+.lede {
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 780px;
+}
+.bullets {
+  font-size: 22px;
+  line-height: 1.6;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 880px;
+}
+.bullets li {
+  position: relative;
+  padding-left: 28px;
+}
+.bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 12px;
+  height: 1px;
+  background: var(--dusk);
+}
+.bullets li ul {
+  margin-top: 8px;
+  padding-left: 24px;
+  list-style: none;
+  font-size: 18px;
+  color: var(--ink-soft);
+}
+.bullets li ul li::before { background: var(--ink-faint); top: 12px; }
+
+a { color: var(--dusk); text-decoration: none; border-bottom: 1px dashed var(--dusk); }
+a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
+
+/* Cover */
+.cover { justify-content: center; gap: 24px; }
+.cover .wordmark {
+  display: flex; align-items: baseline; gap: 24px;
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ink-soft);
+}
+.cover .logomark {
+  width: 220px; height: auto;
+  display: block;
+  flex-shrink: 0;
+  filter:
+    drop-shadow(0 22px 44px rgba(26, 26, 26, 0.18))
+    drop-shadow(0 4px 12px rgba(26, 26, 26, 0.08));
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.5s ease;
+}
+.cover .logomark:hover {
+  transform: translateY(-4px) rotate(-1deg);
+  filter:
+    drop-shadow(0 28px 56px rgba(26, 26, 26, 0.22))
+    drop-shadow(0 6px 14px rgba(26, 26, 26, 0.10));
+}
+.cover .row { display: flex; align-items: center; gap: 36px; }
+.cover .meta {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+  margin-top: 12px;
+}
+
+/* Layouts */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.split.tight { gap: 48px; }
+.split.left-narrow { grid-template-columns: 0.8fr 1.2fr; }
+.split img, .image-fit img {
+  display: block;
+  max-width: 100%;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+/* iPhone bezel — for portrait app screenshots */
+.phone-frame {
+  display: block;
+  background: #1A1A1A;
+  padding: 10px;
+  border-radius: 48px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08);
+  max-width: 320px;
+  max-height: 75vh;
+  margin: 0 auto;
+  position: relative;
+}
+.phone-frame > img {
+  display: block;
+  width: 100%;
+  max-height: calc(75vh - 20px);
+  height: auto;
+  object-fit: contain;
+  border-radius: 38px;
+  box-shadow: none;
+  margin: 0;
+}
+.image-fit { display: flex; align-items: center; justify-content: center; height: 60vh; }
+.image-fit img { width: auto; max-width: 100%; max-height: 100%; }
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.gallery figure {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+}
+.gallery .thumb {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transition: box-shadow 0.3s ease;
+}
+.gallery img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.gallery figure:hover img { transform: scale(1.08); }
+.gallery figure:hover .thumb { box-shadow: 0 12px 28px rgba(0,0,0,0.16); }
+.gallery figcaption {
+  font-family: var(--serif-cn);
+  font-size: 16px;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.gallery figcaption a {
+  color: var(--ink);
+  border-bottom: none;
+}
+.gallery figcaption a:hover { color: var(--dusk); border-bottom: 1px dashed var(--dusk); }
+.gallery figcaption .en {
+  font-family: var(--mono);
+  font-style: normal;
+  color: var(--ink-faint);
+  font-size: 11px;
+  display: block;
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gallery figcaption .en a { color: var(--ink-faint); }
+.gallery figcaption .en a:hover { color: var(--dusk); }
+
+/* Quote slide */
+.quote-slide { background: linear-gradient(180deg, var(--dawn) 0%, var(--dawn) 50%, var(--dusk) 50%, var(--dusk) 100%); }
+.quote-slide .slide-inner {
+  background: var(--cream);
+  padding: 64px 72px;
+  border-radius: 12px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+  max-width: 980px;
+}
+.quote-slide blockquote {
+  font-family: var(--serif-cn);
+  font-size: 24px;
+  line-height: 1.55;
+  color: var(--ink);
+  border-left: 3px solid var(--dawn);
+  padding-left: 24px;
+  margin: 8px 0;
+}
+.quote-slide blockquote + blockquote { margin-top: 22px; border-left-color: var(--dusk); }
+.quote-slide .quote-eyebrow {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.quote-layout {
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  gap: 36px;
+  align-items: center;
+  margin-top: 8px;
+}
+.quote-layout img {
+  width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* Footer */
+.deck-footer {
+  position: fixed;
+  bottom: 24px;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 32px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  z-index: 10;
+}
+.deck-footer .pager {
+  pointer-events: auto;
+  display: flex; gap: 12px; align-items: center;
+}
+.deck-footer button {
+  background: transparent;
+  border: 1px solid var(--ink-faint);
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  letter-spacing: 0.1em;
+}
+.deck-footer button:hover { border-color: var(--dusk); color: var(--dusk); }
+
+/* Lightbox — click any slide image to enlarge */
+.slide img:not(.logomark) { cursor: zoom-in; }
+#lightbox {
+  position: fixed; inset: 0;
+  background: rgba(26, 26, 26, 0.94);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  z-index: 50;
+  cursor: zoom-out;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+#lightbox.show { display: flex; opacity: 1; }
+#lightbox img {
+  max-width: 95vw;
+  max-height: 92vh;
+  width: auto; height: auto;
+  border-radius: 12px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  transform: scale(0.96);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#lightbox.show img { transform: scale(1); }
+#lightbox-close {
+  position: absolute;
+  top: 24px; right: 24px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  color: var(--cream);
+  border: 1px solid rgba(255,255,255,0.18);
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 22px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+#lightbox-close:hover { background: rgba(255,255,255,0.18); }
+#lightbox-hint {
+  position: absolute;
+  bottom: 20px; left: 0; right: 0;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: rgba(240,238,233,0.5);
+  pointer-events: none;
+}
+
+/* Help overlay */
+#help {
+  position: fixed; inset: 0; background: rgba(26,26,26,0.92); color: var(--cream);
+  display: none; align-items: center; justify-content: center; z-index: 20;
+  font-family: var(--mono);
+}
+#help.show { display: flex; }
+#help kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  margin: 0 4px;
+  font-size: 12px;
+}
+
+@media (max-width: 1100px) {
+  .slide { padding: 56px 64px; }
+  .title-en { font-size: 72px; }
+  .title-cn { font-size: 48px; }
+  h2 { font-size: 36px; }
+  .lede, .bullets { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+<!-- ░░░ 1. COVER ░░░ -->
+<section class="slide cover active" data-slide="cover">
+  <div class="slide-inner">
+    <div class="row">
+      <img src="brand/colorwander-marketing-logo.png" alt="ColorWander logo" class="logomark" />
+      <div>
+        <div class="eyebrow"><span class="dot">●</span> &nbsp;livestream &nbsp;&middot;&nbsp; 2026 &middot; 05 &middot; 05</div>
+        <div class="title-cn" style="margin-top: 18px;">从颜色看世界</div>
+        <div class="subtitle" style="margin-top: 10px;">— 做了个叫 <em>ColorWander</em> 的 iOS app</div>
+      </div>
+    </div>
+    <div class="meta">
+      a photo, a color, a day &nbsp;&middot;&nbsp; 10–15 min &nbsp;&middot;&nbsp; for vibe coders
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ 2. 关于我 ░░░ -->
+<section class="slide" data-slide="about">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;01 &nbsp;&middot;&nbsp; about</div>
+    <h2>关于我 <span class="en">who's behind this</span></h2>
+    <p class="lede">前大厂产品经理，现独立开发者。前 3 个月做了很多没有用的小玩具，最近在「无用」和「商业」之间探索平衡。</p>
+    <div class="gallery" style="margin-top: 12px;">
+      <figure>
+        <div class="thumb"><img src="assets/1777957558355-8656.png" alt="硬件桌宠 For OpenClaw" /></div>
+        <figcaption>
+          <a href="https://github.com/bryant24hao/ClawPuter" target="_blank">硬件桌宠 · OpenClaw</a>
+          <span class="en"><a href="https://github.com/bryant24hao/ClawPuter" target="_blank">ClawPuter on GitHub</a></span>
+        </figcaption>
+      </figure>
+      <figure>
+        <div class="thumb"><img src="assets/1777956272114-a357.png" alt="硬件桌宠 For CC" /></div>
+        <figcaption>
+          <a href="https://github.com/bryant24hao/deskpet-firmware" target="_blank">硬件桌宠 · CC</a>
+          <span class="en"><a href="https://github.com/bryant24hao/deskpet-firmware" target="_blank">deskpet-firmware on GitHub</a></span>
+        </figcaption>
+      </figure>
+      <figure>
+        <div class="thumb"><img src="assets/1777956305230-d2c4.png" alt="文学时钟插件" /></div>
+        <figcaption>
+          <a href="https://chromewebstore.google.com/detail/%E6%8B%BE%E5%88%BB-%E4%B8%AD%E6%96%87%E6%96%87%E5%AD%A6%E6%97%B6%E9%92%9F/agoanicnncfnnilkkihplfkpkpkhdbac?utm_source=bryantchen.cc" target="_blank">文学时钟插件</a>
+          <span class="en">Chrome Web Store</span>
+        </figcaption>
+      </figure>
+      <figure>
+        <div class="thumb"><img src="assets/1777956285431-4c37.png" alt="AIBT 性格测试" /></div>
+        <figcaption>
+          <a href="https://aibtapp.com/zh/" target="_blank">AIBT 性格测试</a>
+          <span class="en"><a href="https://aibtapp.com/zh/" target="_blank">aibtapp.com</a></span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ 3. DemoShow — 一句话 ░░░ -->
+<section class="slide" data-slide="demo-pitch">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;02 &nbsp;&middot;&nbsp; demoshow</div>
+    <div class="split tight">
+      <div>
+        <h2>用颜色看世界</h2>
+        <p class="lede" style="margin-top: 16px;">
+          从你的照片中提取颜色，作为相框背景，生成一张 ColorWalk 照片。
+        </p>
+        <p class="lede" style="font-style: italic; color: var(--ink-soft); margin-top: 12px;">
+          A photo, a color, a day.
+        </p>
+      </div>
+      <div class="phone-frame">
+        <img src="assets/1777956728065-a76f.png" alt="ColorWander 示例" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ 4. DemoShow — 差异化功能 ░░░ -->
+<section class="slide" data-slide="demo-diff">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;02 &nbsp;&middot;&nbsp; differentiation</div>
+    <div class="split tight">
+      <div>
+        <h2>差异化功能</h2>
+        <ul class="bullets" style="margin-top: 16px;">
+          <li><strong>自动加标注</strong> — Location · Emoji · Time</li>
+          <li><strong>文学时间模式</strong>
+            <ul><li>照片的时刻，自动匹配一句文学中的句子</li></ul>
+          </li>
+          <li><strong>相框</strong> — 多种排版与画幅</li>
+        </ul>
+      </div>
+      <div class="phone-frame">
+        <img src="assets/1777956857367-eae4.png" alt="文学时间模式示例" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ 5. DemoShow — CTA 真机演示 ░░░ -->
+<section class="slide" data-slide="demo-cta">
+  <div class="slide-inner" style="align-items: center; text-align: center;">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;02 &nbsp;&middot;&nbsp; live demo</div>
+    <h2 style="margin-top: 24px;">— 直接看真机演示 —</h2>
+    <p class="lede" style="font-style: italic; color: var(--ink-soft); margin-top: 12px;">
+      switching to phone…
+    </p>
+  </div>
+</section>
+
+<!-- ░░░ 6. Idea ░░░ -->
+<section class="slide" data-slide="idea">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;03 &nbsp;&middot;&nbsp; the idea</div>
+    <h2>为什么想做这款应用？</h2>
+    <ul class="bullets" style="margin-top: 16px;">
+      <li><strong>流行趋势</strong> — 去年起 ColorWalk 这个词开始流行，今年春天小红书也在推这个话题；当时预测会有不错的流量。
+        <ul><li>很早就把它放进了 <a href="https://github.com/bryant24hao/100-bad-ideas" target="_blank">100 bad ideas</a></li></ul>
+      </li>
+      <li><strong>用 HEX 色值去认知世界和时间</strong>，是一件很酷的事情
+        <ul><li>之前先做了一个<a href="https://chromewebstore.google.com/detail/%E6%8B%BE%E5%88%BB-%E4%B8%AD%E6%96%87%E6%96%87%E5%AD%A6%E6%97%B6%E9%92%9F/agoanicnncfnnilkkihplfkpkpkhdbac?utm_source=bryantchen.cc" target="_blank">文学时钟插件</a></li></ul>
+      </li>
+      <li><strong>把这两个主题结合在一起，做成 iOS App 会怎么样？</strong></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ░░░ 7. 原型设计 ░░░ -->
+<section class="slide" data-slide="prototype">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;04 &nbsp;&middot;&nbsp; prototype</div>
+    <h2>原型设计 <span class="en">from voice to demo</span></h2>
+    <ul class="bullets" style="margin-top: 16px;">
+      <li><strong>Claude Design</strong> — 通过语音输入沟通完整的需求，出一版核心页面设计
+        <ul><li><a href="./design/Color%20Walk.html" target="_blank">▸ 打开 Claude Design 预览（10 layouts canvas）</a></li></ul>
+      </li>
+      <li><strong>Claude Code</strong> — 半天时间完成第一版 Demo 的开发</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ░░░ 8. 50→80 comic (image-led) ░░░ -->
+<section class="slide quote-slide" data-slide="gap-quote">
+  <div class="slide-inner" style="padding: 48px 56px; max-width: 880px;">
+    <div class="quote-eyebrow" style="text-align: center;">● &nbsp;05 &nbsp;&middot;&nbsp; the gap from 50 to 80</div>
+    <img src="assets/1777956338961-5b46.png" alt="50→80 鸿沟漫画"
+         style="display:block; margin: 16px auto 12px; max-width: 100%; max-height: 70vh; object-fit: contain;" />
+    <p style="text-align:center; font-family: var(--serif-cn); font-style: italic; font-size: 22px; color: var(--ink-soft); line-height: 1.5;">
+      想清楚自己想做的到底是<strong style="color: var(--ink); font-style: normal;">几十分的产品</strong>，很重要。
+    </p>
+  </div>
+</section>
+
+<!-- ░░░ 9. 细节与差异化打磨 — 工作方式 ░░░ -->
+<section class="slide" data-slide="craft">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;05 &nbsp;&middot;&nbsp; craft & differentiation</div>
+    <div class="split tight">
+      <div>
+        <h2>细节与差异化打磨</h2>
+        <ul class="bullets" style="margin-top: 16px;">
+          <li><strong>结对 Debug</strong>
+            <ul><li>就像坐在 Agent 的身边，对着电脑指指点点</li><li>（和当年 PM/设计师站在工程师背后没区别）</li></ul>
+          </li>
+          <li><strong>异步开发</strong>
+            <ul><li>GitHub 管理 issue 和 Milestone</li><li>你不在场时，Agent 也可以放心干活</li></ul>
+          </li>
+        </ul>
+      </div>
+      <img src="assets/1777956652807-84cd.png" alt="GitHub issue / milestone 工作流截图" />
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ 10. 上架 ░░░ -->
+<section class="slide" data-slide="launch">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;06 &nbsp;&middot;&nbsp; ship it</div>
+    <h2>上架 <span class="en">submitting to the App Store</span></h2>
+    <ul class="bullets" style="margin-top: 16px;">
+      <li><strong>提前准备账号和材料</strong> — 开发者账号、隐私政策、截图、关键词…</li>
+      <li><strong>第一版 ready 就可以提审了</strong>
+        <ul><li>付费版本的提审，提前要准备的材料更多（IAP、订阅、Privacy Manifest…）</li></ul>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ░░░ 11. 踩过的坑 ░░░ -->
+<section class="slide" data-slide="lessons">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;07 &nbsp;&middot;&nbsp; lessons</div>
+    <h2>踩过的坑 <span class="en">things I'd do differently</span></h2>
+    <ul class="bullets" style="margin-top: 16px;">
+      <li><strong>有好的想法早点开始</strong>
+        <ul>
+          <li>热点来的时候<strong>「在场」</strong>很重要</li>
+          <li>小红书 ColorWalk 数据已经爆了 + 五一出行是绝佳产品窗口期</li>
+        </ul>
+      </li>
+      <li><strong>早点跑通第一个完整产品闭环</strong>
+        <ul><li>idea → 原型 → demo → 打磨 → 上架，每一节都积累经验</li></ul>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ░░░ 12. 谢谢 ░░░ -->
+<section class="slide cover" data-slide="thanks">
+  <div class="slide-inner" style="align-items: center; text-align: center;">
+    <div class="row" style="justify-content: center;">
+      <img src="brand/colorwander-marketing-logo.png" alt="ColorWander logo" class="logomark" />
+      <div style="text-align: left;">
+        <div class="title-en" style="font-size: 84px;">Thanks</div>
+        <div class="title-cn" style="font-size: 48px; margin-top: 8px;">朝色夕拾 · ColorWander</div>
+        <div class="subtitle" style="font-size: 22px; margin-top: 16px;">a photo, a color, a day.</div>
+      </div>
+    </div>
+    <div class="meta" style="margin-top: 32px;">
+      Q &nbsp;&amp;&nbsp; A
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- Footer -->
+<div class="deck-footer">
+  <div>colorwander · sharing 2026-05-05</div>
+  <div class="pager">
+    <button id="btn-prev">◂ prev</button>
+    <span id="pager-text">1 / 12</span>
+    <button id="btn-next">next ▸</button>
+    <button id="btn-help">?</button>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" aria-hidden="true">
+  <button id="lightbox-close" aria-label="close">×</button>
+  <img id="lightbox-img" src="" alt="" />
+  <div id="lightbox-hint">click anywhere · esc to close</div>
+</div>
+
+<!-- Help overlay -->
+<div id="help">
+  <div style="max-width: 480px; line-height: 1.8;">
+    <h3 style="font-family: var(--serif-en); font-style: italic; font-size: 32px; margin-bottom: 16px;">Keyboard</h3>
+    <kbd>→</kbd> <kbd>Space</kbd> <kbd>PgDn</kbd> &nbsp;next slide<br/>
+    <kbd>←</kbd> <kbd>PgUp</kbd> &nbsp;previous slide<br/>
+    <kbd>Home</kbd> &nbsp;first slide &nbsp;&middot;&nbsp; <kbd>End</kbd> last<br/>
+    <kbd>F</kbd> &nbsp;toggle fullscreen<br/>
+    <kbd>?</kbd> &nbsp;toggle this help<br/>
+    <kbd>Esc</kbd> &nbsp;close help
+    <div style="margin-top: 24px; opacity: 0.6; font-size: 11px;">click anywhere to close</div>
+  </div>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let idx = 0;
+
+const pagerText = document.getElementById('pager-text');
+const help = document.getElementById('help');
+
+function go(n) {
+  idx = Math.max(0, Math.min(total - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+  pagerText.textContent = (idx + 1) + ' / ' + total;
+  // Sync hash so refresh keeps slide
+  history.replaceState(null, '', '#' + (idx + 1));
+}
+
+function next() { go(idx + 1); }
+function prev() { go(idx - 1); }
+
+document.getElementById('btn-prev').addEventListener('click', prev);
+document.getElementById('btn-next').addEventListener('click', next);
+document.getElementById('btn-help').addEventListener('click', () => help.classList.toggle('show'));
+help.addEventListener('click', () => help.classList.remove('show'));
+
+// Lightbox
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lightbox-img');
+const lbClose = document.getElementById('lightbox-close');
+function openLb(src, alt) {
+  lbImg.src = src;
+  lbImg.alt = alt || '';
+  lb.classList.add('show');
+  lb.setAttribute('aria-hidden', 'false');
+}
+function closeLb() {
+  lb.classList.remove('show');
+  lb.setAttribute('aria-hidden', 'true');
+  setTimeout(() => { lbImg.src = ''; }, 300);
+}
+document.querySelectorAll('.slide img').forEach(img => {
+  if (img.classList.contains('logomark')) return;
+  img.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openLb(img.src, img.alt);
+  });
+});
+lb.addEventListener('click', closeLb);
+lbClose.addEventListener('click', (e) => { e.stopPropagation(); closeLb(); });
+
+document.addEventListener('keydown', (e) => {
+  if (lb.classList.contains('show')) {
+    if (e.key === 'Escape') { closeLb(); e.preventDefault(); }
+    return;
+  }
+  if (help.classList.contains('show')) {
+    if (e.key === 'Escape' || e.key === '?') { help.classList.remove('show'); e.preventDefault(); }
+    return;
+  }
+  switch (e.key) {
+    case 'ArrowRight': case ' ': case 'PageDown': next(); e.preventDefault(); break;
+    case 'ArrowLeft':  case 'PageUp': prev(); e.preventDefault(); break;
+    case 'Home': go(0); e.preventDefault(); break;
+    case 'End':  go(total - 1); e.preventDefault(); break;
+    case 'f': case 'F':
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+      e.preventDefault();
+      break;
+    case '?':
+      help.classList.add('show');
+      e.preventDefault();
+      break;
+  }
+});
+
+// Restore from hash
+const hashIdx = parseInt(location.hash.slice(1)) - 1;
+if (!isNaN(hashIdx) && hashIdx >= 0 && hashIdx < total) go(hashIdx);
+else go(0);
+</script>
+
+</body>
+</html>

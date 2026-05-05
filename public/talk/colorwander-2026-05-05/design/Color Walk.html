@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Color Walk · iOS hi-fi prototype</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,500;1,500&family=Inter:wght@400;500;600;700&family=Courier+Prime:wght@400;700&family=Caveat:wght@500;600;700&family=VT323&family=Nunito:wght@600;700;800&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+
+<style>
+  html, body { margin: 0; padding: 0; background: #FAFAF7; font-family: -apple-system, "SF Pro Text", system-ui, sans-serif; color: #1a1a1a; }
+  * { box-sizing: border-box; }
+  @keyframes blink { 0%, 50% { opacity: 1 } 51%, 100% { opacity: 0 } }
+  /* design canvas overrides */
+  body { min-height: 100vh; }
+  /* phone bezel reused outside the canvas */
+  .phone-bezel {
+    width: 320px; height: 656px; border-radius: 50px; padding: 9px; background: #1a1a1a;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .phone-bezel > div { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; background: #FAFAF7; }
+  .section-prose {
+    font-family: "Cormorant Garamond", Georgia, serif;
+  }
+</style>
+</head>
+<body>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="sample-data.jsx"></script>
+<script type="text/babel" src="variants.jsx"></script>
+<script type="text/babel" src="screens.jsx"></script>
+<script type="text/babel" src="playground.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+
+// ------------------------------------------------------------------
+// Helpers — phone wrapper used everywhere on the canvas
+// ------------------------------------------------------------------
+function PhoneFrame({ children, scale = 1 }) {
+  return (
+    <div style={{
+      width: 320 * scale, height: 656 * scale,
+      borderRadius: 50 * scale, padding: 9 * scale, background: '#1a1a1a',
+      boxShadow: '0 18px 50px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)',
+      flex: '0 0 auto',
+    }}>
+      <div style={{
+        width: '100%', height: '100%',
+        borderRadius: (50 - 9) * scale, overflow: 'hidden',
+        background: '#FAFAF7',
+      }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function ScreenLabel({ idx, name, sub }) {
+  return (
+    <div style={{ marginTop: 14 }}>
+      <div style={{
+        fontFamily: '"Cormorant Garamond", Georgia, serif', fontStyle: 'italic',
+        fontSize: 18, lineHeight: 1, marginBottom: 4, color: '#1a1a1a',
+      }}>
+        <span style={{ fontFamily: '"Inter", sans-serif', fontStyle: 'normal', fontSize: 11, fontWeight: 600, color: '#8a8a8e', letterSpacing: '0.1em', marginRight: 8 }}>0{idx}</span>
+        {name}
+      </div>
+      {sub && <div style={{ fontSize: 12, color: '#8a8a8e', marginTop: 2 }}>{sub}</div>}
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------
+// Section 3 — 10 layout directions, all using same photo/color/caption
+// ------------------------------------------------------------------
+function LayoutDirections() {
+  const photo = PHOTOS[2]; // sunset
+  const color = photo.palette[0];
+  const font = FONTS[1]; // Editorial
+  const caption = 'a long sunset';
+  return (
+    <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap' }}>
+      {LAYOUTS.map((l, i) => (
+        <div key={l.id} style={{ display: 'flex', flexDirection: 'column', gap: 10, width: 200 }}>
+          <div style={{
+            width: 200, height: 266, borderRadius: 6, overflow: 'hidden',
+            boxShadow: '0 4px 18px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04)',
+          }}>
+            <CWCard variant={l.id} photo={photo} color={color} font={font}
+                    caption={caption} split={0.5} size={{ w: 200, h: 266 }} />
+          </div>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: '#8a8a8e', letterSpacing: '0.08em' }}>
+              {String(i + 1).padStart(2, '0')}
+            </div>
+            <div style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontStyle: 'italic', fontSize: 17, color: '#1a1a1a' }}>
+              {l.name}
+            </div>
+            <div style={{ fontSize: 11, color: '#8a8a8e', marginTop: 1 }}>{l.subtitle}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------
+// Section 4 — same photo, six colors
+// ------------------------------------------------------------------
+function SamePhotoSixColors() {
+  const photo = PHOTOS[0]; // tulips → vivid palette
+  return (
+    <div style={{ display: 'flex', gap: 16 }}>
+      {photo.palette.map((c, i) => (
+        <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 8, width: 180 }}>
+          <div style={{
+            width: 180, height: 240, borderRadius: 6, overflow: 'hidden',
+            boxShadow: '0 4px 18px rgba(0,0,0,0.06)',
+          }}>
+            <CWCard variant="classic" photo={photo} color={c} font={FONTS[1]}
+                    caption="tulip season" split={0.5} size={{ w: 180, h: 240 }} />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 14, height: 14, borderRadius: 3, background: c, border: '1px solid rgba(0,0,0,0.08)' }} />
+            <div style={{ fontFamily: '"Courier Prime", monospace', fontSize: 11, color: '#1a1a1a' }}>{c.toUpperCase()}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------
+// Section 5 — same photo, all eight fonts (using palette layout for max
+// caption visibility)
+// ------------------------------------------------------------------
+function SamePhotoAllFonts() {
+  const photo = PHOTOS[1]; // willow
+  const color = photo.palette[0];
+  const captionFor = (font) => font.id === 'shufa' ? '朝色夕拾' : (font.id === 'pixel' ? 'PRESS START' : 'willow days');
+  return (
+    <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+      {FONTS.map((f) => (
+        <div key={f.id} style={{ display: 'flex', flexDirection: 'column', gap: 8, width: 180 }}>
+          <div style={{
+            width: 180, height: 240, borderRadius: 6, overflow: 'hidden',
+            boxShadow: '0 4px 18px rgba(0,0,0,0.06)',
+          }}>
+            <CWCard variant="classic" photo={photo} color={color} font={f}
+                    caption={captionFor(f)} split={0.5} size={{ w: 180, h: 240 }} />
+          </div>
+          <div style={{
+            fontFamily: f.cssFamily, fontWeight: f.weight,
+            fontStyle: f.italic ? 'italic' : 'normal',
+            fontSize: 16, color: '#1a1a1a',
+          }}>{f.name}</div>
+          <div style={{ fontSize: 10, color: '#8a8a8e', fontFamily: '"Inter", sans-serif', marginTop: -4, letterSpacing: '0.04em' }}>
+            {f.id}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------
+// Section 6 — Feasibility notes (4 columns)
+// ------------------------------------------------------------------
+function FeasibilityNotes() {
+  const cols = [
+    {
+      title: 'Easy',
+      tone: '#3F5C3D',
+      items: [
+        'Color extraction from UIImage (k-means or median-cut, 6 buckets, < 200 ms on iPhone 12+)',
+        'All 10 layouts as SwiftUI Views over a 3:4 canvas — pure layout, no shaders',
+        'Caption font picker (system + bundled CJK)',
+        'PNG / JPG export at 2400×3200 via UIGraphicsImageRenderer',
+        'Recent grid backed by Photos.framework + PHFetchOptions',
+        'Share sheet via UIActivityViewController',
+      ],
+    },
+    {
+      title: 'Harder',
+      tone: '#C8612E',
+      items: [
+        'EXIF → place name (needs reverse-geocoding; bundle ~20MB offline city DB to avoid network)',
+        'Live Photo composition: video must rotate -2.5° to fit polaroid slot; window layer needs circular mask',
+        'Caption auto-color (pick ink vs cream against complex gradient backgrounds)',
+        'CJK font fallback chain — iOS 26 dropped STSongti & STKaitiSC; ship Source Han Serif + LXGW WenKai',
+        'Drag-to-split with rubber-banding while keeping caption centered',
+      ],
+    },
+    {
+      title: 'Unresolved',
+      tone: '#1F2A1A',
+      items: [
+        'Story / Video modes — beyond v1 scope; reserved as paywall hooks',
+        'Collage mode interaction model (grid? stacked? tappable cells?)',
+        'Ma Shan Zheng / Caveat as in-app fonts: ship subsets or fall back?',
+        'Whether to bake EXIF chips into the rendered card or keep them as metadata only',
+        'Server-side palette extraction for sharing low-data users',
+      ],
+    },
+    {
+      title: 'MVP',
+      tone: '#5C6E8A',
+      items: [
+        'Single mode only',
+        '3 layouts ship: Classic / Polaroid / Magazine',
+        '4 fonts: Editorial / Modern / Typewriter / 中文 (Source Han)',
+        'Color: 6 from photo + Dusk + Mono mood palettes',
+        'Export: PNG + Share sheet',
+        'No gallery — drafts in iOS Photos as the user goes',
+      ],
+    },
+  ];
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18 }}>
+      {cols.map(c => (
+        <div key={c.title} style={{
+          background: '#fff', borderRadius: 12, padding: '20px 20px 22px',
+          border: '1px solid rgba(26,26,26,0.06)',
+        }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14,
+          }}>
+            <div style={{ width: 8, height: 8, borderRadius: 2, background: c.tone }} />
+            <div style={{
+              fontFamily: '"Cormorant Garamond", Georgia, serif', fontStyle: 'italic',
+              fontSize: 22, color: '#1a1a1a',
+            }}>{c.title}</div>
+          </div>
+          <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {c.items.map((it, i) => (
+              <li key={i} style={{
+                fontSize: 12.5, lineHeight: 1.5, color: '#1a1a1a', textWrap: 'pretty',
+                display: 'flex', gap: 8,
+              }}>
+                <span style={{ color: '#8a8a8e', fontFamily: '"Courier Prime", monospace', flex: '0 0 auto' }}>{String(i + 1).padStart(2, '0')}</span>
+                <span>{it}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------
+// HEADER for the whole canvas
+// ------------------------------------------------------------------
+function CanvasHeader() {
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 18 }}>
+        {/* logo card */}
+        <div style={{
+          width: 80, height: 96, borderRadius: 6, overflow: 'hidden',
+          boxShadow: '0 4px 14px rgba(0,0,0,0.08)', background: '#fff',
+          display: 'flex', flexDirection: 'column',
+        }}>
+          <div style={{ flex: 1, background: '#F4B89D' }} />
+          <div style={{ height: 1, background: '#1a1a1a' }} />
+          <div style={{ flex: 1, background: '#5C6E8A' }} />
+        </div>
+        <div>
+          <div style={{
+            fontFamily: '"Cormorant Garamond", Georgia, serif', fontStyle: 'italic',
+            fontSize: 56, lineHeight: 0.95, fontWeight: 500, color: '#1a1a1a',
+          }}>Color Walk</div>
+          <div style={{ fontSize: 14, color: 'rgba(60,50,40,0.7)', marginTop: 6 }}>
+            iOS hi-fi concept prototype · A photo, a color, a day.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------
+// Main canvas
+// ------------------------------------------------------------------
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="header" title="Color Walk" subtitle="iOS hi-fi concept prototype · 8 screens, 10 layouts, 6 colors, 8 fonts">
+        <DCArtboard id="cover" label="Cover" width={780} height={180}>
+          <div style={{ padding: '32px 36px', height: '100%', background: '#FAFAF7', display: 'flex', alignItems: 'center' }}>
+            <CanvasHeader />
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="core-flow" title="Core flow" subtitle="Eight screens · upload → editor → sheets → export → library">
+        <DCArtboard id="s1" label="01 · Upload / launch" width={340} height={720}>
+          <PhoneFrame><UploadScreen /></PhoneFrame>
+        </DCArtboard>
+        <DCArtboard id="s2" label="02 · Main editor" width={340} height={720}>
+          <PhoneFrame><EditorScreen photo={PHOTOS[0]} variant="classic" caption="tulip season" activeTool="layout" /></PhoneFrame>
+        </DCArtboard>
+        <DCArtboard id="s3" label="03 · Color sheet" width={340} height={720}>
+          <PhoneFrame><ColorSheetScreen /></PhoneFrame>
+        </DCArtboard>
+        <DCArtboard id="s4" label="04 · Font sheet" width={340} height={720}>
+          <PhoneFrame><FontSheetScreen /></PhoneFrame>
+        </DCArtboard>
+        <DCArtboard id="s5" label="05 · Layout sheet" width={340} height={720}>
+          <PhoneFrame><LayoutSheetScreen /></PhoneFrame>
+        </DCArtboard>
+        <DCArtboard id="s6" label="06 · Text edit" width={340} height={720}>
+          <PhoneFrame><TextEditScreen /></PhoneFrame>
+        </DCArtboard>
+        <DCArtboard id="s7" label="07 · Export / share" width={340} height={720}>
+          <PhoneFrame><ExportScreen /></PhoneFrame>
+        </DCArtboard>
+        <DCArtboard id="s8" label="08 · Gallery" width={340} height={720}>
+          <PhoneFrame><GalleryScreen /></PhoneFrame>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="playground" title="Interactive playground" subtitle="Live editor — flip photo / layout / color / font / split / caption">
+        <DCArtboard id="play" label="Live editor" width={780} height={720}>
+          <div style={{ padding: 28, background: '#FAFAF7', height: '100%' }}>
+            <Playground />
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="layouts" title="10 layout directions" subtitle="Same photo · same color · same caption · ten ways to compose">
+        <DCArtboard id="layouts-grid" label="Layout study" width={1180} height={620}>
+          <div style={{ padding: 28, background: '#FAFAF7', height: '100%' }}>
+            <LayoutDirections />
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="colors" title="Same photo, six colors" subtitle="Tulips, classic layout, six extracted colors">
+        <DCArtboard id="colors-grid" label="Color study" width={1180} height={340}>
+          <div style={{ padding: 28, background: '#FAFAF7', height: '100%' }}>
+            <SamePhotoSixColors />
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="fonts" title="Same photo, all fonts" subtitle="Willow, classic layout, eight typographic voices">
+        <DCArtboard id="fonts-grid" label="Font study" width={1180} height={620}>
+          <div style={{ padding: 28, background: '#FAFAF7', height: '100%' }}>
+            <SamePhotoAllFonts />
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="feasibility" title="Feasibility notes" subtitle="What's easy, what's hard, what's open, and what ships first">
+        <DCArtboard id="notes" label="Engineering notes" width={1180} height={420}>
+          <div style={{ padding: 28, background: '#FAFAF7', height: '100%' }}>
+            <FeasibilityNotes />
+          </div>
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+</body>
+</html>
