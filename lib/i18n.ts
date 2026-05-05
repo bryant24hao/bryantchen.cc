@@ -7,6 +7,7 @@ const dictionaries = {
     nav: {
       thoughts: "碎碎念",
       posts: "文章",
+      talks: "分享",
       projects: "项目",
       about: "关于",
     },
@@ -23,6 +24,10 @@ const dictionaries = {
     },
     posts: {
       title: "文章",
+      empty: "还没有内容。",
+    },
+    talks: {
+      title: "分享",
       empty: "还没有内容。",
     },
     projects: {
@@ -80,6 +85,7 @@ const dictionaries = {
     nav: {
       thoughts: "thoughts",
       posts: "posts",
+      talks: "talks",
       projects: "projects",
       about: "about",
     },
@@ -96,6 +102,10 @@ const dictionaries = {
     },
     posts: {
       title: "Posts",
+      empty: "Nothing here yet.",
+    },
+    talks: {
+      title: "Talks",
       empty: "Nothing here yet.",
     },
     projects: {

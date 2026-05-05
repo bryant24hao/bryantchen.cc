@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getDictionary, type Locale } from "@/lib/i18n";
 
-const navKeys = ["thoughts", "posts", "projects", "about"] as const;
+const navKeys = ["thoughts", "posts", "talks", "projects", "about"] as const;
 
 export function Nav({ lang }: { lang: Locale }) {
   const t = getDictionary(lang).nav;
