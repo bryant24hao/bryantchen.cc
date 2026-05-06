@@ -1,0 +1,4693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agent 时代的产品实践 · 陈正豪 · 北大 HCI · 2026.05.07</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600;1,700&family=Inter:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --cream: #F0EEE9;
+  --ink: #1A1A1A;
+  --ink-soft: rgba(60,50,40,0.7);
+  --ink-faint: rgba(60,50,40,0.4);
+  --rule: rgba(60,50,40,0.18);
+  --dawn: #F4B89D;
+  --dusk: #5C6E8A;
+  --hint: #FEF4A8;
+  --serif-en: "Cormorant Garamond", Georgia, "Songti SC", serif;
+  --serif-cn: "Songti SC", "STSong", Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Inter", "Helvetica Neue", sans-serif;
+  --mono: "Courier Prime", "Courier New", monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--cream);  /* same as deck — letterbox bars invisible */
+  color: var(--ink);
+  font-family: var(--sans);
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Deck stage — fixed natural size, scaled to fit viewport.
+   Content is authored for 1600×1200 (4:3); --stage-scale (set by JS)
+   shrinks/enlarges the whole stage to fit the actual screen. */
+:root { --stage-scale: 1; --stage-w: 1600px; --stage-h: 1200px; }
+#deck {
+  position: fixed;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(var(--stage-scale));
+  transform-origin: center center;
+  background: var(--cream);
+  overflow: hidden;
+}
+.slide {
+  position: absolute; inset: 0;
+  display: none;
+  padding: 56px 64px;
+  overflow: hidden;
+}
+.slide.active { display: flex; }
+.slide-inner {
+  margin: auto; width: 100%; max-width: 1480px;
+  display: flex; flex-direction: column;
+  gap: 22px;
+}
+
+/* Overview mode — grid of all slides as thumbnails.
+   Drop the fit-scale transform; lay slides out as a normal grid. */
+body.overview { overflow: auto; background: #1A1A1A; }
+body.overview #deck {
+  position: static !important;
+  transform: none !important;
+  width: 100% !important; height: auto !important;
+  top: auto; left: auto;
+  background: transparent !important;
+  box-shadow: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 320px);
+  justify-content: center;
+  gap: 22px 18px;
+  padding: 32px 24px 88px;
+}
+body.overview .slide {
+  position: relative !important;
+  display: block !important;
+  inset: auto;
+  /* Natural stage size; zoom shrinks to 320×240 on screen (= 1600 * 0.2). */
+  width: 1600px; height: 1200px;
+  zoom: 0.20;
+  cursor: pointer;
+  background: var(--cream);
+  outline: 2px solid transparent;
+  outline-offset: 6px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  transition: outline-color 0.12s, box-shadow 0.12s;
+  flex: none;
+}
+body.overview .slide:hover { outline-color: var(--dawn); }
+body.overview .slide.active { outline-color: var(--ink); box-shadow: 0 0 0 3px var(--dawn), 0 4px 14px rgba(0,0,0,0.3); }
+body.overview .slide::after {
+  content: attr(data-page);
+  position: absolute; top: 24px; left: 28px;
+  background: rgba(26,26,26,0.85);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 60px; line-height: 1;
+  padding: 16px 26px;
+  border-radius: 10px;
+  letter-spacing: 0.08em;
+  z-index: 100;
+  pointer-events: none;
+}
+body.overview .deck-footer { display: none; }
+body.overview #lightbox, body.overview #help, body.overview #toc { display: none !important; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink-soft);
+}
+.eyebrow .dot { color: var(--dawn); }
+.eyebrow .seg { color: var(--ink-faint); }
+
+.title-cn {
+  font-family: var(--serif-cn);
+  font-weight: 400;
+  font-size: 64px; line-height: 1.15;
+  letter-spacing: 0.04em;
+}
+.title-en {
+  font-family: var(--serif-en);
+  font-style: italic; font-weight: 500;
+  font-size: 84px; line-height: 0.95;
+  letter-spacing: -2px;
+}
+.subtitle {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 26px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+h1.section-title {
+  font-family: var(--serif-cn);
+  font-weight: 400;
+  font-size: 80px;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+}
+h1.section-title .en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 34px;
+  margin-left: 18px;
+  font-weight: 500;
+}
+h2 {
+  font-family: var(--serif-cn);
+  font-weight: 400;
+  font-size: 48px;
+  letter-spacing: 0.02em;
+  line-height: 1.18;
+}
+h2 .en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 28px;
+  margin-left: 14px;
+}
+.lede {
+  font-size: 24px; line-height: 1.55;
+  color: var(--ink); max-width: 1200px;
+}
+.lede strong { font-weight: 600; }
+.lede em { font-style: italic; color: var(--ink-soft); }
+.lede.italic {
+  font-family: var(--serif-en);
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 26px;
+}
+
+.bullets {
+  font-size: 22px; line-height: 1.55;
+  list-style: none;
+  display: flex; flex-direction: column; gap: 10px;
+  max-width: 1280px;
+}
+.bullets li { position: relative; padding-left: 28px; }
+.bullets li::before {
+  content: ""; position: absolute; left: 0; top: 15px;
+  width: 14px; height: 1px; background: var(--dusk);
+}
+.bullets li strong { font-weight: 600; }
+.bullets li ul {
+  margin-top: 6px; padding-left: 24px;
+  list-style: none;
+  font-size: 19px; color: var(--ink-soft);
+}
+.bullets li ul li { padding-left: 22px; }
+.bullets li ul li::before { background: var(--ink-faint); top: 12px; width: 10px; }
+
+a {
+  color: var(--dusk);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--dusk);
+}
+a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
+
+/* Cover */
+.cover { justify-content: center; }
+.cover .slide-inner { gap: 28px; align-items: flex-start; }
+.cover .meta-line {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+}
+.cover .signoff {
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin-top: 12px;
+  border-top: 1px solid var(--rule);
+  padding-top: 18px;
+  max-width: 760px;
+}
+.cover .signoff strong { color: var(--ink); font-weight: 600; }
+
+/* Section divider */
+.divider .slide-inner { justify-content: center; gap: 24px; }
+.divider .num {
+  font-family: var(--mono);
+  font-size: 14px; letter-spacing: 0.2em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+
+/* Section divider with side image (cream-tinted Unsplash photo) */
+.divider.with-image .slide-inner {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 56px;
+  align-items: center;
+  width: 92%; max-width: 1480px;
+}
+.divider.with-image .text-col { display: flex; flex-direction: column; gap: 16px; }
+.divider.with-image .image-col {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.12);
+  aspect-ratio: 4 / 5;
+  max-height: 940px;       /* 1200 * 0.78 — stage-relative, not viewport */
+  background: var(--cream);
+}
+.divider.with-image .image-col img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  /* Cream-tint overlay via filter so photos blend with the deck palette */
+  filter: sepia(0.18) saturate(0.92) contrast(0.96);
+}
+.divider.with-image .image-col::after {
+  /* Soft cream-tinted gradient on top so photo doesn't dominate */
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(240,238,233,0.08), rgba(244,184,157,0.10));
+  pointer-events: none;
+}
+.divider.with-image .keywords {
+  display: flex; flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+.divider.with-image .keyword {
+  font-family: var(--serif-cn);
+  font-size: 22px;
+  background: rgba(244,184,157,0.18);
+  color: var(--ink);
+  padding: 8px 16px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+.divider.with-image .keyword.accent {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+/* Cover with side hero (custom abstract SVG) */
+.cover.with-image .slide-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 56px;
+  align-items: center;
+  width: 92%; max-width: 1480px;
+}
+.cover.with-image .image-col {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.04);
+  aspect-ratio: 3 / 4;
+  max-height: 984px;       /* 1200 * 0.82 — stage-relative */
+  background: var(--cream);
+  border: 1px solid rgba(60,50,40,0.10);
+}
+.cover.with-image .image-col svg.cover-hero {
+  width: 100%; height: 100%; display: block;
+}
+/* Host institution emblem on cover (Peking University) — inline at the start of the eyebrow row */
+.cover .eyebrow .pku-emblem {
+  display: inline-block;
+  width: 32px; height: 32px;
+  vertical-align: middle;
+  margin-right: 14px;
+  opacity: 0.95;
+  user-select: none;
+  /* lift slightly so it visually sits on the same baseline as the small caps text */
+  position: relative;
+  top: -2px;
+}
+
+/* Generic case-image class for case study slides (AIBT / ClawPuter / ColorWander) */
+.case-image {
+  display: block;
+  max-width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(60,50,40,0.22);    /* visible even on white screenshots */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.06);
+  background: #faf6ee;                       /* warm matte instead of stark white */
+  padding: 6px;                              /* slim frame inset */
+}
+.case-image.contain {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  background: #faf6ee;
+  padding: 6px;
+}
+
+/* ClawPuter dual-image layout: smaller, with framed presentation */
+.case-clawputer-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin: 6px auto 0;
+  align-items: stretch;
+  max-width: 1100px;             /* compact pair — keeps images proportional */
+}
+.case-clawputer-pair figure {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.case-clawputer-pair .frame {
+  background: #faf6ee;
+  border-radius: 10px;
+  border: 1px solid rgba(60,50,40,0.14);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  padding: 10px;
+  aspect-ratio: 4 / 3;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.case-clawputer-pair .frame img {
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 6px;
+}
+.case-clawputer-pair figcaption {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+  letter-spacing: 0.06em;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Inline brand icons (SVG masks so we can recolor) */
+.brand-icon {
+  display: inline-block;
+  width: 1em; height: 1em;
+  vertical-align: -0.16em;
+  background-color: currentColor;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  margin-right: 4px;
+  opacity: 0.85;
+}
+.brand-icon.anthropic { -webkit-mask-image: url('assets/icons/anthropic.svg'); mask-image: url('assets/icons/anthropic.svg'); }
+.brand-icon.openai    { -webkit-mask-image: url('assets/icons/openai.svg');    mask-image: url('assets/icons/openai.svg'); }
+.brand-icon.google    { -webkit-mask-image: url('assets/icons/google.svg');    mask-image: url('assets/icons/google.svg'); }
+.brand-icon.gemini    { -webkit-mask-image: url('assets/icons/googlegemini.svg'); mask-image: url('assets/icons/googlegemini.svg'); }
+.brand-icon.github    { -webkit-mask-image: url('assets/icons/github.svg');    mask-image: url('assets/icons/github.svg'); }
+.brand-icon.copilot   { -webkit-mask-image: url('assets/icons/githubcopilot.svg'); mask-image: url('assets/icons/githubcopilot.svg'); }
+.brand-icon.cursor    { -webkit-mask-image: url('assets/icons/cursor.svg');    mask-image: url('assets/icons/cursor.svg'); }
+
+/* Numbered list */
+.numbered { list-style: none; display: flex; flex-direction: column; gap: 20px; max-width: 1280px; }
+.numbered li { display: grid; grid-template-columns: 72px 1fr; gap: 26px; align-items: baseline; }
+.numbered li .n {
+  font-family: var(--mono);
+  font-size: 14px; letter-spacing: 0.18em;
+  color: var(--dawn);
+  padding-top: 6px;
+}
+.numbered li .body { font-size: 23px; line-height: 1.55; color: var(--ink); }
+.numbered li .body strong { font-weight: 600; }
+.numbered li .body small {
+  display: block; font-size: 19px; color: var(--ink-soft);
+  margin-top: 4px; line-height: 1.55;
+}
+
+/* Splits */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.split.tight { gap: 40px; }
+.split.left-narrow { grid-template-columns: 0.85fr 1.15fr; }
+.split.right-narrow { grid-template-columns: 1.15fr 0.85fr; }
+.split img, .image-fit img {
+  display: block;
+  max-width: 100%; max-height: 840px;       /* 1200 * 0.70 — stage-relative */
+  width: auto; height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+.image-fit { display: flex; align-items: center; justify-content: center; height: 720px; /* 1200 * 0.60 */ }
+
+/* Project gallery (关于我) — uniform 4:3 frames with contained images
+   so portrait + landscape captures all coexist without cropping. */
+.gallery {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 18px; align-items: start;
+}
+.gallery figure {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.gallery .thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;             /* uniform square frames — app-icon grid feel */
+  border-radius: 10px; overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+  border: 1px solid rgba(60,50,40,0.12);
+  background: #faf6ee;
+  display: flex; align-items: center; justify-content: center;
+}
+.gallery .thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;   /* fill the square; phone screenshots center-crop cleanly */
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.gallery figure:hover .thumb img { transform: scale(1.06); }
+.gallery figcaption {
+  font-family: var(--serif-cn);
+  font-size: 16px; color: var(--ink); line-height: 1.35;
+}
+.gallery figcaption a { color: var(--ink); border-bottom: none; }
+.gallery figcaption a:hover { color: var(--dusk); border-bottom: 1px dashed var(--dusk); }
+.gallery figcaption .en {
+  font-family: var(--mono); font-style: normal;
+  color: var(--ink-faint); font-size: 11px;
+  display: block; margin-top: 4px; letter-spacing: 0.05em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.gallery figcaption .en a { color: var(--ink-faint); }
+
+/* Hand-raise cards (调研) */
+.handraise {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 28px; margin-top: 12px;
+}
+.handraise .card {
+  background: #fff;
+  padding: 28px 26px;
+  border-radius: 10px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+  display: flex; flex-direction: column; gap: 18px;
+  position: relative;
+}
+.handraise .card::before {
+  content: ""; position: absolute; top: 0; left: 28px; right: 28px;
+  height: 2px; background: var(--dawn);
+}
+.handraise .card .num {
+  font-family: var(--serif-en);
+  font-style: italic; font-weight: 600;
+  font-size: 56px; line-height: 1; color: var(--dawn);
+}
+.handraise .card .text {
+  font-family: var(--serif-cn);
+  font-size: 19px; line-height: 1.5;
+  color: var(--ink);
+}
+.handraise .card .text strong { font-weight: 600; }
+.handraise .card .icon {
+  font-size: 32px; line-height: 1;
+  align-self: flex-end;
+  color: var(--ink-faint);
+}
+
+/* Timeline list */
+.timeline { display: flex; flex-direction: column; font-size: 18px; max-width: 1380px; }
+.timeline .row {
+  display: grid; grid-template-columns: 130px 1fr;
+  gap: 20px; padding: 7px 0;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+}
+.timeline .row:first-of-type {
+  border-top: 2px solid var(--ink); padding-top: 10px;
+}
+.timeline .row .date {
+  font-family: var(--mono);
+  font-size: 14px; color: var(--ink-soft);
+  letter-spacing: 0.05em;
+}
+.timeline .row .what { color: var(--ink); line-height: 1.5; }
+.timeline .row .what em {
+  font-style: normal;
+  font-family: var(--serif-cn);
+  font-weight: 500;
+  background: linear-gradient(transparent 70%, var(--hint) 70%);
+  padding: 0 2px;
+}
+.timeline .row .what small {
+  display: block; color: var(--ink-soft);
+  font-size: 15px; margin-top: 2px; line-height: 1.45;
+}
+.timeline .row.peak {
+  background: linear-gradient(90deg, rgba(244,184,157,0.22), transparent);
+  margin: 0 -10px; padding: 7px 10px;
+  border-top-color: var(--dawn);
+}
+.timeline .row.peak .what { font-weight: 600; }
+.timeline .row.peak .what::before { content: "▸ "; color: var(--dawn); font-weight: 700; }
+.timeline .foot-note {
+  margin-top: 14px;
+  font-size: 15px; color: var(--ink-soft);
+  font-style: italic;
+  line-height: 1.55;
+}
+
+/* Tools list */
+.tools-list { display: flex; flex-direction: column; font-size: 18px; max-width: 1380px; }
+.tools-list .row {
+  display: grid; grid-template-columns: 130px 1fr 260px;
+  gap: 24px; padding: 10px 0;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+}
+.tools-list .row:first-of-type {
+  border-top: 2px solid var(--ink); padding-top: 12px;
+}
+.tools-list .row .cat {
+  font-family: var(--serif-cn);
+  font-weight: 500; color: var(--ink); font-size: 19px;
+}
+.tools-list .row .pick { color: var(--ink); line-height: 1.5; }
+.tools-list .row .pick strong { font-weight: 600; }
+.tools-list .row .pick small {
+  font-family: var(--mono);
+  font-size: 13px; color: var(--ink-soft);
+  letter-spacing: 0.04em;
+}
+.tools-list .row .desc { color: var(--ink-soft); line-height: 1.5; font-size: 17px; }
+
+/* Roles */
+.roles-list { display: flex; flex-direction: column; font-size: 22px; max-width: 1280px; }
+.roles-list .row {
+  display: grid; grid-template-columns: 220px 1fr;
+  gap: 20px; padding: 10px 0;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+}
+.roles-list .row:first-of-type {
+  border-top: 2px solid var(--ink); padding-top: 13px;
+}
+.roles-list .row .who {
+  font-family: var(--serif-cn);
+  font-weight: 500; color: var(--ink); font-size: 23px;
+}
+.roles-list .row .ask { color: var(--ink-soft); line-height: 1.5; font-style: italic; }
+
+/* Migration */
+.migration { display: flex; flex-direction: column; font-size: 19px; max-width: 1380px; }
+.migration .head, .migration .row {
+  display: grid; grid-template-columns: 1fr 36px 1fr;
+  gap: 18px; padding: 12px 0;
+  align-items: center;
+}
+.migration .head {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 8px;
+}
+.migration .row { border-bottom: 1px solid var(--rule); }
+.migration .row .last { color: var(--ink-soft); line-height: 1.55; }
+.migration .row .last strong { color: var(--ink); font-weight: 600; }
+.migration .row .arrow {
+  color: var(--dawn); font-family: var(--mono);
+  font-size: 18px; text-align: center;
+}
+.migration .row .next { color: var(--ink); line-height: 1.55; }
+.migration .row .next strong {
+  font-weight: 600;
+  background: linear-gradient(transparent 65%, var(--hint) 65%);
+  padding: 0 2px;
+}
+
+/* Compare */
+.compare-pair {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 8px;
+}
+.compare-pair > div {
+  padding: 18px 22px;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+.compare-pair > div.now {
+  background: rgba(244,184,157,0.16);
+  border-color: var(--dawn);
+}
+
+/* Compare-pair · dramatic variant — stronger before/after contrast */
+.compare-pair.dramatic {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 12px;
+  align-items: stretch;
+  margin-top: 32px;
+}
+.compare-pair.dramatic > div {
+  padding: 56px 48px;
+  border-radius: 14px;
+  display: flex; flex-direction: column; justify-content: center;
+  min-height: 320px;
+  position: relative;
+}
+.compare-pair.dramatic > div .label {
+  position: absolute;
+  top: 18px; left: 24px;
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.compare-pair.dramatic > div.before {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(60,50,40,0.04) 0px,
+      rgba(60,50,40,0.04) 8px,
+      transparent 8px,
+      transparent 16px
+    ),
+    rgba(60,50,40,0.06);
+  border: 1px solid rgba(60,50,40,0.18);
+  filter: grayscale(0.55);
+}
+.compare-pair.dramatic > div.before .label {
+  color: rgba(60,50,40,0.45);
+}
+.compare-pair.dramatic > div.before .quote-text {
+  color: rgba(60,50,40,0.55);
+  font-style: italic;
+  font-size: 30px;
+  line-height: 1.5;
+}
+.compare-pair.dramatic > div.now {
+  background: linear-gradient(135deg, rgba(244,184,157,0.42) 0%, rgba(244,184,157,0.14) 100%);
+  border: 2px solid var(--dawn);
+  box-shadow: 0 18px 50px rgba(244,184,157,0.40), 0 4px 14px rgba(0,0,0,0.06);
+}
+.compare-pair.dramatic > div.now .label {
+  color: #b56635;
+  font-weight: 700;
+}
+.compare-pair.dramatic > div.now .quote-text {
+  font-size: 32px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.compare-pair.dramatic > div.now .quote-text strong {
+  background: linear-gradient(transparent 60%, rgba(244,184,157,0.55) 60%);
+  padding: 0 4px;
+  font-weight: 700;
+}
+.compare-pair.dramatic .vs-arrow {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 80px;
+  color: var(--dawn);
+  user-select: none;
+  position: relative;
+}
+.compare-pair.dramatic .vs-arrow::after {
+  content: "vs";
+  position: absolute;
+  bottom: -14px;
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+
+/* Loop-compare · production-mode slide (P12) */
+.loop-compare {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+.loop-compare .loop-side {
+  padding: 28px 24px 24px;
+  border-radius: 12px;
+  display: flex; flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  position: relative;
+}
+.loop-compare .loop-side.past {
+  background: rgba(60,50,40,0.05);
+  border: 1px solid rgba(60,50,40,0.18);
+  filter: grayscale(0.4);
+}
+.loop-compare .loop-side.now {
+  background: linear-gradient(135deg, rgba(244,184,157,0.30) 0%, rgba(244,184,157,0.10) 100%);
+  border: 2px solid var(--dawn);
+  box-shadow: 0 14px 40px rgba(244,184,157,0.30), 0 4px 12px rgba(0,0,0,0.05);
+}
+.loop-compare .side-label {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.22em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.loop-compare .loop-side.now .side-label {
+  color: #b56635;
+  font-weight: 600;
+}
+.loop-compare .loop-glyph {
+  display: flex; flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+.loop-compare .loop-glyph .dot-stage {
+  font-family: var(--serif-cn);
+  font-size: 17px;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(60,50,40,0.22);
+  padding: 8px 14px;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+}
+.loop-compare .loop-glyph .arrow {
+  font-family: var(--serif-en);
+  color: var(--ink-soft);
+  font-size: 18px;
+}
+.loop-compare .loop-glyph .arrow.loop-back {
+  margin-left: 4px;
+  color: var(--dawn);
+  font-size: 22px;
+  font-weight: 700;
+}
+.loop-compare .loop-glyph.centerpiece .hub {
+  font-family: var(--serif-cn);
+  font-size: 18px; font-weight: 600;
+  background: var(--dawn);
+  color: var(--ink);
+  padding: 12px 22px;
+  border-radius: 50px;
+  text-align: center;
+  line-height: 1.2;
+}
+.loop-compare .loop-glyph.centerpiece .hub em {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink);
+  opacity: 0.85;
+}
+.loop-compare .side-cap {
+  margin-top: 18px;
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-align: center;
+  line-height: 1.5;
+}
+.loop-compare .loop-arrow {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 80px;
+  color: var(--dawn);
+  user-select: none;
+}
+.big-takeaway {
+  font-family: var(--serif-cn);
+  font-size: 26px;
+  text-align: center;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+.big-takeaway strong {
+  background: linear-gradient(transparent 60%, rgba(244,184,157,0.55) 60%);
+  padding: 0 4px;
+  font-weight: 700;
+}
+
+/* Callout box — bordered explainer panel for definitions / quoted concepts */
+.callout-box {
+  border-left: 4px solid var(--dawn);
+  background: rgba(244,184,157,0.10);
+  border-radius: 0 10px 10px 0;
+  padding: 18px 24px;
+}
+.callout-box .callout-eyebrow {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.18em;
+  color: #b56635;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.callout-box .callout-body {
+  font-family: var(--serif-cn);
+  font-size: 18px; line-height: 1.55;
+  color: var(--ink);
+}
+
+/* Keyword chip strip — for emphasizing bottom phrases as visual keywords */
+.keyword-chips {
+  display: flex; flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 24px;
+  align-items: baseline;
+}
+.keyword-chips .lead-text {
+  font-family: var(--serif-cn);
+  font-size: 22px; font-weight: 500;
+  color: var(--ink);
+  margin-right: 8px;
+}
+.keyword-chips .chip {
+  font-family: var(--serif-cn);
+  font-size: 20px;
+  background: var(--cream);
+  color: var(--ink);
+  padding: 8px 18px;
+  border: 1px solid var(--dawn);
+  border-radius: 30px;
+  letter-spacing: 0.05em;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.keyword-chips .chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244,184,157,0.30);
+}
+.keyword-chips .chip.solid {
+  background: var(--dawn);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Contact cards (Q&A page · QR codes) */
+.contact-row {
+  display: flex; gap: 36px;
+  justify-content: center; align-items: flex-start;
+  margin-top: 28px;
+}
+.contact-card {
+  background: #fff;
+  padding: 16px 16px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--rule);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.04);
+  display: flex; flex-direction: column; align-items: center;
+  gap: 10px;
+}
+.contact-card .qr {
+  width: 240px; height: 240px;
+  display: flex; align-items: center; justify-content: center;
+  background: #faf6ee;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.contact-card .qr img {
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.contact-card .label {
+  font-family: var(--serif-cn);
+  font-size: 17px; color: var(--ink);
+  text-align: center; line-height: 1.4;
+}
+.contact-card .label .en {
+  display: block; margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+}
+.compare-pair .label {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.compare-pair > div.now .label { color: #c46a44; }
+.compare-pair .quote-text {
+  font-family: var(--serif-cn);
+  font-size: 24px; line-height: 1.55;
+  color: var(--ink);
+  margin-top: 12px;
+}
+.compare-pair .quote-text strong {
+  font-weight: 600;
+  background: linear-gradient(transparent 65%, var(--hint) 65%);
+  padding: 0 2px;
+}
+
+/* Style cheatsheet (Vibe Design 风格速查表) */
+.style-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  font-size: 13px;
+}
+.style-grid .col { display: flex; flex-direction: column; gap: 14px; }
+.style-grid .cat-block {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.style-grid .cat-title {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.14em;
+  color: var(--dawn);
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 4px;
+}
+.style-grid .cat-title strong {
+  font-family: var(--serif-cn);
+  font-size: 13px;
+  color: var(--ink);
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 500;
+  margin-left: 6px;
+}
+.style-grid .style-row {
+  display: grid; grid-template-columns: 1fr;
+  font-size: 12px; line-height: 1.4;
+  padding: 2px 0;
+}
+.style-grid .style-row .zh {
+  font-family: var(--serif-cn);
+  font-size: 13px; color: var(--ink);
+}
+.style-grid .style-row .en {
+  font-family: var(--mono);
+  font-size: 10px; color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+/* SVG block */
+.svg-block { width: 100%; max-width: 1380px; display: flex; align-items: center; justify-content: center; }
+.svg-block svg { width: 100%; height: auto; display: block; font-family: var(--sans); }
+.svg-block svg text { dominant-baseline: middle; }
+
+/* Image with caption */
+.image-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 28px; align-items: stretch;
+}
+.image-row figure { display: flex; flex-direction: column; gap: 8px; }
+.image-row figure .img-wrap {
+  background: #fff; border-radius: 8px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  height: 672px;       /* 1200 * 0.56 — stage-relative */
+}
+.image-row figure img {
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;
+  display: block;
+  object-fit: contain;
+}
+.image-row figure figcaption {
+  font-family: var(--mono);
+  font-size: 11px; color: var(--ink-soft);
+  letter-spacing: 0.08em;
+  line-height: 1.55;
+}
+.image-row figure figcaption a { color: var(--ink-soft); border-bottom-color: var(--ink-faint); }
+
+/* Sources */
+.sources-list { display: flex; flex-direction: column; max-width: 1380px; gap: 14px; }
+.sources-list .group { display: flex; flex-direction: column; }
+.sources-list .group-title {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dawn);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 4px;
+}
+.sources-list .row {
+  display: grid; grid-template-columns: 280px 1fr;
+  gap: 16px; padding: 4px 0;
+  font-size: 14px; line-height: 1.5;
+  border-bottom: 1px dashed var(--rule);
+}
+.sources-list .row .k {
+  font-family: var(--serif-cn);
+  font-weight: 500; color: var(--ink); font-size: 14px;
+}
+.sources-list .row .v {
+  font-family: var(--mono);
+  font-size: 12px; color: var(--ink-soft);
+  word-break: break-all;
+}
+
+/* Quote slide */
+.quote-slide {
+  background: linear-gradient(180deg, var(--dawn) 0%, var(--dawn) 50%, var(--dusk) 50%, var(--dusk) 100%);
+}
+.quote-slide .slide-inner {
+  background: var(--cream);
+  padding: 64px 72px;
+  border-radius: 12px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+  max-width: 1180px;
+}
+.quote-slide blockquote {
+  font-family: var(--serif-cn);
+  font-size: 30px; line-height: 1.55;
+  color: var(--ink);
+  border-left: 3px solid var(--dawn);
+  padding-left: 24px;
+  margin: 8px 0;
+}
+.quote-slide blockquote + blockquote {
+  margin-top: 22px; border-left-color: var(--dusk);
+}
+.quote-slide .quote-eyebrow {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.quote-slide h2 { margin-top: 4px; font-size: 38px; }
+
+/* Hero image variant — closing slide with full-bleed horizon image.
+   Stage is fixed 1600×1200; hero-bg fills the stage, slide-inner is a
+   centered cream glass card on top. Use px (not vh) for sizing.
+   Override .slide.active (display: flex) with display: grid + place-items
+   so the cream card centers reliably without flex/margin-auto edge cases. */
+.quote-slide.hero-image.active {
+  display: grid !important;
+  /* Force the single track to fill the 1600×1200 stage so place-items
+     centers the card across the entire slide, not just its content row. */
+  grid-template: 1fr / 1fr !important;
+  place-items: center !important;
+  padding: 0 !important;
+  position: absolute;
+  overflow: hidden;
+  background: var(--cream);
+}
+.quote-slide.hero-image {
+  background: var(--cream);
+  padding: 0;
+  position: absolute;
+  overflow: hidden;
+}
+.quote-slide.hero-image .hero-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+.quote-slide.hero-image .hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg,
+    rgba(240,238,233,0.05) 0%,
+    rgba(240,238,233,0.02) 40%,
+    rgba(240,238,233,0.55) 100%);
+  z-index: 1;
+}
+/* Center the slide-inner inside the grid container.
+   Override base .slide-inner (margin:auto + width:100% + max-width:1480px) so
+   the inner sizes to content; grid's place-items: center handles centering. */
+.quote-slide.hero-image .slide-inner {
+  position: relative;
+  width: auto !important;
+  max-width: 1080px !important;
+  margin: 0 !important;
+  background: rgba(240,238,233,0.92);
+  padding: 56px 72px;
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.22);
+  z-index: 2;
+  text-align: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.quote-slide.hero-image .slide-inner .quote-eyebrow,
+.quote-slide.hero-image .slide-inner h2,
+.quote-slide.hero-image .slide-inner blockquote {
+  margin-left: auto; margin-right: auto;
+}
+.quote-slide.hero-image .slide-inner blockquote {
+  border-left: none;          /* no left rule when centered */
+  text-align: center;
+  padding-left: 0;
+}
+
+/* Presentation-first patterns for v5 */
+.big-thesis {
+  font-family: var(--serif-cn);
+  font-size: 54px;
+  line-height: 1.18;
+  letter-spacing: 0.02em;
+  max-width: 1200px;
+}
+.big-thesis em {
+  font-family: var(--serif-en);
+  font-style: italic;
+  color: var(--dusk);
+}
+.one-line {
+  font-size: 24px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  max-width: 1100px;
+}
+.visual-rule {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 20px;
+}
+.visual-rule .rule-card,
+.style-showcase .style-card,
+.resource-hub .resource-card,
+.tool-principle .principle-card,
+.migration-cards .migration-card {
+  background: rgba(255,255,255,0.62);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+.visual-rule .num,
+.style-showcase .tag,
+.resource-hub .tag,
+.tool-principle .tag,
+.migration-cards .tag {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--dawn);
+  text-transform: uppercase;
+}
+.visual-rule h3,
+.style-showcase h3,
+.resource-hub h3,
+.tool-principle h3,
+.migration-cards h3 {
+  font-family: var(--serif-cn);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.2;
+  margin-top: 10px;
+}
+.visual-rule p,
+.style-showcase p,
+.resource-hub p,
+.tool-principle p,
+.migration-cards p {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+.style-showcase {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 18px;
+}
+.style-showcase .style-card {
+  min-height: 190px;
+  position: relative;
+  overflow: hidden;
+}
+.style-showcase .style-card::after {
+  content: "";
+  position: absolute;
+  right: -36px;
+  bottom: -36px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(244,184,157,0.24);
+}
+.style-showcase.has-swatch .style-card::after { display: none; }   /* swatch replaces the dawn blob */
+.style-showcase .keywords {
+  margin-top: 14px;
+}
+
+/* Style card swatches — abstract CSS-only previews of each visual register */
+.style-showcase .swatch {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  border: 1px solid rgba(60,50,40,0.10);
+}
+.swatch-minimal {
+  background: #fafaf6;
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 8px; padding: 18px 22px;
+}
+.swatch-minimal .bar {
+  display: block; height: 4px; background: #1a1a1a; border-radius: 2px;
+}
+.swatch-minimal .bar.w70 { width: 70%; }
+.swatch-minimal .bar.w40 { width: 40%; }
+.swatch-minimal .bar.w55 { width: 55%; }
+
+.swatch-editorial {
+  background: #f6f1e9;
+  padding: 12px 18px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  gap: 6px;
+}
+.swatch-editorial .ed-title {
+  position: absolute; top: 6px; left: 18px;
+  font-family: var(--serif-en);
+  font-size: 56px; font-style: italic; font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1;
+}
+.swatch-editorial .ed-rule {
+  position: absolute; top: 18px; right: 18px;
+  width: 40%; height: 1px; background: #1a1a1a; opacity: 0.6;
+}
+.swatch-editorial .ed-line {
+  height: 3px; background: rgba(26,26,26,0.65); border-radius: 1px; width: 80%;
+}
+.swatch-editorial .ed-line.s { width: 55%; opacity: 0.45; }
+
+.swatch-glass {
+  background: linear-gradient(135deg, #d6c3e8 0%, #f4b89d 100%);
+  position: relative;
+}
+.swatch-glass .g-blob {
+  position: absolute; border-radius: 50%; filter: blur(8px);
+}
+.swatch-glass .g-a {
+  width: 60%; aspect-ratio: 1; left: -10%; top: -20%;
+  background: rgba(255,255,255,0.55);
+}
+.swatch-glass .g-b {
+  width: 50%; aspect-ratio: 1; right: -8%; bottom: -18%;
+  background: rgba(92,110,138,0.55);
+}
+.swatch-glass .g-card {
+  position: absolute; left: 22%; top: 30%; width: 56%; height: 40%;
+  background: rgba(255,255,255,0.42);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.swatch-retro {
+  background: #2b2b2b;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 2px;
+  padding: 6px;
+}
+.swatch-retro .px {
+  aspect-ratio: 1;
+  background: #F4B89D;
+  border-radius: 1px;
+}
+.swatch-retro .px:nth-child(2),
+.swatch-retro .px:nth-child(5),
+.swatch-retro .px:nth-child(7),
+.swatch-retro .px:nth-child(11) { background: #5C6E8A; }
+.swatch-retro .px:nth-child(3),
+.swatch-retro .px:nth-child(8),
+.swatch-retro .px:nth-child(12) { background: #FEF4A8; }
+.swatch-retro .px:nth-child(4),
+.swatch-retro .px:nth-child(9) { background: #2b2b2b; }
+
+.swatch-luxury {
+  background: linear-gradient(180deg, #1a1614 0%, #2a221d 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.swatch-luxury .lx-mark {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4af6a 0%, #b88840 100%);
+  color: transparent;
+  box-shadow: 0 0 24px rgba(212,175,106,0.45), inset 0 1px 2px rgba(255,255,255,0.4);
+}
+
+.swatch-brutal {
+  background: #FEF4A8;
+  position: relative;
+}
+.swatch-brutal .br-block {
+  position: absolute;
+  top: 12%; left: 8%;
+  width: 50%; height: 76%;
+  background: #1a1a1a;
+}
+.swatch-brutal .br-stripe {
+  position: absolute;
+  top: 24%; right: 8%;
+  width: 32%; height: 12%;
+  background: #ff3300;
+  transform: rotate(-3deg);
+}
+.prompt-frame {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: stretch;
+  margin-top: 20px;
+}
+.prompt-frame .prompt-card {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 28px;
+  background: rgba(255,255,255,0.55);
+}
+.prompt-frame .prompt-card.primary {
+  background: rgba(244,184,157,0.14);
+  border-color: rgba(244,184,157,0.55);
+}
+.prompt-frame .formula {
+  font-family: var(--serif-cn);
+  font-size: 30px;
+  line-height: 1.5;
+}
+.prompt-frame code {
+  font-family: var(--mono);
+  font-size: 18px;
+  color: var(--dusk);
+}
+.resource-hub {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+.resource-hub .resource-card {
+  min-height: 240px;
+}
+.resource-hub .resource-card .items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.growth-map {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 22px;
+  align-items: center;
+  margin-top: 24px;
+}
+.growth-map .node {
+  border: 1px solid var(--rule);
+  background: rgba(255,255,255,0.58);
+  border-radius: 8px;
+  padding: 30px 28px;
+  min-height: 128px;
+  text-align: center;
+}
+.growth-map .node.core {
+  background: var(--dawn);
+  border-color: var(--dawn);
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.growth-map .node h3 {
+  font-family: var(--serif-cn);
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1.2;
+}
+.growth-map .node p {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+.growth-map .arrow {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 34px;
+  color: var(--dusk);
+  text-align: center;
+}
+.bip-principles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 22px;
+}
+.bip-principles .principle {
+  padding: 22px 20px;
+  min-height: 220px;
+  border-top: 3px solid var(--dawn);
+  background: rgba(255,255,255,0.58);
+  position: relative;
+  display: flex; flex-direction: column;
+}
+.bip-principles .principle .p-num {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.bip-principles .principle h3 {
+  font-family: var(--serif-cn);
+  font-size: 29px;
+  font-weight: 400;
+}
+.bip-principles .principle p {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+.bip-principles .principle p.anti {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(60,50,40,0.18);
+  font-size: 13px;
+  color: rgba(60,50,40,0.55);
+  font-style: italic;
+}
+
+/* Four-question grid (P25 s32-four) — 4 question cards with anti-example tail */
+.four-questions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.four-questions .q-card {
+  background: rgba(255,255,255,0.62);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 22px 20px 18px;
+  display: flex; flex-direction: column;
+  min-height: 220px;
+}
+.four-questions .q-card:nth-child(odd) {
+  border-color: rgba(244,184,157,0.55);
+  background: rgba(244,184,157,0.10);
+}
+.four-questions .q-num {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+.four-questions .q-card h3 {
+  font-family: var(--serif-cn);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+.four-questions .q-sub {
+  margin-top: 10px;
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.55;
+}
+.four-questions .q-anti {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(60,50,40,0.18);
+  font-size: 12.5px;
+  color: rgba(60,50,40,0.55);
+  font-style: italic;
+}
+
+/* Big-cards — large 2-column takeaway (P48 hundred-x) */
+.big-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+.big-cards .big-card {
+  border: 1px solid var(--rule);
+  background: rgba(255,255,255,0.6);
+  border-radius: 14px;
+  padding: 36px 36px;
+  display: flex; flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.big-cards .big-card.accent {
+  background: linear-gradient(135deg, rgba(244,184,157,0.32) 0%, rgba(244,184,157,0.10) 100%);
+  border: 2px solid var(--dawn);
+  box-shadow: 0 18px 50px rgba(244,184,157,0.30);
+}
+.big-cards .big-num {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 80px;
+  font-weight: 700;
+  color: var(--dawn);
+  line-height: 0.95;
+  margin-bottom: 12px;
+}
+.big-cards .big-card.accent .big-num {
+  color: #b56635;
+}
+.big-cards .big-card h3 {
+  font-family: var(--serif-cn);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.big-cards .big-card h3 em {
+  font-family: var(--serif-en);
+  font-style: italic;
+  color: #b56635;
+}
+.big-cards .big-card p {
+  margin-top: 16px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* Cope cards (P51 how-to-cope) — 2-column with reason tail */
+.cope-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.cope-cards .cope-card {
+  border: 1px solid var(--rule);
+  background: rgba(255,255,255,0.6);
+  border-radius: 12px;
+  padding: 26px 28px;
+  display: flex; flex-direction: column;
+  min-height: 240px;
+}
+.cope-cards .cope-card.accent {
+  background: rgba(244,184,157,0.14);
+  border-color: var(--dawn);
+}
+.cope-cards .cope-num {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.2em;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+.cope-cards .cope-card h3 {
+  font-family: var(--serif-cn);
+  font-size: 26px;
+  font-weight: 500;
+}
+.cope-cards .cope-card p {
+  margin-top: 10px;
+  font-size: 16px;
+  color: var(--ink);
+  line-height: 1.55;
+}
+.cope-cards .cope-card p.cope-why {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(60,50,40,0.18);
+  font-size: 14px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* P10 micro-comic — eyebrow + h2 above, comic image as the main illustration */
+.slide.micro-comic .slide-inner {
+  width: 100% !important;
+  max-width: 1480px !important;
+  margin: 0 auto !important;
+  display: flex; flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+.slide.micro-comic .eyebrow,
+.slide.micro-comic h2 {
+  flex: 0 0 auto;
+}
+.slide.micro-comic .micro-comic-image {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto;
+  max-height: 960px;           /* leaves room for eyebrow + h2 in the 1200 stage */
+  object-fit: contain;
+  display: block;
+  margin: 8px auto 0;
+  border-radius: 10px;
+  border: 1px solid rgba(60,50,40,0.10);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
+}
+.tool-principle {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+.tool-decision {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  align-items: stretch;
+  margin-top: 22px;
+}
+.tool-decision .step {
+  border: 1px solid var(--rule);
+  background: rgba(255,255,255,0.58);
+  border-radius: 8px;
+  padding: 24px;
+}
+.tool-decision .step strong {
+  display: block;
+  font-family: var(--serif-cn);
+  font-size: 29px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.tool-decision .step span {
+  display: block;
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.tool-decision .step span em {
+  display: inline-block;
+  margin-top: 4px;
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-faint);
+}
+.tool-decision .step strong .handle {
+  font-family: var(--mono);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-left: 8px;
+  letter-spacing: 0.04em;
+}
+
+/* Demo flow — 3-step concrete prompt examples (P35 s33-tips) */
+.demo-flow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+.demo-flow .demo-step {
+  background: rgba(255,255,255,0.65);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 18px 18px 16px;
+  display: flex; flex-direction: column;
+}
+.demo-flow .demo-step:nth-child(2) {
+  border-color: var(--dawn);
+  background: rgba(244,184,157,0.10);
+}
+.demo-flow .step-head {
+  display: flex; align-items: baseline;
+  gap: 12px;
+  border-bottom: 1px dashed var(--rule);
+  padding-bottom: 10px;
+}
+.demo-flow .step-num {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.18em;
+  color: var(--ink-soft);
+}
+.demo-flow .step-head h3 {
+  font-family: var(--serif-cn);
+  font-size: 22px;
+  font-weight: 500;
+  flex: 1;
+}
+.demo-flow .step-time {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.demo-flow .step-desc {
+  margin-top: 12px;
+  font-size: 15px; line-height: 1.55;
+  color: var(--ink);
+}
+.demo-flow .step-prompt {
+  margin-top: 12px;
+  background: #1a1a1a;
+  color: #e6e0d4;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.55;
+  padding: 12px 14px;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  flex: 1;
+  overflow: auto;
+}
+.demo-flow .prompt-prefix {
+  color: #F4B89D;
+  margin-right: 6px;
+}
+
+/* Channel chain — 4-step linear flow with one hub callout (P40 s35-channels) */
+.channel-chain {
+  display: grid;
+  grid-template-columns: 1fr 32px 1fr 32px 1fr 32px 1fr;
+  gap: 4px;
+  align-items: stretch;
+}
+.channel-chain .chain-step {
+  background: rgba(255,255,255,0.6);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 16px 18px 38px;
+  position: relative;
+  display: flex; flex-direction: column;
+}
+.channel-chain .chain-step.hub {
+  background: linear-gradient(180deg, rgba(244,184,157,0.30) 0%, rgba(244,184,157,0.08) 100%);
+  border: 2px solid var(--dawn);
+  box-shadow: 0 14px 36px rgba(244,184,157,0.30);
+}
+.channel-chain .chain-num {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.channel-chain .chain-step.hub .chain-num {
+  color: #b56635; font-weight: 600;
+}
+.channel-chain .chain-step h3 {
+  font-family: var(--serif-cn);
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.channel-chain .chain-step p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.channel-chain .chain-out {
+  position: absolute;
+  bottom: 10px; left: 18px;
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.14em;
+  color: var(--ink-faint);
+}
+.channel-chain .chain-step.hub .chain-out { color: #b56635; }
+.channel-chain .chain-arrow {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif-en);
+  font-size: 28px;
+  color: var(--ink-faint);
+}
+.audit-loop {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+.audit-loop .loop-step {
+  min-height: 190px;
+  padding: 22px 20px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: rgba(255,255,255,0.62);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.audit-loop .loop-step strong {
+  font-family: var(--serif-cn);
+  font-size: 25px;
+  font-weight: 400;
+}
+.audit-loop .loop-step span {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-top: 8px;
+  line-height: 1.45;
+}
+.migration-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 22px;
+}
+.migration-cards .arrow {
+  font-family: var(--serif-en);
+  font-size: 34px;
+  font-style: italic;
+  color: var(--dawn);
+  margin-top: 14px;
+}
+
+/* Footer */
+.deck-footer {
+  position: fixed;
+  bottom: 18px; left: 0; right: 0;
+  display: flex; justify-content: space-between;
+  padding: 0 32px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  pointer-events: none; z-index: 10;
+}
+.deck-footer .pager {
+  pointer-events: auto;
+  display: flex; gap: 12px; align-items: center;
+}
+.deck-footer button {
+  background: transparent;
+  border: 1px solid var(--ink-faint);
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  letter-spacing: 0.1em;
+}
+.deck-footer button:hover { border-color: var(--dusk); color: var(--dusk); }
+
+/* Lightbox */
+.slide img:not(.logomark):not(.no-zoom) { cursor: zoom-in; }
+#lightbox {
+  position: fixed; inset: 0;
+  background: rgba(26, 26, 26, 0.94);
+  display: none; align-items: center; justify-content: center;
+  padding: 48px; z-index: 50; cursor: zoom-out;
+  opacity: 0; transition: opacity 0.25s ease;
+}
+#lightbox.show { display: flex; opacity: 1; }
+#lightbox img {
+  max-width: 95vw; max-height: 92vh;
+  width: auto; height: auto;
+  border-radius: 12px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  transform: scale(0.96);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#lightbox.show img { transform: scale(1); }
+#lightbox-close {
+  position: absolute; top: 24px; right: 24px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  color: var(--cream);
+  border: 1px solid rgba(255,255,255,0.18);
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 22px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+#lightbox-close:hover { background: rgba(255,255,255,0.18); }
+#lightbox-hint {
+  position: absolute; bottom: 20px; left: 0; right: 0;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.18em;
+  color: rgba(240,238,233,0.5);
+  pointer-events: none;
+}
+
+/* Help */
+#help {
+  position: fixed; inset: 0; background: rgba(26,26,26,0.92);
+  color: var(--cream);
+  display: none; align-items: center; justify-content: center;
+  z-index: 20; font-family: var(--mono);
+}
+#help.show { display: flex; }
+#help kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  margin: 0 4px;
+  font-size: 12px;
+}
+
+/* TOC modal — section list */
+#toc {
+  position: fixed; inset: 0;
+  background: rgba(26,26,26,0.78);
+  display: none;
+  align-items: flex-start; justify-content: center;
+  padding: 64px 24px;
+  z-index: 40;
+  overflow-y: auto;
+}
+#toc.show { display: flex; }
+#toc .toc-card {
+  background: var(--cream);
+  border-radius: 14px;
+  width: 100%; max-width: 720px;
+  padding: 32px 36px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  font-family: var(--sans);
+  color: var(--ink);
+}
+#toc .toc-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 12px; margin-bottom: 8px;
+}
+#toc .toc-head .title {
+  font-family: var(--serif-cn);
+  font-size: 28px; font-weight: 400;
+  letter-spacing: 0.04em;
+}
+#toc .toc-head .title .en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 18px;
+  margin-left: 12px;
+}
+#toc .toc-head .meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.12em;
+}
+#toc .toc-list {
+  display: flex; flex-direction: column;
+  list-style: none; padding: 0; margin: 0;
+}
+#toc .toc-row {
+  display: grid;
+  grid-template-columns: 86px 1fr 84px;
+  gap: 18px; align-items: baseline;
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+  transition: background 0.12s;
+  border-radius: 4px;
+}
+#toc .toc-row:last-child { border-bottom: none; }
+#toc .toc-row:hover { background: rgba(244,184,157,0.18); }
+#toc .toc-row.current { background: rgba(244,184,157,0.28); }
+#toc .toc-row .num {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--dawn);
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+#toc .toc-row .label {
+  font-family: var(--serif-cn);
+  font-size: 19px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+#toc .toc-row .label .en {
+  display: block;
+  font-family: var(--serif-en);
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 14px;
+  margin-top: 2px;
+}
+#toc .toc-row .pages {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  text-align: right;
+  letter-spacing: 0.04em;
+}
+#toc .toc-foot {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+#toc .toc-foot kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 4px;
+  margin: 0 3px;
+}
+
+@media (max-width: 1100px) {
+  .slide { padding: 48px 56px; }
+  .title-cn { font-size: 44px; }
+  .title-en { font-size: 60px; }
+  h1.section-title { font-size: 56px; }
+  h1.section-title .en { font-size: 24px; }
+  h2 { font-size: 32px; }
+  h2 .en { font-size: 18px; }
+  .lede, .bullets { font-size: 18px; }
+  .gallery { grid-template-columns: repeat(2, 1fr); }
+  .style-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ===========================================================
+   Stagger reveal animation
+   Auto-applied to direct children of .slide-inner via JS init.
+   Each child enters with fade + 30px slide-up, staggered by 80ms.
+   Triggered when .slide gets both .active AND .animate-in classes
+   (we toggle .animate-in on slide change via go() to restart anim).
+   =========================================================== */
+.slide .reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.slide.active.animate-in .reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+.slide.active.animate-in .reveal:nth-child(1) { transition-delay: 0.08s; }
+.slide.active.animate-in .reveal:nth-child(2) { transition-delay: 0.16s; }
+.slide.active.animate-in .reveal:nth-child(3) { transition-delay: 0.24s; }
+.slide.active.animate-in .reveal:nth-child(4) { transition-delay: 0.32s; }
+.slide.active.animate-in .reveal:nth-child(5) { transition-delay: 0.40s; }
+.slide.active.animate-in .reveal:nth-child(6) { transition-delay: 0.48s; }
+.slide.active.animate-in .reveal:nth-child(7) { transition-delay: 0.56s; }
+.slide.active.animate-in .reveal:nth-child(n+8) { transition-delay: 0.62s; }
+
+/* ===========================================================
+   Section divider — abstract geometric accent
+   Purely decorative SVG injected via ::after on .divider slides.
+   Lives in the bottom-right corner; doesn't disturb content layout.
+   =========================================================== */
+.slide.divider .slide-inner { position: relative; }
+.slide.divider .slide-inner::after {
+  content: "";
+  position: absolute;
+  right: -32px; bottom: -32px;
+  width: 220px; height: 220px;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'><circle cx='110' cy='110' r='90' fill='none' stroke='%23F4B89D' stroke-width='1.4' opacity='0.85'/><circle cx='110' cy='110' r='62' fill='none' stroke='%235C6E8A' stroke-width='0.8' stroke-dasharray='3,5' opacity='0.6'/><line x1='40' y1='180' x2='180' y2='40' stroke='%231A1A1A' stroke-width='1' opacity='0.55'/><circle cx='180' cy='40' r='4' fill='%231A1A1A'/><circle cx='40' cy='180' r='2.5' fill='%23F4B89D'/></svg>");
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.95;
+  z-index: 0;
+}
+.slide.divider .slide-inner > * { position: relative; z-index: 1; }
+/* When the divider has its own image, suppress the accent (image is hero) */
+.slide.divider.with-image .slide-inner::after { display: none; }
+
+/* ===========================================================
+   Inline editing mode (toggle: E)
+   When body.edit-active, marked text elements become contenteditable.
+   Visual: dashed dawn outline on hover, solid dawn on focus.
+   =========================================================== */
+body.edit-active [contenteditable="true"] {
+  outline: 1px dashed rgba(244,184,157,0.55);
+  outline-offset: 3px;
+  cursor: text;
+  border-radius: 2px;
+  transition: outline 0.12s, background 0.12s;
+}
+body.edit-active [contenteditable="true"]:hover {
+  outline-color: var(--dawn);
+  background: rgba(244,184,157,0.08);
+}
+body.edit-active [contenteditable="true"]:focus {
+  outline: 2px solid var(--dawn);
+  outline-offset: 2px;
+  background: rgba(244,184,157,0.16);
+}
+#edit-banner {
+  position: fixed;
+  top: 18px; left: 50%;
+  transform: translateX(-50%) translateY(-80px);
+  background: var(--ink); color: var(--cream);
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  z-index: 200;
+  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+  display: flex; align-items: center; gap: 14px;
+  pointer-events: none;
+}
+#edit-banner.show { transform: translateX(-50%) translateY(0); }
+#edit-banner .pulse {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--dawn);
+  animation: edit-pulse 1.4s ease-in-out infinite;
+}
+@keyframes edit-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.85); }
+  50%      { opacity: 1.0; transform: scale(1.15); }
+}
+
+/* ===========================================================
+   3D tilt on hover — adds depth to cards / gallery / cover SVG
+   Applied via JS (.tilt-host class set by JS on init).
+   =========================================================== */
+.tilt-host {
+  transform-style: preserve-3d;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+/* ===========================================================
+   Reduced motion — respect user's OS-level preference
+   =========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .slide .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: opacity 0.2s !important;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.2s !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ===========================================================
+   Lecture spotlight — hover a card in a multi-card group to lift it,
+   sibling cards in the same group dim. Lets the speaker direct audience
+   attention with the cursor. Toggle with H key.
+   - Only activates with mouse / trackpad (`hover: hover`)
+   - Skipped when user prefers reduced motion
+   - Skipped when body has .no-spotlight (H toggle)
+   - Skipped on slides with handraise/gallery (those have their own hover)
+   =========================================================== */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  /* Smooth transition on every spotlight-eligible card */
+  body:not(.no-spotlight) .visual-rule > *,
+  body:not(.no-spotlight) .tool-decision > *,
+  body:not(.no-spotlight) .bip-principles > *,
+  body:not(.no-spotlight) .migration-cards > *,
+  body:not(.no-spotlight) .four-questions > *,
+  body:not(.no-spotlight) .big-cards > *,
+  body:not(.no-spotlight) .cope-cards > *,
+  body:not(.no-spotlight) .audit-loop > *,
+  body:not(.no-spotlight) .demo-flow > *,
+  body:not(.no-spotlight) .channel-chain > *,
+  body:not(.no-spotlight) .resource-hub > *,
+  body:not(.no-spotlight) .tool-principle > *,
+  body:not(.no-spotlight) .style-showcase > *,
+  body:not(.no-spotlight) .migration-cards > *,
+  body:not(.no-spotlight) .big-cards > * {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity, filter;
+  }
+
+  /* Hovered card: lift, slight scale, dawn glow */
+  body:not(.no-spotlight) .visual-rule > *:hover,
+  body:not(.no-spotlight) .tool-decision > *:hover,
+  body:not(.no-spotlight) .bip-principles > *:hover,
+  body:not(.no-spotlight) .migration-cards > *:hover,
+  body:not(.no-spotlight) .four-questions > *:hover,
+  body:not(.no-spotlight) .big-cards > *:hover,
+  body:not(.no-spotlight) .cope-cards > *:hover,
+  body:not(.no-spotlight) .audit-loop > *:hover,
+  body:not(.no-spotlight) .demo-flow > *:hover,
+  body:not(.no-spotlight) .channel-chain > *:hover,
+  body:not(.no-spotlight) .resource-hub > *:hover,
+  body:not(.no-spotlight) .tool-principle > *:hover,
+  body:not(.no-spotlight) .style-showcase > *:hover {
+    transform: scale(1.06);
+    z-index: 20;
+    box-shadow: 0 24px 60px rgba(244,184,157,0.40),
+                0 8px 24px rgba(0,0,0,0.14) !important;
+    position: relative;
+  }
+
+  /* Non-hovered siblings in the same group: dim, slight shrink */
+  body:not(.no-spotlight) .visual-rule:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .tool-decision:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .bip-principles:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .migration-cards:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .four-questions:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .big-cards:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .cope-cards:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .audit-loop:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .demo-flow:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .channel-chain:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .resource-hub:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .tool-principle:has(> *:hover) > *:not(:hover),
+  body:not(.no-spotlight) .style-showcase:has(> *:hover) > *:not(:hover) {
+    opacity: 0.45;
+    transform: scale(0.98);
+    filter: saturate(0.7);
+  }
+
+  /* When focus mode is off (post-edit, etc.), restore base state */
+  body.edit-active .visual-rule > *,
+  body.edit-active .tool-decision > *,
+  body.edit-active .bip-principles > *,
+  body.edit-active .migration-cards > *,
+  body.edit-active .four-questions > *,
+  body.edit-active .big-cards > *,
+  body.edit-active .cope-cards > *,
+  body.edit-active .audit-loop > *,
+  body.edit-active .demo-flow > *,
+  body.edit-active .channel-chain > *,
+  body.edit-active .resource-hub > *,
+  body.edit-active .tool-principle > *,
+  body.edit-active .style-showcase > * {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+<!-- ░░░ 封面 ░░░ -->
+<section class="slide cover with-image active" data-slide="cover">
+  <div class="slide-inner">
+    <div class="text-col">
+      <div class="eyebrow"><img class="pku-emblem" src="assets/pku-emblem.png" alt="北京大学 · Peking University · 1898" /><span class="dot">●</span> &nbsp;北大 HCI 通识课业界讲座 &nbsp;<span class="seg">·</span>&nbsp; 2026 &middot; 05 &middot; 07 &nbsp;<span class="seg">·</span>&nbsp; 文史 108</div>
+      <h1 class="title-cn" style="margin-top: 16px;">Agent 时代的产品实践</h1>
+      <div class="subtitle" style="margin-top: 6px;"><em>从想法到产品发布</em></div>
+      <div class="meta-line" style="margin-top: 12px;">
+        2026 &middot; 05 &middot; 07 &nbsp;周四 &nbsp;10:10–12:00
+      </div>
+      <div class="signoff">
+        <strong>陈正豪</strong> / Bryant Chen &nbsp;·&nbsp;
+        独立开发者 &nbsp;·&nbsp; 前 Motiff（妙多）AI 产品负责人 &nbsp;·&nbsp;
+        <a href="https://bryantchen.cc" target="_blank">bryantchen.cc</a>
+      </div>
+    </div>
+    <div class="image-col">
+      <svg class="cover-hero" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <!-- Subtle film-grain noise via fractal turbulence -->
+          <filter id="cover-grain" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" stitchTiles="stitch"/>
+            <feColorMatrix values="0 0 0 0 0.10
+                                   0 0 0 0 0.08
+                                   0 0 0 0 0.06
+                                   0 0 0 0.10 0"/>
+          </filter>
+          <!-- Dawn (sunrise) gradient -->
+          <radialGradient id="cover-dawn" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#F4B89D" stop-opacity="0.85"/>
+            <stop offset="60%" stop-color="#F4B89D" stop-opacity="0.45"/>
+            <stop offset="100%" stop-color="#F4B89D" stop-opacity="0"/>
+          </radialGradient>
+          <!-- Soft cream-to-warm vertical wash -->
+          <linearGradient id="cover-wash" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#F0EEE9"/>
+            <stop offset="55%" stop-color="#EDE8DE"/>
+            <stop offset="100%" stop-color="#F0EEE9"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Background wash -->
+        <rect width="600" height="800" fill="url(#cover-wash)"/>
+
+        <!-- ===== TOP ZONE · 想法 / pixels (scatter dots) ===== -->
+        <!-- Loose dot grid suggesting nascent ideas / pixels -->
+        <g fill="#5C6E8A" opacity="0.55">
+          <circle cx="80"  cy="80"  r="3"/>
+          <circle cx="120" cy="60"  r="2"/>
+          <circle cx="160" cy="90"  r="2.5"/>
+          <circle cx="200" cy="55"  r="3"/>
+          <circle cx="240" cy="105" r="2"/>
+          <circle cx="100" cy="130" r="2.5"/>
+          <circle cx="170" cy="150" r="3"/>
+          <circle cx="220" cy="165" r="2"/>
+          <circle cx="280" cy="80"  r="2.5"/>
+          <circle cx="60"  cy="180" r="2"/>
+          <circle cx="130" cy="200" r="3"/>
+          <circle cx="195" cy="220" r="2.5"/>
+          <circle cx="265" cy="155" r="2"/>
+          <circle cx="320" cy="120" r="3"/>
+          <circle cx="50"  cy="240" r="2.5"/>
+          <circle cx="105" cy="265" r="2"/>
+          <circle cx="160" cy="280" r="2.5"/>
+          <circle cx="225" cy="245" r="3"/>
+          <circle cx="295" cy="195" r="2"/>
+          <circle cx="360" cy="80"  r="2.5"/>
+        </g>
+        <!-- A few smaller ink-color dots scattered in -->
+        <g fill="#1A1A1A" opacity="0.6">
+          <circle cx="155" cy="115" r="1.5"/>
+          <circle cx="245" cy="180" r="1.5"/>
+          <circle cx="115" cy="225" r="1.5"/>
+          <circle cx="305" cy="240" r="1.5"/>
+          <circle cx="385" cy="160" r="1.5"/>
+        </g>
+
+        <!-- ===== MIDDLE · 朝阳 / agent (sunrise dawn circle) ===== -->
+        <!-- Soft glow halo behind the main circle -->
+        <circle cx="380" cy="380" r="200" fill="url(#cover-dawn)"/>
+        <!-- Main outline -->
+        <circle cx="380" cy="380" r="155" fill="none" stroke="#F4B89D" stroke-width="2" opacity="0.95"/>
+        <!-- Inner offset outline (suggests depth / "two layers of thinking") -->
+        <circle cx="380" cy="380" r="120" fill="none" stroke="#1A1A1A" stroke-width="0.8" opacity="0.45"/>
+        <!-- Tiny accent dot at the rim -->
+        <circle cx="525" cy="350" r="5" fill="#1A1A1A"/>
+
+        <!-- Small secondary dusk circle (left, smaller — "the maker") -->
+        <circle cx="155" cy="430" r="48" fill="none" stroke="#5C6E8A" stroke-width="1.5" opacity="0.75"/>
+        <circle cx="155" cy="430" r="6" fill="#5C6E8A"/>
+
+        <!-- ===== HORIZON LINE (transformation) ===== -->
+        <!-- Diagonal connecting the maker (dusk) to the dawn — agent flow -->
+        <line x1="155" y1="430" x2="525" y2="350" stroke="#1A1A1A" stroke-width="1" opacity="0.35" stroke-dasharray="3,5"/>
+
+        <!-- ===== BOTTOM ZONE · 产品 / code (ordered horizontal lines) ===== -->
+        <!-- Crisp horizontal lines suggesting structured output (code / lines of text) -->
+        <g stroke="#1A1A1A" stroke-linecap="round">
+          <line x1="80"  y1="580" x2="320" y2="580" stroke-width="2.5" opacity="0.9"/>
+          <line x1="80"  y1="615" x2="450" y2="615" stroke-width="1.6" opacity="0.65"/>
+          <line x1="120" y1="650" x2="380" y2="650" stroke-width="1.6" opacity="0.65"/>
+          <line x1="80"  y1="685" x2="510" y2="685" stroke-width="1.6" opacity="0.7"/>
+          <line x1="200" y1="720" x2="430" y2="720" stroke-width="1.6" opacity="0.55"/>
+          <line x1="80"  y1="755" x2="280" y2="755" stroke-width="2.5" opacity="0.85"/>
+        </g>
+
+        <!-- ===== SHIP arrow (bottom-right, the "publish" gesture) ===== -->
+        <g transform="translate(495, 745)">
+          <circle cx="0" cy="0" r="22" fill="none" stroke="#F4B89D" stroke-width="1.6"/>
+          <path d="M -6 -8 L 8 0 L -6 8 Z" fill="#1A1A1A" opacity="0.85"/>
+        </g>
+
+        <!-- ===== Subtle film grain overlay ===== -->
+        <rect width="600" height="800" fill="white" filter="url(#cover-grain)" opacity="1"/>
+
+        <!-- Bottom-left tiny "AGENT / 2026" wordmark for editorial signature -->
+        <g font-family="ui-monospace, SF Mono, monospace" font-size="11" fill="#1A1A1A" opacity="0.55" letter-spacing="0.18em">
+          <text x="60" y="775">AGENT &middot; 2026</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §0 Page 1 关于我 ░░░ -->
+<section class="slide" data-slide="about">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 0 &nbsp;<span class="seg">·</span>&nbsp; 关于我 &nbsp;<span class="seg">·</span>&nbsp; about</div>
+    <h2>关于我 <span class="en">who's behind this</span></h2>
+    <ul class="bullets" style="margin-top: 4px;">
+      <li><strong>2026.01 — 至今</strong>：和 AI 一起协作的独立开发者 / AI 创业者</li>
+      <li><strong>2019 — 2026.01</strong>：大厂产品经理（先后在网易、猿辅导任职），前 Motiff 妙多 AI 产品负责人</li>
+    </ul>
+    <div class="gallery" style="margin-top: 10px;">
+      <figure>
+        <div class="thumb"><img src="assets/1777956285431-4c37.webp" alt="AIBT" /></div>
+        <figcaption>
+          <a href="https://aibtapp.com/zh/" target="_blank">AIBT · AI 性格测试</a>
+          <span class="en"><a href="https://aibtapp.com/zh/" target="_blank">aibtapp.com</a></span>
+        </figcaption>
+      </figure>
+      <figure>
+        <div class="thumb"><img src="assets/1777957558355-8656.webp" alt="ClawPuter" /></div>
+        <figcaption>
+          <a href="https://github.com/bryant24hao/ClawPuter" target="_blank">硬件桌宠 · ClawPuter</a>
+          <span class="en"><a href="https://github.com/bryant24hao/ClawPuter" target="_blank">ClawPuter on GitHub</a></span>
+        </figcaption>
+      </figure>
+      <figure>
+        <div class="thumb"><img src="assets/1777956272114-a357.webp" alt="deskpet-firmware For CC" /></div>
+        <figcaption>
+          <a href="https://github.com/bryant24hao/deskpet-firmware" target="_blank">硬件桌宠 · For CC</a>
+          <span class="en"><a href="https://github.com/bryant24hao/deskpet-firmware" target="_blank">deskpet-firmware</a></span>
+        </figcaption>
+      </figure>
+      <figure>
+        <div class="thumb"><img src="assets/1777956728065-a76f.webp" alt="ColorWander" /></div>
+        <figcaption>
+          <a href="https://bryantchen.cc/talk/colorwander-2026-05-05/" target="_blank">ColorWander · iOS App</a>
+          <span class="en"><a href="https://bryantchen.cc/talk/colorwander-2026-05-05/" target="_blank">colorwander · 2026.05.05 talk</a></span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §0 Page 2 一个调研 ░░░ -->
+<section class="slide" data-slide="poll">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 0 &nbsp;<span class="seg">·</span>&nbsp; 一个调研 &nbsp;<span class="seg">·</span>&nbsp; show of hands</div>
+    <h2>一个调研 <span class="en">show of hands</span></h2>
+    <div class="handraise">
+      <div class="card">
+        <div class="num">01</div>
+        <div class="text">听过 <strong>Vibe Coding</strong> 的同学举手？</div>
+        <div class="icon">✋</div>
+      </div>
+      <div class="card">
+        <div class="num">02</div>
+        <div class="text">自己动手 <strong>Vibe Coding</strong> 并做过 demo 的同学举手？</div>
+        <div class="icon">✋</div>
+      </div>
+      <div class="card">
+        <div class="num">03</div>
+        <div class="text">用过 <strong>Claude Code</strong>、<strong>Codex</strong> 的同学举手？</div>
+        <div class="icon">✋</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §0 Page 3 分享内容梗概 ░░░ -->
+<section class="slide" data-slide="agenda">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 0 &nbsp;<span class="seg">·</span>&nbsp; 分享内容梗概 &nbsp;<span class="seg">·</span>&nbsp; agenda</div>
+    <h2>今天分享三块内容 <span class="en">three parts</span></h2>
+    <p class="lede italic" style="margin-top: -4px;">AI 从业者 + 独立开发者视角的观察与实践。</p>
+    <ol class="numbered" style="margin-top: 8px;">
+      <li><span class="n">§ 1</span><span class="body">过去一年的变化与演进</span></li>
+      <li><span class="n">§ 3</span><span class="body">AI Coding 实践</span></li>
+      <li><span class="n">§ 4</span><span class="body">AI 工具箱</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ░░░ §1 Page 4 演进路线 引子 ░░░ -->
+<section class="slide divider with-image" data-slide="s1-divider">
+  <div class="slide-inner">
+    <div class="text-col">
+      <div class="num">§ 1 &nbsp;·&nbsp; 10 minutes</div>
+      <h1 class="section-title">过去一年的<br>演进路线 <span class="en">a year in review</span></h1>
+      <div class="keywords">
+        <span class="keyword accent">像素</span>
+        <span class="keyword accent">+</span>
+        <span class="keyword accent">代码</span>
+      </div>
+      <div class="keywords" style="margin-top: 4px;">
+        <span class="keyword">日新月异</span>
+        <span class="keyword">两条主线</span>
+        <span class="keyword">人机交互</span>
+      </div>
+    </div>
+    <div class="image-col">
+      <img src="assets/s1-evolution.png" alt="§1 演进路线 · 朝阳与散落的想法" />
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §1 Page 5 主线一 AI Coding 演进图 ░░░ -->
+<section class="slide" data-slide="ai-coding-line">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 1 &nbsp;<span class="seg">·</span>&nbsp; 主线一 · ai coding</div>
+    <h2>主线一：AI Coding —— 从「能用」到「吞噬一切」</h2>
+    <p class="lede italic" style="font-size: 17px; margin-top: -4px;">加粗 = 对业界产生巨大影响的模型 · 图标 = 发布机构</p>
+    <div class="svg-block" style="margin-top: 6px;">
+      <svg viewBox="0 0 1100 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <line x1="60" y1="180" x2="1060" y2="180" stroke="#1A1A1A" stroke-width="1.4"/>
+        <g font-family="Courier Prime, monospace" font-size="11" fill="rgba(60,50,40,0.7)">
+          <line x1="80"   y1="178" x2="80"   y2="186" stroke="#1A1A1A" stroke-width="1.2"/>
+          <text x="80"   y="204" text-anchor="middle">2024-06</text>
+          <line x1="510"  y1="178" x2="510"  y2="186" stroke="rgba(60,50,40,0.4)" stroke-width="0.8"/>
+          <text x="510"  y="204" text-anchor="middle">2025</text>
+          <line x1="845"  y1="178" x2="845"  y2="186" stroke="rgba(60,50,40,0.4)" stroke-width="0.8"/>
+          <text x="845"  y="204" text-anchor="middle">2026</text>
+          <line x1="970"  y1="178" x2="970"  y2="186" stroke="#1A1A1A" stroke-width="1.2"/>
+          <text x="970"  y="204" text-anchor="middle">04</text>
+        </g>
+
+        <!-- 2024-06-20 Claude 3.5 Sonnet (peak · Anthropic) -->
+        <line x1="80" y1="180" x2="80" y2="138" stroke="#F4B89D" stroke-width="1.2"/>
+        <circle cx="80" cy="180" r="5" fill="#F4B89D"/>
+        <image href="assets/icons/anthropic.svg" x="62" y="116" width="14" height="14"/>
+        <text x="80" y="124" text-anchor="start" font-family="Inter" font-size="12" font-weight="700" fill="#1A1A1A" dx="20">Claude 3.5 Sonnet</text>
+        <text x="80" y="106" text-anchor="middle" font-family="Cormorant Garamond" font-size="12" font-style="italic" fill="rgba(60,50,40,0.7)">coding 跨过实用门槛</text>
+
+        <!-- 2025-02-25 Claude 3.7 + Claude Code (peak · Anthropic) -->
+        <line x1="400" y1="180" x2="400" y2="58" stroke="#F4B89D" stroke-width="1.2"/>
+        <circle cx="400" cy="180" r="5" fill="#F4B89D"/>
+        <image href="assets/icons/anthropic.svg" x="335" y="46" width="14" height="14"/>
+        <text x="356" y="54" font-family="Inter" font-size="12" font-weight="700" fill="#1A1A1A">Claude 3.7 + Claude Code</text>
+        <text x="400" y="38" text-anchor="middle" font-family="Cormorant Garamond" font-size="12" font-style="italic" fill="rgba(60,50,40,0.7)">agent coding 范式确立</text>
+
+        <!-- 2025-03-06 Manus -->
+        <line x1="430" y1="180" x2="430" y2="232" stroke="rgba(60,50,40,0.4)" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="430" cy="180" r="3.5" fill="#1A1A1A"/>
+        <text x="430" y="246" text-anchor="middle" font-family="Inter" font-size="11" fill="#1A1A1A">Manus beta</text>
+        <text x="430" y="260" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2025-03-06</text>
+
+        <!-- 2025-04-16 Codex CLI (peak · OpenAI) -->
+        <line x1="465" y1="180" x2="465" y2="148" stroke="#F4B89D" stroke-width="1.2"/>
+        <circle cx="465" cy="180" r="5" fill="#F4B89D"/>
+        <image href="assets/icons/openai.svg" x="450" y="124" width="14" height="14"/>
+        <text x="467" y="132" font-family="Inter" font-size="12" font-weight="700" fill="#1A1A1A">Codex CLI</text>
+        <text x="465" y="116" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2025-04-16</text>
+
+        <!-- 2025-08-07 GPT-5 (· OpenAI) -->
+        <line x1="635" y1="180" x2="635" y2="232" stroke="rgba(60,50,40,0.4)" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="635" cy="180" r="3.5" fill="#1A1A1A"/>
+        <image href="assets/icons/openai.svg" x="616" y="240" width="13" height="13"/>
+        <text x="632" y="248" font-family="Inter" font-size="11" fill="#1A1A1A">GPT-5</text>
+        <text x="635" y="262" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2025-08-07</text>
+
+        <!-- 2025-11-18 Gemini 3 Pro (· Google) -->
+        <line x1="780" y1="180" x2="780" y2="148" stroke="rgba(60,50,40,0.4)" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="780" cy="180" r="3.5" fill="#1A1A1A"/>
+        <image href="assets/icons/googlegemini.svg" x="745" y="124" width="13" height="13"/>
+        <text x="761" y="132" font-family="Inter" font-size="11" fill="#1A1A1A">Gemini 3 Pro</text>
+        <text x="780" y="116" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2025-11-18</text>
+
+        <!-- 2025-11 Opus 4.5 (peak · Anthropic) -->
+        <line x1="800" y1="180" x2="800" y2="232" stroke="#F4B89D" stroke-width="1.2"/>
+        <circle cx="800" cy="180" r="5" fill="#F4B89D"/>
+        <image href="assets/icons/anthropic.svg" x="753" y="240" width="14" height="14"/>
+        <text x="769" y="248" font-family="Inter" font-size="12" font-weight="700" fill="#1A1A1A">Claude Opus 4.5</text>
+        <text x="800" y="262" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2025-11 · 长任务能力提升</text>
+
+        <!-- 2026-02 集中发布 -->
+        <line x1="870" y1="180" x2="870" y2="148" stroke="rgba(60,50,40,0.4)" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="870" cy="180" r="3.5" fill="#1A1A1A"/>
+        <text x="870" y="140" text-anchor="middle" font-family="Inter" font-size="11" fill="#1A1A1A">2026-02 · 集中发布</text>
+        <text x="870" y="126" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">月级迭代成为常态</text>
+
+        <!-- ===== 2026-04 cluster — staggered y to avoid overlap ===== -->
+        <!-- 2026-04-16 Opus 4.7 (peak · Anthropic) — label below at y=232/246 -->
+        <line x1="935" y1="180" x2="935" y2="232" stroke="#F4B89D" stroke-width="1.2"/>
+        <circle cx="935" cy="180" r="5" fill="#F4B89D"/>
+        <image href="assets/icons/anthropic.svg" x="908" y="240" width="14" height="14"/>
+        <text x="924" y="248" font-family="Inter" font-size="12" font-weight="700" fill="#1A1A1A">Opus 4.7</text>
+        <text x="935" y="262" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2026-04-16 · SOTA</text>
+
+        <!-- 2026-04-17 Claude Design (Anthropic) — labeled mid above-axis at y=88/102 -->
+        <line x1="965" y1="180" x2="965" y2="105" stroke="rgba(60,50,40,0.5)" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="965" cy="180" r="3.5" fill="#1A1A1A"/>
+        <image href="assets/icons/anthropic.svg" x="948" y="93" width="13" height="13"/>
+        <text x="964" y="101" font-family="Inter" font-size="11" font-weight="600" fill="#1A1A1A">Claude Design</text>
+        <text x="965" y="84" text-anchor="middle" font-family="Cormorant Garamond" font-size="10" font-style="italic" fill="rgba(60,50,40,0.7)">2026-04-17</text>
+
+        <!-- 2026-04-20 Kimi K2.6 — labeled lower below at y=290/302 -->
+        <line x1="995" y1="180" x2="995" y2="285" stroke="rgba(60,50,40,0.5)" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="995" cy="180" r="3.5" fill="#1A1A1A"/>
+        <text x="995" y="298" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="#1A1A1A">Kimi K2.6</text>
+        <text x="995" y="312" text-anchor="middle" font-family="Cormorant Garamond" font-size="10" font-style="italic" fill="rgba(60,50,40,0.7)">2026-04-20 · 1T 开源</text>
+
+        <!-- 2026-04-23 GPT-5.5 (peak · OpenAI) — label very high at y=18/32 -->
+        <line x1="1025" y1="180" x2="1025" y2="38" stroke="#F4B89D" stroke-width="1.2"/>
+        <circle cx="1025" cy="180" r="5.5" fill="#F4B89D"/>
+        <image href="assets/icons/openai.svg" x="1004" y="26" width="14" height="14"/>
+        <text x="1020" y="34" font-family="Inter" font-size="12" font-weight="700" fill="#1A1A1A">GPT-5.5</text>
+        <text x="1025" y="18" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2026-04-23 · 当前 SOTA</text>
+      </svg>
+    </div>
+    <p class="lede italic" style="font-size: 13px; margin-top: 4px; color: var(--ink-soft);">
+      配套关键工具：Cursor → Lovable → Bolt → Replit Agent → Claude Code / Codex
+    </p>
+  </div>
+</section>
+
+<!-- ░░░ §1 Page 6 主线二 AI 生图 演进图 ░░░ -->
+<section class="slide" data-slide="ai-image-line">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 1 &nbsp;<span class="seg">·</span>&nbsp; 主线二 · ai 生图</div>
+    <h2>主线二：AI 生图 —— 文本渲染与可控性的两次跨越</h2>
+    <p class="lede italic" style="font-size: 17px; margin-top: -4px;">加粗的事件 = 在对应时间点对业界产生巨大影响的模型。</p>
+    <div class="svg-block" style="margin-top: 6px;">
+      <svg viewBox="0 0 1100 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <line x1="60" y1="150" x2="1040" y2="150" stroke="#1A1A1A" stroke-width="1.4"/>
+        <g font-family="Courier Prime, monospace" font-size="11" fill="rgba(60,50,40,0.7)">
+          <line x1="80"   y1="148" x2="80"   y2="156" stroke="#1A1A1A" stroke-width="1.2"/>
+          <text x="80"   y="174" text-anchor="middle">2024-06</text>
+          <line x1="510"  y1="148" x2="510"  y2="156" stroke="rgba(60,50,40,0.4)" stroke-width="0.8"/>
+          <text x="510"  y="174" text-anchor="middle">2025</text>
+          <line x1="845"  y1="148" x2="845"  y2="156" stroke="rgba(60,50,40,0.4)" stroke-width="0.8"/>
+          <text x="845"  y="174" text-anchor="middle">2026</text>
+          <line x1="970"  y1="148" x2="970"  y2="156" stroke="#1A1A1A" stroke-width="1.2"/>
+          <text x="970"  y="174" text-anchor="middle">04</text>
+        </g>
+        <!-- 2024-06-12 SD3 Medium (peak · Stability AI / 开源) -->
+        <line x1="80" y1="150" x2="80" y2="98" stroke="#F4B89D" stroke-width="1.2"/>
+        <circle cx="80" cy="150" r="5" fill="#F4B89D"/>
+        <text x="80" y="90" text-anchor="middle" font-family="Inter" font-size="12" font-weight="700" fill="#1A1A1A">SD3 Medium</text>
+        <text x="80" y="76" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2024-06-12 · 开源派最后一波主力</text>
+
+        <!-- 2025-04-23 GPT-Image-1 (peak · OpenAI) -->
+        <line x1="475" y1="150" x2="475" y2="40" stroke="#F4B89D" stroke-width="1.2"/>
+        <circle cx="475" cy="150" r="5" fill="#F4B89D"/>
+        <image href="assets/icons/openai.svg" x="455" y="28" width="14" height="14"/>
+        <text x="471" y="36" font-family="Inter" font-size="12" font-weight="700" fill="#1A1A1A">GPT-Image-1</text>
+        <text x="475" y="18" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2025-04-23 · 西文文本渲染突破</text>
+
+        <!-- 2025-08-26 Nano Banana (normal · Google) -->
+        <line x1="640" y1="150" x2="640" y2="200" stroke="rgba(60,50,40,0.4)" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="640" cy="150" r="3.5" fill="#1A1A1A"/>
+        <image href="assets/icons/googlegemini.svg" x="619" y="208" width="13" height="13"/>
+        <text x="635" y="216" font-family="Inter" font-size="11" fill="#1A1A1A">Nano Banana</text>
+        <text x="640" y="230" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2025-08-26</text>
+
+        <!-- 2025-11-20 Nano Banana Pro (peak · Google) -->
+        <line x1="785" y1="150" x2="785" y2="200" stroke="#F4B89D" stroke-width="1.2"/>
+        <circle cx="785" cy="150" r="5" fill="#F4B89D"/>
+        <image href="assets/icons/googlegemini.svg" x="753" y="208" width="14" height="14"/>
+        <text x="770" y="216" font-family="Inter" font-size="12" font-weight="700" fill="#1A1A1A">Nano Banana Pro</text>
+        <text x="785" y="230" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2025-11-20 · 高质量 + 多语言</text>
+
+        <!-- 2026-02-26 Nano Banana 2 (normal · Google) -->
+        <line x1="900" y1="150" x2="900" y2="118" stroke="rgba(60,50,40,0.4)" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="900" cy="150" r="3.5" fill="#1A1A1A"/>
+        <image href="assets/icons/googlegemini.svg" x="876" y="93" width="13" height="13"/>
+        <text x="892" y="101" font-family="Inter" font-size="11" fill="#1A1A1A">Nano Banana 2</text>
+        <text x="900" y="84" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2026-02-26</text>
+
+        <!-- 2026-04-21 GPT-Image-2 (peak · OpenAI) -->
+        <line x1="975" y1="150" x2="975" y2="40" stroke="#F4B89D" stroke-width="1.2"/>
+        <circle cx="975" cy="150" r="6" fill="#F4B89D"/>
+        <image href="assets/icons/openai.svg" x="950" y="26" width="15" height="15"/>
+        <text x="968" y="36" font-family="Inter" font-size="13" font-weight="700" fill="#1A1A1A">GPT-Image-2</text>
+        <text x="975" y="18" text-anchor="middle" font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="rgba(60,50,40,0.7)">2026-04-21 · 中文等多语言接近完美 · 2K 原生</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §1 Page 7 当前 SOTA: GPT-Image-2 ░░░ -->
+<section class="slide" data-slide="gpt-image-2">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 1 &nbsp;<span class="seg">·</span>&nbsp; 当前 sota · gpt-image-2</div>
+    <h2>当前 SOTA：GPT-Image-2 <span class="en">multilingual text rendering</span></h2>
+    <div class="image-row" style="margin-top: 6px;">
+      <figure>
+        <div class="img-wrap"><img src="assets/1778035866284-690a.png" alt="OpenAI 算法研究员给出的一张图，惊艳的文本渲染能力" /></div>
+        <figcaption>OpenAI 算法研究员给出的一张图，惊艳的文本渲染能力 · <a href="https://zhuanlan.zhihu.com/p/2033191141806437343?share_code=14Nn959jZGZnP&utm_psn=2033488466290406649&utm_source=wechat_session&utm_medium=social&s_r=0" target="_blank">来源（知乎）</a></figcaption>
+      </figure>
+      <figure>
+        <div class="img-wrap"><img src="assets/1778035775481-7f5c.png" alt="最新的双盲测试" /></div>
+        <figcaption>最新的双盲测试</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §1 Page 8 这意味着什么 · 宏观 ░░░ -->
+<section class="slide" data-slide="macro">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 1 &nbsp;<span class="seg">·</span>&nbsp; 这意味着什么 · 宏观</div>
+    <h2>宏观：Agent + SOTA 模型正在吞噬传统软件</h2>
+    <div class="svg-block" style="margin-top: 6px;">
+      <svg viewBox="0 0 1080 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <line x1="60" y1="40" x2="1020" y2="40" stroke="rgba(60,50,40,0.18)" stroke-width="0.6" stroke-dasharray="3,3"/>
+        <line x1="60" y1="150" x2="1020" y2="150" stroke="rgba(60,50,40,0.18)" stroke-width="0.6" stroke-dasharray="3,3"/>
+        <text x="50" y="40" text-anchor="end" font-family="Courier Prime, monospace" font-size="11" fill="rgba(60,50,40,0.7)">100%</text>
+        <text x="50" y="150" text-anchor="end" font-family="Courier Prime, monospace" font-size="11" fill="rgba(60,50,40,0.7)">~50%</text>
+        <polyline points="60,42 140,46 220,52 320,62 420,74 520,86 600,94 680,104 740,112 800,118 860,130 920,144 1020,150"
+          fill="none" stroke="#1A1A1A" stroke-width="2"/>
+        <line x1="740" y1="112" x2="740" y2="22" stroke="#5C6E8A" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="740" cy="112" r="4" fill="#5C6E8A"/>
+        <text x="740" y="16" text-anchor="middle" font-family="Inter" font-size="13" font-weight="600" fill="#5C6E8A">2026-03-19 Stitch 升级 · -4%+</text>
+        <line x1="900" y1="138" x2="900" y2="50" stroke="#F4B89D" stroke-width="1.4" stroke-dasharray="2,2"/>
+        <circle cx="900" cy="138" r="6" fill="#F4B89D"/>
+        <text x="900" y="44" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#1A1A1A">2026-04-17 Claude Design · -5%+</text>
+        <text x="60" y="180" font-family="Courier Prime" font-size="11" fill="rgba(60,50,40,0.7)">2025-04</text>
+        <text x="1020" y="180" text-anchor="end" font-family="Courier Prime" font-size="11" fill="rgba(60,50,40,0.7)">2026-04</text>
+        <text x="540" y="180" text-anchor="middle" font-family="Cormorant Garamond" font-size="13" font-style="italic" fill="#5C6E8A">12 个月累计跌约 50%</text>
+      </svg>
+    </div>
+    <ul class="bullets" style="font-size: 17px; margin-top: 6px;">
+      <li>案例：Anthropic 2026-04-17 发布 <strong>Claude Design</strong> 当天，Figma 股价再跌约 5%（过去 12 个月已累计跌约 50%）</li>
+      <li>类似的故事此前已多次上演：Stitch（Google Labs，2025-05 I/O 首发，2026-03 公开升级）发布时 Figma 股价当日跌 4%+</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ░░░ §1 Page 9 这意味着什么 · 微观 ░░░ -->
+<section class="slide micro-comic" data-slide="micro">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 1 &nbsp;<span class="seg">·</span>&nbsp; 这意味着什么 · 微观</div>
+    <h2>微观：AI Coding 把软件生产门槛压到地板</h2>
+    <img class="micro-comic-image" src="assets/p10-micro-comic.png"
+         alt="过去（程序员稀缺、开发慢贵）vs 现在（AI 工具齐全、想法稀缺）+ 真正稀缺的 4 件事：品味 / 想法 / 交付能力 / 营销与增长" />
+  </div>
+</section>
+
+<!-- ░░░ §2 Page 10 打车软件分工 ░░░ -->
+<section class="slide" data-slide="roles">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 2 &nbsp;<span class="seg">·</span>&nbsp; 去年的判断正在加速兑现</div>
+    <h2>产品经理、设计师、工程师 —— 三阶段演进 <span class="en">a ride-hailing example</span></h2>
+    <div class="svg-block" style="margin-top: 10px;">
+      <svg viewBox="0 0 1400 380" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <marker id="role-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1A1A1A"/>
+          </marker>
+        </defs>
+
+        <!-- Stage 1 · 传统线性分工 (PAST) -->
+        <text x="220" y="34" text-anchor="middle" font-family="Courier Prime, monospace" font-size="12"
+              letter-spacing="0.22em" fill="rgba(60,50,40,0.7)">STAGE 1 · 过去 · 线性分工</text>
+        <g font-family="Inter, system-ui" font-size="13" fill="#1A1A1A">
+          <rect x="40"  y="76" width="78" height="44" fill="rgba(255,255,255,0.55)" stroke="#1A1A1A" stroke-width="1" rx="4"/>
+          <text x="79"  y="96" text-anchor="middle">PM</text>
+          <text x="79"  y="110" text-anchor="middle" font-size="10" fill="rgba(60,50,40,0.7)">需求</text>
+          <line x1="118" y1="98" x2="138" y2="98" stroke="#1A1A1A" marker-end="url(#role-arrow)"/>
+
+          <rect x="138" y="76" width="78" height="44" fill="rgba(255,255,255,0.55)" stroke="#1A1A1A" stroke-width="1" rx="4"/>
+          <text x="177" y="96" text-anchor="middle">UX</text>
+          <text x="177" y="110" text-anchor="middle" font-size="10" fill="rgba(60,50,40,0.7)">体验</text>
+          <line x1="216" y1="98" x2="236" y2="98" stroke="#1A1A1A" marker-end="url(#role-arrow)"/>
+
+          <rect x="236" y="76" width="78" height="44" fill="rgba(255,255,255,0.55)" stroke="#1A1A1A" stroke-width="1" rx="4"/>
+          <text x="275" y="96" text-anchor="middle">UI</text>
+          <text x="275" y="110" text-anchor="middle" font-size="10" fill="rgba(60,50,40,0.7)">视觉</text>
+          <line x1="314" y1="98" x2="334" y2="98" stroke="#1A1A1A" marker-end="url(#role-arrow)"/>
+
+          <rect x="334" y="76" width="78" height="44" fill="rgba(255,255,255,0.55)" stroke="#1A1A1A" stroke-width="1" rx="4"/>
+          <text x="373" y="96" text-anchor="middle">FE / BE</text>
+          <text x="373" y="110" text-anchor="middle" font-size="10" fill="rgba(60,50,40,0.7)">实现</text>
+        </g>
+        <text x="220" y="156" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="14"
+              font-style="italic" fill="rgba(60,50,40,0.7)">「我有一个很棒的想法 / 就差一个程序员了」</text>
+
+        <!-- Divider -->
+        <line x1="450" y1="50" x2="450" y2="180" stroke="rgba(60,50,40,0.18)" stroke-width="1" stroke-dasharray="3,4"/>
+
+        <!-- Stage 2 · UX+UI 合并 (NOW) -->
+        <text x="700" y="34" text-anchor="middle" font-family="Courier Prime, monospace" font-size="12"
+              letter-spacing="0.22em" fill="rgba(60,50,40,0.7)">STAGE 2 · 过去 10 年 · UX + UI 合并</text>
+        <g font-family="Inter, system-ui" font-size="13" fill="#1A1A1A">
+          <rect x="496" y="76" width="78" height="44" fill="rgba(255,255,255,0.55)" stroke="#1A1A1A" stroke-width="1" rx="4"/>
+          <text x="535" y="96" text-anchor="middle">PM</text>
+          <text x="535" y="110" text-anchor="middle" font-size="10" fill="rgba(60,50,40,0.7)">需求</text>
+          <line x1="574" y1="98" x2="594" y2="98" stroke="#1A1A1A" marker-end="url(#role-arrow)"/>
+
+          <rect x="594" y="68" width="146" height="60" fill="rgba(244,184,157,0.22)" stroke="#F4B89D" stroke-width="1.5" rx="6"/>
+          <text x="667" y="92" text-anchor="middle" font-weight="600">Product Designer</text>
+          <text x="667" y="108" text-anchor="middle" font-size="10" font-style="italic" fill="rgba(60,50,40,0.7)">UX + UI 合一</text>
+          <text x="667" y="120" text-anchor="middle" font-size="9" fill="rgba(60,50,40,0.55)">体验 + 视觉 + 原型</text>
+          <line x1="740" y1="98" x2="760" y2="98" stroke="#1A1A1A" marker-end="url(#role-arrow)"/>
+
+          <rect x="760" y="76" width="78" height="44" fill="rgba(255,255,255,0.55)" stroke="#1A1A1A" stroke-width="1" rx="4"/>
+          <text x="799" y="96" text-anchor="middle">FE / BE</text>
+          <text x="799" y="110" text-anchor="middle" font-size="10" fill="rgba(60,50,40,0.7)">实现</text>
+        </g>
+        <text x="700" y="156" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="14"
+              font-style="italic" fill="rgba(60,50,40,0.7)">分工边界变模糊，但仍然是 hand-off 流</text>
+
+        <!-- Divider -->
+        <line x1="880" y1="50" x2="880" y2="180" stroke="rgba(60,50,40,0.18)" stroke-width="1" stroke-dasharray="3,4"/>
+
+        <!-- Stage 3 · 一个人 + Agent (FUTURE / NOW arriving) -->
+        <text x="1180" y="34" text-anchor="middle" font-family="Courier Prime, monospace" font-size="12"
+              letter-spacing="0.22em" fill="#b56635" font-weight="600">STAGE 3 · 现在 / 未来 · 一个人 + Agent</text>
+        <g font-family="Inter, system-ui" font-size="13" fill="#1A1A1A">
+          <rect x="932" y="68" width="118" height="60" fill="rgba(255,255,255,0.55)" stroke="#1A1A1A" stroke-width="1" rx="6"/>
+          <text x="991" y="90" text-anchor="middle" font-weight="600">定义需求</text>
+          <text x="991" y="108" text-anchor="middle" font-size="10" font-style="italic" fill="rgba(60,50,40,0.7)">人 · 不确定性</text>
+          <line x1="1050" y1="98" x2="1078" y2="98" stroke="#1A1A1A" marker-end="url(#role-arrow)"/>
+
+          <circle cx="1148" cy="98" r="48" fill="#F4B89D"/>
+          <text x="1148" y="92" text-anchor="middle" font-family="Songti SC, serif" font-size="18"
+                font-weight="500" fill="#1A1A1A">一个人</text>
+          <text x="1148" y="112" text-anchor="middle" font-family="Cormorant Garamond" font-size="13"
+                font-style="italic" fill="#1A1A1A">+ agents</text>
+          <line x1="1196" y1="98" x2="1224" y2="98" stroke="#1A1A1A" marker-end="url(#role-arrow)"/>
+
+          <rect x="1224" y="68" width="118" height="60" fill="rgba(255,255,255,0.55)" stroke="#1A1A1A" stroke-width="1" rx="6"/>
+          <text x="1283" y="90" text-anchor="middle" font-weight="600">上线 + 增长</text>
+          <text x="1283" y="108" text-anchor="middle" font-size="10" font-style="italic" fill="rgba(60,50,40,0.7)">Agent · 确定性</text>
+        </g>
+        <text x="1180" y="156" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="14"
+              font-style="italic" fill="#b56635" font-weight="500">需求定义 · 品味 · 增长 → 人；执行 → AI</text>
+
+        <!-- Bottom evolutionary keywords row -->
+        <line x1="40" y1="210" x2="1360" y2="210" stroke="rgba(60,50,40,0.10)" stroke-width="1"/>
+        <g font-family="Inter, system-ui" font-size="13">
+          <text x="220"  y="240" text-anchor="middle" fill="rgba(60,50,40,0.55)">线性 · hand-off · slow</text>
+          <text x="700"  y="240" text-anchor="middle" fill="rgba(60,50,40,0.65)">合并 · 仍 hand-off · faster</text>
+          <text x="1180" y="240" text-anchor="middle" fill="#b56635" font-weight="600">闭环 · 一个人 · agent · realtime</text>
+        </g>
+
+        <!-- Big takeaway -->
+        <text x="700" y="298" text-anchor="middle" font-family="Songti SC, serif" font-size="20"
+              font-weight="500" fill="#1A1A1A">关键迁移：执行力 → <tspan fill="#b56635" font-weight="700">需求 / 品味 / 增长</tspan></text>
+        <text x="700" y="332" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="16"
+              font-style="italic" fill="rgba(60,50,40,0.7)">AI 接走「确定性」工作，人留下「不确定性」判断</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §2 Page 11 生产模式 · 从分工到模糊 ░░░ -->
+<section class="slide" data-slide="production-mode">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 2 &nbsp;<span class="seg">·</span>&nbsp; 生产模式 · 线性 → 闭环</div>
+    <h2>线性 hand-off → 闭环 maker <span class="en">linear → loop</span></h2>
+    <div class="loop-compare" style="margin-top: 28px;">
+      <div class="loop-side past">
+        <div class="side-label">PAST · 线性</div>
+        <div class="loop-glyph">
+          <span class="dot-stage">需求</span>
+          <span class="arrow">→</span>
+          <span class="dot-stage">PM</span>
+          <span class="arrow">→</span>
+          <span class="dot-stage">设计</span>
+          <span class="arrow">→</span>
+          <span class="dot-stage">研发</span>
+          <span class="arrow">→</span>
+          <span class="dot-stage">上线</span>
+        </div>
+        <p class="side-cap">每一步要等下一个角色接手 · slow</p>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-side now">
+        <div class="side-label">NOW · 闭环</div>
+        <div class="loop-glyph centerpiece">
+          <span class="dot-stage">需求</span>
+          <span class="arrow">→</span>
+          <span class="hub">一个人<br><em>+ agents</em></span>
+          <span class="arrow">→</span>
+          <span class="dot-stage">上线</span>
+          <span class="arrow loop-back">⟲</span>
+        </div>
+        <p class="side-cap">实时回环 · 同一人闭环到上线 · realtime</p>
+      </div>
+    </div>
+    <p class="big-takeaway" style="margin-top: 28px;">
+      关键能力迁移：执行力 →
+      <strong>需求定义 · 产品定义 · 增长 · 营销</strong>
+    </p>
+    <p class="lede italic" style="font-size: 17px; margin-top: 6px; color: var(--ink-soft); text-align: center;">"代码能力" 不再是入门门槛 —— 现在不是了。</p>
+  </div>
+</section>
+
+<!-- ░░░ §2 Page 12 SaaS 冲击 · Figma ░░░ -->
+<section class="slide" data-slide="figma-case">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 2 &nbsp;<span class="seg">·</span>&nbsp; saas 冲击案例 · 以界面设计为例</div>
+    <h2>Figma vs Google Stitch / Claude Design / Lovable</h2>
+    <div class="timeline" style="margin-top: 8px;">
+      <div class="row"><span class="date">2026-03-19</span><span class="what">Google Stitch 公开升级（多屏 + 无限画布 + 交互原型）<small>→ Figma 股价当日跌 <em>4%+</em></small></span></div>
+      <div class="row peak"><span class="date">2026-04-17</span><span class="what">Claude Design 发布（Opus 4.7 驱动，可直出可交互产品）<small>→ Figma 股价再跌 <em>5%+</em></small></span></div>
+    </div>
+    <p class="lede" style="font-size: 19px; margin-top: 16px;">
+      当 60 分够用时，AI 就够了；Figma 这类工具只剩<strong>极致专业化</strong>这条路（极少数高标准设计需求）。
+    </p>
+    <p class="lede italic" style="font-size: 17px; margin-top: 10px;">类似故事在不断上演。</p>
+  </div>
+</section>
+
+<!-- ░░░ §3 章节扉页 ░░░ -->
+<section class="slide divider with-image" data-slide="s3-divider">
+  <div class="slide-inner">
+    <div class="text-col">
+      <div class="num">§ 3 &nbsp;·&nbsp; 35 minutes · 主干</div>
+      <h1 class="section-title">独立开发<br>完整链路 <span class="en">end-to-end</span></h1>
+      <div class="keywords">
+        <span class="keyword accent">两个真实案例</span>
+        <span class="keyword">贯穿 §3</span>
+      </div>
+    </div>
+    <div class="image-col">
+      <img src="assets/s3-maker.png" alt="§3 一个独立开发者 + 多个迭代分身" />
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ Page 13 案例 A · AIBT 介绍页 ░░░ -->
+<section class="slide" data-slide="case-aibt-intro">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3 &nbsp;<span class="seg">·</span>&nbsp; 案例 a · aibt · 介绍页</div>
+    <h2>案例 A · AIBT（AI 性格测试）<span class="en">overnight: idea → build</span></h2>
+    <div class="split tight" style="margin-top: 6px;">
+      <div>
+        <p class="lede" style="margin-top: 0;"><strong>一晚速通的 idea → build</strong></p>
+        <ul class="bullets" style="margin-top: 12px; font-size: 18px;">
+          <li>起点：当晚看到 SBTI 爆火 → "能不能做一个给 AI 测 MBTI 的版本？"
+            <ul><li>SBTI（Sixteen Brand Type Indicator）= AI 时代衍生出的"品牌人格"测试热点</li></ul>
+          </li>
+          <li>产品：<a href="https://aibtapp.com/zh/" target="_blank">https://aibtapp.com/zh/</a></li>
+          <li>复盘 slides：<a href="https://img.bryantchen.cc/slides/aibt-intro" target="_blank">img.bryantchen.cc/slides/aibt-intro</a></li>
+        </ul>
+      </div>
+      <div><img class="case-image" src="assets/1777956285431-4c37.webp" alt="AIBT 性格测试" style="max-height: 840px; margin: 0 auto; display: block;" /></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ Page 14 案例 A · AIBT 总结页 ░░░ -->
+<section class="slide" data-slide="case-aibt-summary">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3 &nbsp;<span class="seg">·</span>&nbsp; 案例 a · aibt · 总结页</div>
+    <h2>AIBT · 核心设计 + 工具栈 + 发布</h2>
+    <p class="one-line" style="margin-top: 6px;">这个案例的关键不是"我会写代码"，而是<strong>提示词设计</strong>：给 LLM 喂什么、回什么、怎么让用户愿意分享。</p>
+    <div class="visual-rule" style="margin-top: 22px;">
+      <div class="rule-card">
+        <div class="num">DESIGN</div>
+        <h3>核心设计</h3>
+        <p>
+          <strong>视觉</strong>：黑客帝国粒子效果<br>
+          <strong>数据</strong>：提示词一键拉对话记录做分析<br>
+          <strong>分享钩子</strong>：你是键盘的哪个键 / 用户喜欢的语言风格
+        </p>
+      </div>
+      <div class="rule-card">
+        <div class="num">STACK</div>
+        <h3>工具栈</h3>
+        <p>
+          <strong>Claude Code</strong> · 设计 + 开发<br>
+          <strong>Cloudflare</strong> · 域名 + 部署 + 数据分析<br>
+          <em>一个人 + agent 一夜跑通整条链</em>
+        </p>
+      </div>
+      <div class="rule-card">
+        <div class="num">SHIP</div>
+        <h3>发布</h3>
+        <p>
+          各种 AI 微信群 · Reddit AI 频道<br>
+          <em>不是 PR 稿，是开发者社区原生分享</em>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ Page 15 案例 B · ClawPuter 介绍页 ░░░ -->
+<section class="slide" data-slide="case-clawputer-intro">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3 &nbsp;<span class="seg">·</span>&nbsp; 案例 b · clawputer · 介绍页</div>
+    <h2>案例 B · ClawPuter <span class="en">xhs build-in-public driven iteration</span></h2>
+    <ul class="bullets" style="margin-top: 4px; font-size: 18px;">
+      <li>起点：「如果 OpenClaw 有真实物理形态，会是什么样？」</li>
+      <li>创作目标：好玩有趣 + 流量 / 账号冷启动</li>
+      <li>复盘 slides：<a href="https://img.bryantchen.cc/slides/clawputer-story" target="_blank">img.bryantchen.cc/slides/clawputer-story</a></li>
+    </ul>
+    <div class="case-clawputer-pair" style="margin-top: 16px;">
+      <figure>
+        <div class="frame"><img src="assets/1777957558355-8656.webp" alt="硬件桌宠 For OpenClaw" /></div>
+        <figcaption>硬件桌宠 · For OpenClaw<br><a href="https://github.com/bryant24hao/ClawPuter" target="_blank">github.com/bryant24hao/ClawPuter</a></figcaption>
+      </figure>
+      <figure>
+        <div class="frame"><img src="assets/1777956272114-a357.webp" alt="硬件桌宠 For CC" /></div>
+        <figcaption>硬件桌宠 · For CC<br><a href="https://github.com/bryant24hao/deskpet-firmware" target="_blank">github.com/bryant24hao/deskpet-firmware</a></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ Page 16 案例 B · ClawPuter 项目历程与总结 ░░░ -->
+<section class="slide" data-slide="case-clawputer-summary">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3 &nbsp;<span class="seg">·</span>&nbsp; 案例 b · 项目历程与总结</div>
+    <h2>ClawPuter · 项目历程与总结</h2>
+    <p class="one-line" style="margin-top: 6px;">这个案例的关键是 <strong>build in public</strong>：让小红书的反馈直接驱动迭代，而不是闭门做完再上线。</p>
+    <div class="visual-rule" style="margin-top: 22px;">
+      <div class="rule-card">
+        <div class="num">DESIGN</div>
+        <h3>核心设计</h3>
+        <p>
+          <strong>形态</strong>：桌面宠物 + 互动玩法<br>
+          <strong>视觉</strong>：像素风 / 复古 / 拓麻歌子<br>
+          <strong>关键词</strong>：陪伴 · 温度
+        </p>
+      </div>
+      <div class="rule-card">
+        <div class="num">STACK</div>
+        <h3>工具栈</h3>
+        <p>
+          <strong>Claude Code</strong> · 嵌入式开发也能做好<br>
+          <strong>Build in Public</strong> · 小红书互动 + 实时反馈<br>
+          <em>开发即营销</em>
+        </p>
+      </div>
+      <div class="rule-card">
+        <div class="num">SHIP</div>
+        <h3>发布</h3>
+        <p>
+          X · 小红书 · Reddit · GitHub 开源<br>
+          <em>多平台分发，长尾内容持续带流量</em>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ Page 17 案例 C · ColorWander 介绍页 ░░░ -->
+<section class="slide" data-slide="case-colorwander-intro">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3 &nbsp;<span class="seg">·</span>&nbsp; 案例 c · colorwander · 介绍页</div>
+    <h2>案例 C · ColorWander <span class="en">prototype → ship</span></h2>
+    <div class="split tight" style="margin-top: 6px;">
+      <div>
+        <p class="lede" style="margin-top: 0;">
+          一句话介绍：<strong>用颜色看世界</strong>，从你的照片中提取颜色并作为相框背景，生成 colorwalk 的照片。
+        </p>
+        <p class="lede italic" style="font-size: 18px; margin-top: 12px;">
+          <a href="https://bryantchen.cc/talk/colorwander-2026-05-05/" target="_blank">bryantchen.cc/talk/colorwander-2026-05-05</a>
+        </p>
+      </div>
+      <div><img class="case-image" src="assets/1777956728065-a76f.webp" alt="ColorWander 示例" style="max-height: 840px; margin: 0 auto; display: block;" /></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ Page 18 案例 C · ColorWander 项目实践 ░░░ -->
+<section class="slide" data-slide="case-colorwander-summary">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3 &nbsp;<span class="seg">·</span>&nbsp; 案例 c · colorwander · 项目实践</div>
+    <h2>ColorWander · 项目实践 <span class="en">from prototype to App Store</span></h2>
+    <div class="growth-map" style="grid-template-columns: 1fr 0.25fr 1fr 0.25fr 1fr 0.25fr 1fr 0.25fr 1fr; margin-top: 28px;">
+      <div class="node"><h3>Idea</h3><p>想法验证</p></div>
+      <div class="arrow">→</div>
+      <div class="node"><h3>Design</h3><p>设计原型</p></div>
+      <div class="arrow">→</div>
+      <div class="node core"><h3>AI&nbsp;Coding</h3><p>实操 5 分钟跑通</p></div>
+      <div class="arrow">→</div>
+      <div class="node"><h3>Eval&nbsp;&amp;&nbsp;Ship</h3><p>把 0.8 推到 1.0</p></div>
+      <div class="arrow">→</div>
+      <div class="node"><h3>BIP</h3><p>build in public</p></div>
+    </div>
+    <p class="one-line italic" style="margin-top: 22px; color: var(--ink-soft); font-size: 14px;">
+      复盘原文：<a href="https://bryantchen.cc/talk/colorwander-2026-05-05/#6" target="_blank">bryantchen.cc/talk/colorwander-2026-05-05/#6</a>
+    </p>
+  </div>
+</section>
+
+<!-- ░░░ §3.1 引子 ░░░ -->
+<section class="slide" data-slide="s31-intro">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.1 &nbsp;<span class="seg">·</span>&nbsp; idea → 想法验证 · 5 min</div>
+    <h2>3.1 Idea → 想法验证</h2>
+    <div class="split tight" style="margin-top: 18px; align-items: center;">
+      <div>
+        <p class="lede italic" style="font-size: 26px; line-height: 1.5;">一切的源头——</p>
+        <p class="lede" style="font-size: 28px; line-height: 1.45; margin-top: 16px;">
+          多数需求都<strong>不值得做</strong>，<br>
+          但很多时候我们会<strong>忽视这一步</strong>。
+        </p>
+      </div>
+      <div>
+        <img class="case-image" src="assets/s31-bad-ideas.png" alt="commonplace book · 多数想法都被划掉" style="max-height: 720px; margin: 0 auto; display: block;" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.1 方法 + Skill 科普 ░░░ -->
+<section class="slide" data-slide="s31-method">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.1 &nbsp;<span class="seg">·</span>&nbsp; 方法 · brd skill</div>
+    <h2>方法：用 agent 跑 BRD</h2>
+    <div class="split tight" style="margin-top: 12px; align-items: start;">
+      <div>
+        <div class="keyword-chips" style="margin-top: 0;">
+          <span class="lead-text">六个维度 ——</span>
+          <span class="chip solid">趋势</span>
+          <span class="chip solid">痛点</span>
+          <span class="chip">竞品</span>
+          <span class="chip">用户画像</span>
+          <span class="chip">定价</span>
+          <span class="chip">GO / NO-GO</span>
+        </div>
+        <div class="callout-box" style="margin-top: 18px;">
+          <div class="callout-eyebrow">实操 · what is a Skill</div>
+          <p class="callout-body">
+            在 Claude Code / Codex 里强制加载一个 <strong>BRD Skill</strong>
+          </p>
+          <p class="callout-body" style="margin-top: 6px; font-size: 17px;">
+            Skill = 把「重复做某件事的最佳实践」写成可被 agent <strong>按需加载</strong>的能力包
+          </p>
+          <div class="keywords" style="margin-top: 10px;">
+            <span class="keyword accent">渐进式披露</span>
+            <span class="keyword accent">流程化</span>
+            <span class="keyword">不污染上下文</span>
+            <span class="keyword">人类经验固化</span>
+          </div>
+        </div>
+        <p class="lede italic" style="font-size: 14px; margin-top: 14px; color: var(--ink-soft);">
+          → 右侧：BRD Skill 实物片段 · <em>3 小时 &gt; 3 个月</em> · 写代码前先验证市场
+        </p>
+      </div>
+      <div>
+        <img class="case-image" src="assets/s31-brd-skill.png" alt="BRD Skill SKILL.md · 调研方法论"
+             style="max-height: 820px; margin: 0 auto; display: block;" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.1 我的实践 ░░░ -->
+<section class="slide" data-slide="s31-practice">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.1 &nbsp;<span class="seg">·</span>&nbsp; 我自己的实践</div>
+    <h2>我自己的实践 · <em>100 Bad Ideas</em></h2>
+    <div class="split tight" style="margin-top: 12px; align-items: center;">
+      <div>
+        <p class="lede" style="margin-top: 0; font-size: 19px;">
+          踩过的坑：很多很酷的 idea，用户需求并不强烈或场景不通——
+          <em>e.g. MemoryX 这款 Chrome 扩展</em>
+        </p>
+        <p class="lede" style="margin-top: 14px; font-size: 19px;">
+          现在的做法：维护一个 <strong>100 Bad Ideas</strong> 仓库，
+          一切 idea 默认是 "bad"，先找反例 → 再决定 <em>埋葬 / 孵化 / 继续观察</em>。
+        </p>
+        <div class="keywords" style="margin-top: 12px;">
+          <span class="keyword accent">Speed-to-MRR 优先</span>
+          <span class="keyword">资本密集 → NO-GO</span>
+          <span class="keyword">先找反例</span>
+          <span class="keyword">公开即过滤</span>
+        </div>
+        <p class="lede italic" style="margin-top: 12px; font-size: 13px; color: var(--ink-soft);">
+          <a href="https://github.com/bryant24hao/100-bad-ideas" target="_blank">github.com/bryant24hao/100-bad-ideas</a>
+          · 未对外开放，仅现场演示
+        </p>
+      </div>
+      <div>
+        <img class="case-image" src="assets/s31-100-bad-ideas.png" alt="100 Bad Ideas · GitHub 仓库截图"
+             style="max-height: 760px; margin: 0 auto; display: block;" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.1 现场 demo ░░░ -->
+<section class="slide" data-slide="s31-demo">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.1 &nbsp;<span class="seg">·</span>&nbsp; 现场 demo · idea 验证</div>
+    <h2>现场 demo：怎么验证一个 idea</h2>
+    <p class="big-thesis" style="margin-top: 10px;">先让 agent 跑 BRD，再用<strong>客观信号</strong>交叉检验。</p>
+    <div class="tool-decision">
+      <div class="step">
+        <strong>主观 · Agent 视角</strong>
+        <span>
+          丢一个 idea 给 Claude Code，让它跑 BRD skill，6 步：趋势 / 痛点 / 竞品 / 用户画像 / 定价 / GO-NO-GO。
+          <em>3 小时 &gt; 3 个月</em>
+        </span>
+      </div>
+      <div class="step">
+        <strong>客观 · 真实付费意愿</strong>
+        <span>
+          <a href="https://www.fiverr.com/" target="_blank">Fiverr</a> 订单数据反推真实需求；<a href="https://trends.google.com/trends/" target="_blank">Google Trends</a> 看 5 年 + Related Queries；
+          <em>已经付钱的事 &gt; 调研问卷</em>
+        </span>
+      </div>
+      <div class="step">
+        <strong>融合 · 用 agent 串起来</strong>
+        <span>
+          让 agent 拉数据 + 解读 + 给 GO/NO-GO 打分，你只做最后一公里判断。
+          <em>这是新的"小型 PM"工作方式</em>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.2 4 问 ░░░ -->
+<section class="slide" data-slide="s32-four">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.2 &nbsp;<span class="seg">·</span>&nbsp; 产品定义 → 设计原型 · 5 min</div>
+    <h2>3.2 产品定义 → 设计原型</h2>
+    <p class="big-thesis" style="margin-top: 10px;">启动前，不要急着画 wireframe —— 先用 4 个问题逼自己说清楚。</p>
+    <div class="four-questions" style="margin-top: 22px;">
+      <div class="q-card">
+        <div class="q-num">Q1</div>
+        <h3>你想做什么？</h3>
+        <p class="q-sub">一句话概括产品 + 目标用户。</p>
+        <p class="q-anti">说不清 = 还没准备好画原型</p>
+      </div>
+      <div class="q-card">
+        <div class="q-num">Q2</div>
+        <h3>对标谁？</h3>
+        <p class="q-sub">明确说出你想接近哪一类产品。</p>
+        <p class="q-anti">"参考 Notion、Figma、Linear 综合体" = 没对标</p>
+      </div>
+      <div class="q-card">
+        <div class="q-num">Q3</div>
+        <h3>视觉风格？</h3>
+        <p class="q-sub">引用真实产品 / 风格名 / 关键词。</p>
+        <p class="q-anti">"高级一点" = 没风格</p>
+      </div>
+      <div class="q-card">
+        <div class="q-num">Q4</div>
+        <h3>差异化是什么？</h3>
+        <p class="q-sub">为什么用户选你不选对标？</p>
+        <p class="q-anti">"AI 加持" = 没差异</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.2 DESIGN.md ░░░ -->
+<section class="slide" data-slide="s32-designmd">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.2 &nbsp;<span class="seg">·</span>&nbsp; 如何做出好设计</div>
+    <h2>如何做出好设计</h2>
+    <p class="big-thesis" style="margin-top: 10px;">先给 agent 一个 <em>design brief</em>，再让它产出界面。</p>
+    <div class="visual-rule" style="margin-top: 28px;">
+      <div class="rule-card">
+        <div class="num">01</div>
+        <h3>风格坐标</h3>
+        <p>不是“好看一点”，而是明确说出你要接近哪类产品、哪种视觉气质。</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">02</div>
+        <h3>设计约束</h3>
+        <p>颜色、字体、圆角、密度、动效、组件风格都要可复用，避免每页重新发明。</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">03</div>
+        <h3>可迭代记忆</h3>
+        <p><strong>DESIGN.md</strong> 把审美判断沉淀成上下文，让多轮改稿不跑偏。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.2 Vibe Design 风格速查表 (1/4) · 基础体系 ░░░ -->
+<section class="slide" data-slide="s32-styles-1">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.2 &nbsp;<span class="seg">·</span>&nbsp; vibe design · 先选坐标</div>
+    <h2>设计风格不是术语表，是给 agent 的坐标系</h2>
+    <p class="one-line" style="margin-top: 8px;">把“我想要什么感觉”翻译成 agent 能执行的约束：秩序、质感、人群。</p>
+    <div class="visual-rule" style="margin-top: 30px;">
+      <div class="rule-card">
+        <div class="num">ORDER</div>
+        <h3>界面秩序</h3>
+        <p>极简、瑞士、Material、Ant Design：决定信息密度和组件规则。</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">MATERIAL</div>
+        <h3>视觉质感</h3>
+        <p>拟物、玻璃、卡片、暗黑、高对比：决定页面的触感和层次。</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">CULTURE</div>
+        <h3>人群语境</h3>
+        <p>杂志、摄影、像素、二次元、潮流：决定用户第一眼的归属感。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.2 Vibe Design 风格速查表 (2/4) · 质感 + 强视觉 ░░░ -->
+<section class="slide" data-slide="s32-styles-2">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.2 &nbsp;<span class="seg">·</span>&nbsp; vibe design · 常用卡片</div>
+    <h2>一些风格举例 <span class="en">six common registers</span></h2>
+    <div class="style-showcase has-swatch">
+      <div class="style-card">
+        <div class="swatch swatch-minimal" aria-hidden="true">
+          <span class="bar w70"></span><span class="bar w40"></span><span class="bar w55"></span>
+        </div>
+        <div class="tag">Minimal</div>
+        <h3>极简 / 瑞士</h3>
+        <p>适合效率工具、知识产品、专业服务。</p>
+        <div class="keywords"><span class="keyword">留白</span><span class="keyword">网格</span></div>
+      </div>
+      <div class="style-card">
+        <div class="swatch swatch-editorial" aria-hidden="true">
+          <span class="ed-title">A</span><span class="ed-rule"></span><span class="ed-line"></span><span class="ed-line s"></span>
+        </div>
+        <div class="tag">Editorial</div>
+        <h3>杂志 / 编辑</h3>
+        <p>适合内容、作品集、讲故事的产品。</p>
+        <div class="keywords"><span class="keyword">大标题</span><span class="keyword">节奏</span></div>
+      </div>
+      <div class="style-card">
+        <div class="swatch swatch-glass" aria-hidden="true">
+          <span class="g-blob g-a"></span><span class="g-blob g-b"></span><span class="g-card"></span>
+        </div>
+        <div class="tag">Glass</div>
+        <h3>玻璃 / 分层</h3>
+        <p>适合 AI、空间感、数据可视化。</p>
+        <div class="keywords"><span class="keyword">半透明</span><span class="keyword">景深</span></div>
+      </div>
+      <div class="style-card">
+        <div class="swatch swatch-retro" aria-hidden="true">
+          <span class="px"></span><span class="px"></span><span class="px"></span><span class="px"></span>
+          <span class="px"></span><span class="px"></span><span class="px"></span><span class="px"></span>
+          <span class="px"></span><span class="px"></span><span class="px"></span><span class="px"></span>
+        </div>
+        <div class="tag">Retro</div>
+        <h3>复古 / 像素</h3>
+        <p>适合玩具、游戏、社区、怀旧表达。</p>
+        <div class="keywords"><span class="keyword">低保真</span><span class="keyword">趣味</span></div>
+      </div>
+      <div class="style-card">
+        <div class="swatch swatch-luxury" aria-hidden="true">
+          <span class="lx-mark">·</span>
+        </div>
+        <div class="tag">Luxury</div>
+        <h3>轻奢 / 高级感</h3>
+        <p>适合摄影、生活方式、审美消费。</p>
+        <div class="keywords"><span class="keyword">克制</span><span class="keyword">材质</span></div>
+      </div>
+      <div class="style-card">
+        <div class="swatch swatch-brutal" aria-hidden="true">
+          <span class="br-block"></span><span class="br-stripe"></span>
+        </div>
+        <div class="tag">Brutal</div>
+        <h3>粗野 / 高对比</h3>
+        <p>适合强态度、开发者工具、实验项目。</p>
+        <div class="keywords"><span class="keyword">直接</span><span class="keyword">冲突</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.2 Vibe Design 风格速查表 (3/4) · 内容 + 亚文化 ░░░ -->
+<section class="slide" data-slide="s32-styles-3">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.2 &nbsp;<span class="seg">·</span>&nbsp; vibe design · prompt anatomy</div>
+    <h2>把风格词写进 prompt，要像写产品需求</h2>
+    <div class="prompt-frame">
+      <div class="prompt-card primary">
+        <div class="tag">BAD</div>
+        <p class="formula" style="margin-top: 14px;">“做得高级一点”</p>
+        <p>这类表达没有边界，agent 只能随机套模板。</p>
+      </div>
+      <div class="prompt-card">
+        <div class="tag">GOOD</div>
+        <p class="formula" style="margin-top: 14px;">
+          <code>目标用户</code> + <code>参考产品</code><br>
+          + <code>视觉风格</code> + <code>约束</code>
+        </p>
+        <p>例如：面向独立开发者的 AI 工具，参考 Linear + Raycast，瑞士风网格、低饱和、密集但清晰。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.2 Vibe Design 风格速查表 (4/4) · 审美 + 交互 + 权威来源 ░░░ -->
+<section class="slide" data-slide="s32-styles-4">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.2 &nbsp;<span class="seg">·</span>&nbsp; vibe design · demo cue</div>
+    <h2>现场可以这样演示：同一个产品，三种风格</h2>
+    <div class="style-showcase" style="grid-template-columns: repeat(3, 1fr); margin-top: 28px;">
+      <div class="style-card">
+        <div class="tag">Version A</div>
+        <h3>Linear-like</h3>
+        <p>高密度、灰阶、快捷键、适合专业工具。</p>
+      </div>
+      <div class="style-card">
+        <div class="tag">Version B</div>
+        <h3>Editorial</h3>
+        <p>大标题、照片、故事感、适合内容产品。</p>
+      </div>
+      <div class="style-card">
+        <div class="tag">Version C</div>
+        <h3>Playful</h3>
+        <p>插画、强色彩、轻动效、适合消费和社区。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.2 资源（一） ░░░ -->
+<section class="slide" data-slide="s32-res1">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.2 &nbsp;<span class="seg">·</span>&nbsp; 资源入口 · 从这里开始</div>
+    <h2>设计资源只分三类：生成、参考、沉淀</h2>
+    <div class="resource-hub">
+      <div class="resource-card">
+        <div class="tag">Generate</div>
+        <h3>AI 原型</h3>
+        <p>把一句产品想法变成可交互界面。</p>
+        <div class="items">
+          <a href="https://claude.ai/design" target="_blank">Claude Design</a>
+          <a href="https://stitch.withgoogle.com/" target="_blank">Google Stitch</a>
+          <a href="https://lovable.dev/" target="_blank">Lovable</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="tag">Reference</div>
+        <h3>真实产品</h3>
+        <p>不要只看 Dribbble，看真实产品如何解决信息密度。</p>
+        <div class="items">
+          <a href="https://mobbin.com/discover/apps/ios/latest" target="_blank">Mobbin</a>
+          <a href="https://uinotes.com/" target="_blank">UI Notes</a>
+          <span>X bookmarks</span>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="tag">Memory</div>
+        <h3>设计规范</h3>
+        <p>把审美偏好固化成 agent 可以复用的上下文。</p>
+        <div class="items">
+          <a href="https://github.com/google-labs-code/design.md" target="_blank">DESIGN.md</a>
+          <a href="https://getdesign.md/" target="_blank">getdesign.md</a>
+          <a href="https://impeccable.style/" target="_blank">Impeccable</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.2 资源（二） ░░░ -->
+<section class="slide" data-slide="s32-res2">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.2 &nbsp;<span class="seg">·</span>&nbsp; 资源入口 · 课堂动作</div>
+    <h2>给学生的动作：先收藏，不要现场抄链接</h2>
+    <div class="visual-rule" style="margin-top: 30px;">
+      <div class="rule-card">
+        <div class="num">1 min</div>
+        <h3>找一个对标产品</h3>
+        <p>Mobbin / UI Notes：截图 3 个你喜欢的界面状态。</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">3 min</div>
+        <h3>写一句风格描述</h3>
+        <p>用“用户 + 场景 + 气质 + 约束”描述，而不是只说高级。</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">5 min</div>
+        <h3>生成第一版原型</h3>
+        <p>让 agent 同时产出 UI 和 DESIGN.md，后面迭代才有一致性。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.3 引子 + 演进 ░░░ -->
+<section class="slide" data-slide="s33-evolution">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.3 &nbsp;<span class="seg">·</span>&nbsp; ai coding 入门 + 实操 · 12 min · 重点</div>
+    <h2>3.3 AI Coding 入门 + 实操</h2>
+    <p class="lede italic" style="font-size: 18px; margin-top: 0;">叫法在变 (Vibe Coding → Agentic Engineering → ...) ，核心不变 ——
+      <strong>人利用 AI 做出可用产品的一种方法</strong>
+    </p>
+    <div class="svg-block" style="margin-top: 18px;">
+      <svg viewBox="0 0 1320 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <marker id="evol-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1A1A1A"/>
+          </marker>
+        </defs>
+
+        <!-- Era 1 · Copilot — autocomplete inside editor -->
+        <rect x="40"  y="60" width="380" height="160" fill="rgba(255,255,255,0.55)"
+              stroke="rgba(60,50,40,0.30)" stroke-width="1.2" rx="10"/>
+        <text x="60" y="40" font-family="Courier Prime, monospace" font-size="11"
+              letter-spacing="0.22em" fill="rgba(60,50,40,0.7)">2021–2023 · ERA 1</text>
+        <text x="60" y="92" font-family="Inter, system-ui" font-size="22" font-weight="700"
+              fill="#1A1A1A">Copilot 时代</text>
+        <image href="assets/icons/githubcopilot.svg" x="60" y="108" width="22" height="22"/>
+        <text x="92" y="119" dominant-baseline="central" font-family="Inter, system-ui" font-size="14" fill="#1A1A1A">GitHub Copilot</text>
+        <text x="60" y="160" font-family="Cormorant Garamond, serif" font-size="14"
+              font-style="italic" fill="rgba(60,50,40,0.7)">编辑器内补全 · 单词级建议</text>
+        <line x1="60" y1="180" x2="400" y2="180" stroke="rgba(60,50,40,0.10)"/>
+        <text x="60" y="202" font-family="Cormorant Garamond, serif" font-size="13"
+              fill="rgba(60,50,40,0.65)">"AI as autocomplete"</text>
+
+        <!-- Arrow 1 → 2 -->
+        <line x1="430" y1="140" x2="478" y2="140" stroke="#1A1A1A" stroke-width="1.6"
+              marker-end="url(#evol-arrow)"/>
+
+        <!-- Era 2 · AI IDE — Cursor — context-aware whole-codebase -->
+        <rect x="490" y="60" width="380" height="160" fill="rgba(244,184,157,0.10)"
+              stroke="rgba(244,184,157,0.55)" stroke-width="1.2" rx="10"/>
+        <text x="510" y="40" font-family="Courier Prime, monospace" font-size="11"
+              letter-spacing="0.22em" fill="rgba(60,50,40,0.7)">2023–2025 · ERA 2</text>
+        <text x="510" y="92" font-family="Inter, system-ui" font-size="22" font-weight="700"
+              fill="#1A1A1A">AI IDE 时代</text>
+        <image href="assets/icons/cursor.svg" x="510" y="108" width="22" height="22"/>
+        <text x="542" y="119" dominant-baseline="central" font-family="Inter, system-ui" font-size="14" fill="#1A1A1A">Cursor · Windsurf</text>
+        <text x="510" y="160" font-family="Cormorant Garamond, serif" font-size="14"
+              font-style="italic" fill="rgba(60,50,40,0.7)">理解整个项目 · 多文件改动 · chat-with-repo</text>
+        <line x1="510" y1="180" x2="850" y2="180" stroke="rgba(60,50,40,0.10)"/>
+        <text x="510" y="202" font-family="Cormorant Garamond, serif" font-size="13"
+              fill="rgba(60,50,40,0.65)">"AI as collaborator in IDE"</text>
+
+        <!-- Arrow 2 → 3 -->
+        <line x1="880" y1="140" x2="928" y2="140" stroke="#1A1A1A" stroke-width="1.6"
+              marker-end="url(#evol-arrow)"/>
+
+        <!-- Era 3 · Coding Agent — autonomous, terminal-native -->
+        <rect x="940" y="50" width="340" height="180" fill="#F4B89D"
+              stroke="#F4B89D" stroke-width="1.6" rx="10"/>
+        <text x="960" y="40" font-family="Courier Prime, monospace" font-size="11"
+              letter-spacing="0.22em" fill="#b56635" font-weight="600">2025– · ERA 3 · NOW</text>
+        <text x="960" y="92" font-family="Inter, system-ui" font-size="24" font-weight="700"
+              fill="#1A1A1A">Coding Agent</text>
+        <image href="assets/icons/anthropic.svg" x="960" y="108" width="20" height="20"/>
+        <text x="986" y="118" dominant-baseline="central" font-family="Inter, system-ui" font-size="13" fill="#1A1A1A">Claude Code</text>
+        <image href="assets/icons/openai.svg" x="1080" y="108" width="20" height="20"/>
+        <text x="1106" y="118" dominant-baseline="central" font-family="Inter, system-ui" font-size="13" fill="#1A1A1A">Codex / GPT-5.3</text>
+        <text x="960" y="158" font-family="Cormorant Garamond, serif" font-size="14"
+              font-style="italic" fill="#1A1A1A">终端原生 · 长任务 · 自主执行 · 多步规划</text>
+        <line x1="960" y1="178" x2="1260" y2="178" stroke="rgba(26,26,26,0.18)"/>
+        <text x="960" y="200" font-family="Cormorant Garamond, serif" font-size="13"
+              fill="#1A1A1A" font-weight="500">"AI as autonomous engineer"</text>
+
+        <!-- Bottom evolution caption -->
+        <text x="660" y="262" text-anchor="middle" font-family="Songti SC, serif" font-size="18"
+              font-weight="500" fill="#1A1A1A">能力从「补全单词」到「执行整个任务」</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.3 如何入门 ░░░ -->
+<section class="slide" data-slide="s33-how">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.3 &nbsp;<span class="seg">·</span>&nbsp; 如何入门</div>
+    <h2>如何入门</h2>
+    <p class="big-thesis" style="margin-top: 12px;">不要先学概念，先把一个真实页面做出来。</p>
+    <div class="tool-decision">
+      <div class="step">
+        <strong>Build First</strong>
+        <span>选一个很小的真实需求，今晚跑通第一版。</span>
+      </div>
+      <div class="step">
+        <strong>Use SOTA</strong>
+        <span>初学时优先用最强模型，先降低失败率。</span>
+      </div>
+      <div class="step">
+        <strong>Spend Tokens</strong>
+        <span>先提升使用量，再谈效率；没有体感就没有判断力。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.3 现场 demo + 实操技巧 ░░░ -->
+<section class="slide" data-slide="s33-tips">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.3 &nbsp;<span class="seg">·</span>&nbsp; 现场 demo · 5 分钟跑通</div>
+    <h2>现场 demo：5 分钟跑通第一个 AI Coding 任务</h2>
+    <p class="one-line" style="margin-top: 6px;">现场我会真的打开 Claude Code，用一个北大学生场景跑这三步。</p>
+    <div class="demo-flow" style="margin-top: 22px;">
+      <div class="demo-step">
+        <div class="step-head">
+          <span class="step-num">01</span>
+          <h3>Plan</h3>
+          <span class="step-time">~ 1 min</span>
+        </div>
+        <p class="step-desc">让 agent 先写计划 + 验收标准，再写代码。</p>
+        <pre class="step-prompt"><span class="prompt-prefix">&gt;</span> 我想做一个北大食堂"今天该吃什么"小工具，<br>  随机抽一个菜 + 一句吐槽。先给我 5 步实现计划<br>  和验收标准，不要写代码。</pre>
+      </div>
+      <div class="demo-step">
+        <div class="step-head">
+          <span class="step-num">02</span>
+          <h3>Execute</h3>
+          <span class="step-time">~ 3 min</span>
+        </div>
+        <p class="step-desc">同意计划后让它一次写完，<strong>边界</strong>用 ASCII wireframe 或 GitHub Issue 描述。</p>
+        <pre class="step-prompt"><span class="prompt-prefix">&gt;</span> 同意，按这个计划写出来。布局参考下面的 ascii：<br>  ┌──── 今天该吃 ────┐<br>  │   〔随机抽签按钮〕  │<br>  │   →  菜名 · 吐槽   │<br>  └──────────────┘</pre>
+      </div>
+      <div class="demo-step">
+        <div class="step-head">
+          <span class="step-num">03</span>
+          <h3>Review</h3>
+          <span class="step-time">~ 1 min</span>
+        </div>
+        <p class="step-desc">审<strong>规格 + 真实跑通</strong>，不逐行读代码——浏览器里点一下，发现问题再返工。</p>
+        <pre class="step-prompt"><span class="prompt-prefix">&gt;</span> 跑起来后，按钮没居中，菜名重复了。<br>  修这两点，并加一个"再来一次"按钮。</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.4 Eval & Ship ░░░ -->
+<section class="slide" data-slide="s34-eval">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.4 &nbsp;<span class="seg">·</span>&nbsp; eval &amp; ship · 3 min</div>
+    <h2>3.4 Eval &amp; Ship</h2>
+    <p class="big-thesis" style="margin-top: 10px;">AI 负责放大产能，人负责最后一公里的判断。</p>
+    <div class="tool-decision">
+      <div class="step">
+        <strong>Eval</strong>
+        <span>让 AI 写测试、回归用例、LLM-as-judge。</span>
+      </div>
+      <div class="step">
+        <strong>Human QA</strong>
+        <span>人看真实体验：能不能用、哪里奇怪、是否符合目标。</span>
+      </div>
+      <div class="step">
+        <strong>/ship</strong>
+        <span>发布前固定做安全、隐私、token 泄漏扫描。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.5 BIP 是普通人最易得 ░░░ -->
+<section class="slide quote-slide" data-slide="s35-cheapest">
+  <div class="slide-inner">
+    <div class="quote-eyebrow">● &nbsp;§ 3.5 &nbsp;·&nbsp; 上线 → 宣发：build in public · 10 min · 工作坊亮点①"无保留分享"</div>
+    <h2>Build in Public</h2>
+    <blockquote>
+      <em>普通人最易得的「市场调研 + 用户增长」方法。</em>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ░░░ §3.5 BIP 是什么 · 来源 ░░░ -->
+<section class="slide" data-slide="s35-origin">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.5 &nbsp;<span class="seg">·</span>&nbsp; 什么是 build in public · 来源</div>
+    <h2>什么是 Build in Public？</h2>
+    <p class="big-thesis" style="margin-top: 10px;">把产品从“闭门造车”变成“公开迭代”。</p>
+    <div class="tool-decision">
+      <div class="step">
+        <strong>Devlog 文化</strong>
+        <span>游戏开发和开源社区：过程本身就是内容。<em>e.g. Notch 当年开发 Minecraft 的 Twitter</em></span>
+      </div>
+      <div class="step">
+        <strong>Pieter Levels <span class="handle">@levelsio</span></strong>
+        <span>NomadList / RemoteOK 等 12+ 独立项目作者；公开 MRR、用户、failure，证明一个人也能造一个公司。</span>
+      </div>
+      <div class="step">
+        <strong>Indie Maker 圈</strong>
+        <span>进度 / 失败 / 收入 / 反馈都成为市场信号。<em>Indie Hackers · X 独立开发者圈 · 即刻独立开发产品</em></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.5 BIP 为什么 ░░░ -->
+<section class="slide" data-slide="s35-why">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.5 &nbsp;<span class="seg">·</span>&nbsp; 为什么要 build in public</div>
+    <h2>为什么要 Build in Public</h2>
+    <div class="visual-rule" style="margin-top: 28px;">
+      <div class="rule-card">
+        <div class="num">ATTENTION</div>
+        <h3>先获得注意力</h3>
+        <p>产品需要被看见；注意力是最早的市场信号。</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">FEEDBACK</div>
+        <h3>低成本验证</h3>
+        <p>评论、私信、转发，比闭门访谈更快暴露真实兴趣。</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">COMPOUND</div>
+        <h3>内容会复利</h3>
+        <p>过去发布的进度，会持续为未来版本带来新用户。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §3.5 宣发链路 ░░░ -->
+<section class="slide" data-slide="s35-channels">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.5 &nbsp;<span class="seg">·</span>&nbsp; 宣发链路 + 多平台分发</div>
+    <h2>别只发一条动态，要搭一条增长链路</h2>
+    <p class="one-line" style="margin-top: 6px;">每一步都有自己的产物，<strong>产品页</strong>是中枢——前面把人引来，后面把内容沉淀回去。</p>
+    <div class="channel-chain" style="margin-top: 22px;">
+      <div class="chain-step">
+        <div class="chain-num">01 · 持续</div>
+        <h3>社媒 / 社区</h3>
+        <p>X · Threads · 小红书 · 抖音 · Reddit · HN · B 站 · 微信群</p>
+        <span class="chain-out">引流</span>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-step hub">
+        <div class="chain-num">中枢</div>
+        <h3>产品页</h3>
+        <p>一句话价值主张 · Demo · 等候名单 / 下载入口</p>
+        <span class="chain-out">承接</span>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-step">
+        <div class="chain-num">02 · 集中</div>
+        <h3>首发</h3>
+        <p>Product Hunt · 开源 · 公众号长文</p>
+        <span class="chain-out">爆发</span>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-step">
+        <div class="chain-num">03 · 长尾</div>
+        <h3>沉淀</h3>
+        <p>SEO · 外链 · 复盘文章 · 案例归档</p>
+        <span class="chain-out">复利</span>
+      </div>
+    </div>
+    <p class="one-line italic" style="margin-top: 22px; color: var(--ink-soft); font-size: 15px;">→ 关键不是渠道有多少，而是<strong>四种节奏</strong>都要有：日常曝光 + 单点爆发 + 中枢承接 + 长尾复利。</p>
+  </div>
+</section>
+
+<!-- ░░░ §3.5 如何做好 BIP ░░░ -->
+<section class="slide" data-slide="s35-how">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 3.5 &nbsp;<span class="seg">·</span>&nbsp; 如何做好 build in public</div>
+    <h2>如何做好 Build in Public</h2>
+    <p class="one-line" style="margin-top: 6px;">四条原则有先后：<strong>前提 → 内容 → 频率 → 受众</strong>，缺前一条做后一条都白做。</p>
+    <div class="bip-principles">
+      <div class="principle">
+        <div class="p-num">01 · 前提</div>
+        <h3>真诚</h3>
+        <p>像一个真实的人，不像品牌公告。</p>
+        <p class="anti">反例：「重磅发布、敬请期待」式的公关稿</p>
+      </div>
+      <div class="principle">
+        <div class="p-num">02 · 内容</div>
+        <h3>利他</h3>
+        <p>让读者获得经验、模板、避坑或灵感。</p>
+        <p class="anti">反例：只贴自己产品截图，不解释能解决谁的问题</p>
+      </div>
+      <div class="principle">
+        <div class="p-num">03 · 频率</div>
+        <h3>持续</h3>
+        <p>不是爆款思维，而是反复出现在信息流。</p>
+        <p class="anti">反例：发一条爆款、然后消失三个月</p>
+      </div>
+      <div class="principle">
+        <div class="p-num">04 · 受众</div>
+        <h3>匹配</h3>
+        <p>读者要尽量靠近你的真实目标用户。</p>
+        <p class="anti">反例：在小红书发开发者深度长文 / 在 HN 发美妆 vlog</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §4 章节扉页 ░░░ -->
+<section class="slide divider with-image" data-slide="s4-divider">
+  <div class="slide-inner">
+    <div class="text-col">
+      <div class="num">§ 4 &nbsp;·&nbsp; 15 minutes</div>
+      <h1 class="section-title">工具箱 2026<br>+ 怎么选 <span class="en">toolbox</span></h1>
+      <div class="keywords">
+        <span class="keyword">每 ~2 月一变</span>
+        <span class="keyword accent">不选产品</span>
+        <span class="keyword accent">选判断力</span>
+      </div>
+    </div>
+    <div class="image-col">
+      <img src="assets/s4-toolbox.png" alt="§4 工具箱 · Bauhaus 几何拼贴" />
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ 工具清单（一） ░░░ -->
+<section class="slide" data-slide="tools-1">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 4 &nbsp;<span class="seg">·</span>&nbsp; (a) 工具清单 · 2026 年 5 月版本</div>
+    <h2>工具变化太快——用判断力代替被动选择</h2>
+    <p class="one-line" style="margin-top: 8px;">现在听到的工具名，半年后可能已经过期。<strong>不要背工具清单</strong>，要建立自己的判断标准——下面三条原则比任何工具列表都活得久。</p>
+    <div class="tool-principle">
+      <div class="principle-card">
+        <div class="tag">01</div>
+        <h3>任务原生</h3>
+        <p>写代码选 coding agent，做原型选 design agent，内容生产选多模态工具。</p>
+      </div>
+      <div class="principle-card">
+        <div class="tag">02</div>
+        <h3>工作流重塑</h3>
+        <p>优先选择改变工作方式的工具，而不是只多一个按钮的工具。</p>
+      </div>
+      <div class="principle-card">
+        <div class="tag">03</div>
+        <h3>生态信号</h3>
+        <p>看 Frontier Labs、开源社区、真实 builder 是否在持续使用。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ 工具清单（二） · 任务地图 ░░░ -->
+<section class="slide" data-slide="tools-2">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 4 &nbsp;<span class="seg">·</span>&nbsp; (a) 任务地图</div>
+    <h2>把工具放进任务地图，而不是收藏夹</h2>
+    <div class="growth-map" style="grid-template-columns: 1fr 0.35fr 1fr 0.35fr 1fr;">
+      <div class="node">
+        <h3>Build</h3>
+        <p>Claude Code / Codex / Cursor</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node core">
+        <h3>Prototype</h3>
+        <p>Stitch / Claude Design / Lovable</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node">
+        <h3>Content</h3>
+        <p>Image / Video / Voice / Music</p>
+      </div>
+    </div>
+    <p class="one-line" style="margin-top: 24px;">主线讲"我现在要完成什么任务"；下一页给完整清单作为参考。</p>
+  </div>
+</section>
+
+<!-- ░░░ 工具清单（详细表格） · 2026-05 版本 ░░░ -->
+<section class="slide" data-slide="tools-detail">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 4 &nbsp;<span class="seg">·</span>&nbsp; (a) 工具清单 · 2026 年 5 月版本</div>
+    <h2>2026-05 工具清单 <span class="en">snapshot · for reference</span></h2>
+    <p class="one-line" style="margin-top: 4px;">这页是给课后参考的快照——下面每条都标了发布时间，方便你判断哪条信息已经过期。</p>
+    <div class="tools-list" style="margin-top: 12px; font-size: 15px;">
+      <div class="row">
+        <span class="cat">Coding Agent</span>
+        <span class="pick"><strong>Claude Code</strong> <small>(2025-02 起，Opus 4.7 驱动)</small> / <strong>Codex CLI</strong> <small>(2025-04 开源，GPT-5.4 驱动)</small></span>
+        <span class="desc">终端原生 agent IDE</span>
+      </div>
+      <div class="row">
+        <span class="cat">AI 原型设计</span>
+        <span class="pick"><strong>Google Stitch</strong> <small>(2026-03 升级)</small> / <strong>Claude Design</strong> <small>(2026-04-17)</small> / <strong>Lovable</strong></span>
+        <span class="desc">自然语言 → 可交互 UI</span>
+      </div>
+      <div class="row">
+        <span class="cat">前端模型</span>
+        <span class="pick"><strong>Gemini 3.1 Pro</strong> <small>(2026-02-19)</small> / <strong>Kimi K2.6</strong> <small>(2026-04-20，开源 1T)</small></span>
+        <span class="desc">长上下文 + 多模态前端</span>
+      </div>
+      <div class="row">
+        <span class="cat">通用 / 设计 Agent</span>
+        <span class="pick"><strong>Manus</strong> <small>(Butterfly Effect，2025-03 beta)</small> / <strong>Lovart</strong> <small>(2025-07 全球)</small></span>
+        <span class="desc">浏览器任务编排 / 单 prompt 出全套素材</span>
+      </div>
+      <div class="row">
+        <span class="cat">生图</span>
+        <span class="pick"><strong>GPT-Image-2</strong> <small>(2026-04-21，多语言 SOTA)</small> / <strong>Nano Banana 2</strong> <small>(2026-02-26)</small></span>
+        <span class="desc">中文文本 / 多语言图像主力</span>
+      </div>
+      <div class="row">
+        <span class="cat">视频生成</span>
+        <span class="pick"><strong>Seedance 2.0</strong> <small>(ByteDance，2026-02-10)</small> / <strong>可灵 3.0</strong></span>
+        <span class="desc">文生视频中文场景</span>
+      </div>
+      <div class="row">
+        <span class="cat">音乐生成</span>
+        <span class="pick"><strong>Suno V5.5</strong> <small>(2026-03-26，含 Voices 声音克隆)</small> / <strong>MiniMax Music 2.6</strong> <small>(2026-04-10)</small></span>
+        <span class="desc">长歌曲 + 个性声音</span>
+      </div>
+      <div class="row">
+        <span class="cat">语音输入</span>
+        <span class="pick"><strong>Typeless</strong> <small>(多端 / 跨语言)</small> / <strong>豆包语音输入法</strong></span>
+        <span class="desc">语音替代键盘</span>
+      </div>
+      <div class="row">
+        <span class="cat">Skill 市场</span>
+        <span class="pick"><a href="https://skills.sh/" target="_blank">skills.sh</a> / <a href="https://github.com/anthropics/skills" target="_blank">anthropics/skills</a></span>
+        <span class="desc">Agent skill 应用商店雏形</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §4 (b) 怎么选 ░░░ -->
+<section class="slide" data-slide="how-to-choose">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 4 &nbsp;<span class="seg">·</span>&nbsp; (b) 在快速变化的时代如何选 ⭐</div>
+    <h2>不要选产品，要选判断力</h2>
+    <div class="tool-decision">
+      <div class="step">
+        <strong>看标准</strong>
+        <span>谁在定义 MCP、Skills、DESIGN.md 这类新工作流标准？</span>
+      </div>
+      <div class="step">
+        <strong>看一线</strong>
+        <span>Frontier Lab builder 和你信任的实践者每天真正在用什么？</span>
+      </div>
+      <div class="step">
+        <strong>看替代</strong>
+        <span>它有没有让旧流程消失，而不只是多一个 AI 按钮？</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §4 操作建议 ░░░ -->
+<section class="slide" data-slide="bi-monthly">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 4 &nbsp;<span class="seg">·</span>&nbsp; 操作建议</div>
+    <h2>操作建议：每 2 个月做一次 AI / Agent 盘点</h2>
+    <div class="audit-loop">
+      <div class="loop-step">
+        <strong>删除</strong>
+        <span>哪些工具已经不用了？</span>
+      </div>
+      <div class="loop-step">
+        <strong>替换</strong>
+        <span>哪些模型开始显得笨？</span>
+      </div>
+      <div class="loop-step">
+        <strong>升级</strong>
+        <span>哪个工作流值得重配？</span>
+      </div>
+      <div class="loop-step">
+        <strong>沉淀</strong>
+        <span>哪些经验应该写进 skill / prompt？</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §5 章节扉页 ░░░ -->
+<section class="slide divider with-image" data-slide="s5-divider">
+  <div class="slide-inner">
+    <div class="text-col">
+      <div class="num">§ 5 &nbsp;·&nbsp; 5 minutes</div>
+      <h1 class="section-title">Be a <span class="en" style="font-style:normal; color:var(--ink); font-size: 1em; margin-left: 0;">Builder.</span></h1>
+      <div class="keywords">
+        <span class="keyword accent">门槛低 100×</span>
+        <span class="keyword">Get hands dirty</span>
+        <span class="keyword">Agent 编排者</span>
+      </div>
+    </div>
+    <div class="image-col">
+      <img src="assets/s5-maker.png" alt="§5 一只手 · 一颗想法的种子" />
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §5 100 倍 ░░░ -->
+<section class="slide" data-slide="hundred-x">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 5 &nbsp;<span class="seg">·</span>&nbsp; 给学生的话</div>
+    <h2>给在座同学的两句话</h2>
+    <div class="big-cards" style="margin-top: 28px;">
+      <div class="big-card">
+        <div class="big-num">100×</div>
+        <h3>门槛比你想象的低 <em>100 倍</em></h3>
+        <p>脑子里那个想法，今晚可能就能跑通——
+          <strong>Get Hands Dirty Now</strong>，不要等"我学完了再开始"。
+        </p>
+      </div>
+      <div class="big-card accent">
+        <div class="big-num">∞</div>
+        <h3>每个人都会是 <em>Agent 编排者</em></h3>
+        <p>未来未必所有人都做 PM / 工程师，但管理好 agent 是我们这一代的事——
+          某种程度上，<strong>agent 的可控性和聪明度比人更高</strong>。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §5 一些心得 · 去年→今年迁移 ░░░ -->
+<section class="slide" data-slide="migration">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 5 &nbsp;<span class="seg">·</span>&nbsp; 一些心得 · 去年 → 今年的迁移</div>
+    <h2>一些心得：去年 → 今年的迁移</h2>
+    <div class="migration-cards">
+      <div class="migration-card">
+        <div class="tag">01</div>
+        <h3>Dive into AI</h3>
+        <div class="arrow">→</div>
+        <h3>Collaborate with Agents</h3>
+        <p>不再是把 AI 加进工具，而是把 agent 当作协作者编排。</p>
+      </div>
+      <div class="migration-card">
+        <div class="tag">02</div>
+        <h3>Stay Curious</h3>
+        <div class="arrow">→</div>
+        <h3>Context &amp; Taste</h3>
+        <p>好奇心是入场券，差异来自你的上下文、审美、经历和活人感——这些 AI 复制不来。</p>
+      </div>
+      <div class="migration-card">
+        <div class="tag">03</div>
+        <h3>Find PMF</h3>
+        <div class="arrow">→</div>
+        <h3>Play Your Game</h3>
+        <p>先想清楚：你到底在为谁吸引注意力？</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §5 Play Your Game ░░░ -->
+<section class="slide" data-slide="play-game">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 5 &nbsp;<span class="seg">·</span>&nbsp; play your game · 三种受众</div>
+    <h2>Play Your Game · 你在为谁吸引注意力？</h2>
+    <p class="one-line" style="margin-top: 6px;">同样一份精力做产品，受众选择不同，决定的事完全不一样。</p>
+    <div class="visual-rule" style="margin-top: 26px;">
+      <div class="rule-card">
+        <div class="num">SELF</div>
+        <h3>自己</h3>
+        <p>做到极致是<strong>艺术</strong>，做不到极致大多数时候是<em>自嗨</em>。</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">AGENT</div>
+        <h3>Agent</h3>
+        <p>新的设计对象——为 agent 设计 prompt / context / workflow，是<strong>当下和未来</strong>都要做的事。</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">OTHERS</div>
+        <h3>其他人</h3>
+        <p>用户规模决定<strong>商业模式</strong>和市场天花板。1000 个真粉 vs 100 万用户，是两种产品。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §5 应对快速变化 ░░░ -->
+<section class="slide" data-slide="how-to-cope">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 5 &nbsp;<span class="seg">·</span>&nbsp; 如何应对快速变化</div>
+    <h2>如何应对快速变化</h2>
+    <p class="one-line" style="margin-top: 6px;">两件事：<strong>身心</strong>是底层燃料，<strong>方向</strong>是节奏感。</p>
+    <div class="cope-cards" style="margin-top: 28px;">
+      <div class="cope-card">
+        <div class="cope-num">01</div>
+        <h3>保持健康的身心</h3>
+        <p>运动 · 睡眠 · 可持续的节奏。</p>
+        <p class="cope-why">变化越快，<strong>能持续</strong>就赢一半——身心是这个时代独立开发者的底层资产。</p>
+      </div>
+      <div class="cope-card accent">
+        <div class="cope-num">02</div>
+        <h3>先做自己喜欢的事 / 产品</h3>
+        <p>从兴趣出发，先利己，再利他。</p>
+        <p class="cope-why">不喜欢的事坚持不了 6 个月；喜欢的事能熬过低谷，<strong>持续就是壁垒</strong>。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ §5 最后 · Make Some Wonderful ░░░ -->
+<section class="slide quote-slide hero-image" data-slide="closing">
+  <div class="hero-bg" style="background-image: url('assets/s5-closing-horizon.png');"></div>
+  <div class="hero-overlay"></div>
+  <div class="slide-inner">
+    <div class="quote-eyebrow">● &nbsp;§ 5 &nbsp;·&nbsp; 最后</div>
+    <h2>最后</h2>
+    <blockquote>
+      祝大家在 Agent 时代 <em>Make Something Wonderful！</em>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ░░░ §6 Q&A ░░░ -->
+<section class="slide" data-slide="qa">
+  <div class="slide-inner" style="align-items: center; text-align: center; justify-content: center;">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;§ 6 &nbsp;<span class="seg">·</span>&nbsp; q&amp;a</div>
+    <h1 class="title-cn" style="margin-top: 18px; font-size: 96px;">Q&amp;A</h1>
+    <p class="lede" style="margin-top: 20px; font-size: 32px; color: var(--ink);">谢谢大家</p>
+    <div class="contact-row" style="margin-top: 36px;">
+      <div class="contact-card">
+        <div class="qr"><img src="assets/1778038687306-146c.png" alt="WeChat 微信二维码" /></div>
+        <div class="label">
+          扫码加我微信
+          <span class="en">WeChat · Bryant Chen</span>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="qr"><img src="assets/1778043665496-f307.png" alt="小红书 @噗大可 二维码" /></div>
+        <div class="label">
+          小红书 @ 噗大可
+          <span class="en">Xiaohongshu · 634901668</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ 附 D · 来源清单（一） ░░░ -->
+<section class="slide" data-slide="sources-1">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;附 D &nbsp;<span class="seg">·</span>&nbsp; 来源清单 (1/2) · 模型与产品时间线</div>
+    <h2>附 D · 来源清单（一）—— 模型与产品时间线</h2>
+    <div class="sources-list" style="margin-top: 4px;">
+      <div class="group">
+        <div class="row"><span class="k">Claude 3.5 Sonnet（2024-06-20）</span><span class="v"><a href="https://www.anthropic.com/news/claude-3-5-sonnet" target="_blank">Anthropic 官方</a></span></div>
+        <div class="row"><span class="k">Claude 3.7 Sonnet + Claude Code（2025-02-25）</span><span class="v"><a href="https://www.anthropic.com/news/claude-3-7-sonnet" target="_blank">Anthropic 官方</a></span></div>
+        <div class="row"><span class="k">Claude Opus 4.7（2026-04-16）</span><span class="v"><a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank">Anthropic 官方</a> · <a href="https://github.blog/changelog/2026-04-16-claude-opus-4-7-is-generally-available/" target="_blank">GitHub Changelog</a></span></div>
+        <div class="row"><span class="k">Claude 全系列时间线</span><span class="v"><a href="https://www.scriptbyai.com/anthropic-claude-timeline/" target="_blank">scriptbyai timeline</a></span></div>
+        <div class="row"><span class="k">GPT-5（2025-08-07）</span><span class="v"><a href="https://openai.com/index/introducing-gpt-5/" target="_blank">OpenAI</a></span></div>
+        <div class="row"><span class="k">GPT-5.5（2026-04-23）</span><span class="v"><a href="https://openai.com/index/introducing-gpt-5-5/" target="_blank">OpenAI</a> · <a href="https://techcrunch.com/2026/04/23/openai-chatgpt-gpt-5-5-ai-model-superapp/" target="_blank">TechCrunch</a></span></div>
+        <div class="row"><span class="k">GPT-Image-1（2025-04-23）/ GPT-Image-2（2026-04-21）</span><span class="v"><a href="https://openai.com/index/introducing-chatgpt-images-2-0/" target="_blank">OpenAI</a> · <a href="https://en.wikipedia.org/wiki/GPT_Image" target="_blank">Wikipedia</a></span></div>
+        <div class="row"><span class="k">Codex CLI（2025-04-16）</span><span class="v"><a href="https://openai.com/codex/" target="_blank">OpenAI</a> · <a href="https://github.com/openai/codex" target="_blank">GitHub</a></span></div>
+        <div class="row"><span class="k">Manus 邀请制 beta（2025-03-06）</span><span class="v"><a href="https://en.wikipedia.org/wiki/Manus_(AI_agent)" target="_blank">Wikipedia</a> · <a href="https://www.technologyreview.com/2025/03/11/1113133/manus-ai-review/" target="_blank">MIT Tech Review</a></span></div>
+        <div class="row"><span class="k">Stable Diffusion 3 Medium（2024-06-12）</span><span class="v"><a href="https://stability.ai/news/stable-diffusion-3" target="_blank">Stability AI</a></span></div>
+        <div class="row"><span class="k">Nano Banana 系列</span><span class="v"><a href="https://deepmind.google/models/gemini-image/" target="_blank">Google DeepMind</a></span></div>
+        <div class="row"><span class="k">Gemini 3 Pro（2025-11-18）/ 3.1 Pro（2026-02-19）</span><span class="v"><a href="https://blog.google/products-and-platforms/products/gemini/gemini-3/" target="_blank">Google blog</a></span></div>
+        <div class="row"><span class="k">Cursor / Lovable / Bolt 时间线</span><span class="v"><a href="https://en.wikipedia.org/wiki/Cursor_(code_editor)" target="_blank">Cursor on Wikipedia</a> · <a href="https://www.producthunt.com/products/lovable" target="_blank">Lovable on PH</a></span></div>
+        <div class="row"><span class="k">Lovart 公测（2025-05）/ 全球（2025-07-28）</span><span class="v"><a href="https://www.lovart.ai/news/lovart-design-agent-public-launch-chatcanvas" target="_blank">Lovart 官方</a></span></div>
+        <div class="row"><span class="k">Seedance 2.0（2026-02-10）</span><span class="v"><a href="https://seed.bytedance.com/en/seedance2_0" target="_blank">ByteDance Seed</a></span></div>
+        <div class="row"><span class="k">Suno V5（2025-09）/ V5.5（2026-03-26）</span><span class="v"><a href="https://suno.com/blog/v5-5" target="_blank">Suno blog</a></span></div>
+        <div class="row"><span class="k">MiniMax Music 2.6（2026-04-10）</span><span class="v"><a href="https://www.minimax.io/news/music-26" target="_blank">MiniMax 官方</a></span></div>
+        <div class="row"><span class="k">Kimi K2 系列</span><span class="v"><a href="https://en.wikipedia.org/wiki/Kimi_(chatbot)" target="_blank">Wikipedia</a> · <a href="https://www.verdent.ai/guides/what-is-kimi-k2-6" target="_blank">Verdent K2.6 解析</a></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ 附 D · 来源清单（二） ░░░ -->
+<section class="slide" data-slide="sources-2">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;附 D &nbsp;<span class="seg">·</span>&nbsp; 来源清单 (2/2)</div>
+    <h2>附 D · 来源清单（二）—— 关键论断 / Build in Public / 生态资源</h2>
+    <div class="sources-list" style="margin-top: 4px;">
+      <div class="group">
+        <div class="group-title">关键论断</div>
+        <div class="row"><span class="k">Claude Design 发布 + Figma 股价跌 5%</span><span class="v"><a href="https://techcrunch.com/2026/04/17/anthropic-launches-claude-design-a-new-product-for-creating-quick-visuals/" target="_blank">TechCrunch 报道</a> · <a href="https://venturebeat.com/technology/anthropic-just-launched-claude-design-an-ai-tool-that-turns-prompts-into-prototypes-and-challenges-figma" target="_blank">VentureBeat</a></span></div>
+        <div class="row"><span class="k">Stitch 发布 Figma 股价跌 4%</span><span class="v"><a href="https://thenewstack.io/anthropic-claude-design-launch/" target="_blank">The New Stack</a> · <a href="https://dev.to/stevengonsalvez/google-stitch-ai-native-ui-design-that-actually-understands-your-design-system-58f2" target="_blank">DEV community</a></span></div>
+        <div class="row"><span class="k">Manus → Meta 收购 + 中国监管</span><span class="v"><a href="https://www.cnbc.com/2025/12/30/meta-acquires-singapore-ai-agent-firm-manus-china-butterfly-effect-monicai.html" target="_blank">CNBC</a> · <a href="https://asiatimes.com/2026/05/chinas-manus-ai-case-sets-red-lines-to-bar-singapore-washing/" target="_blank">Asia Times</a></span></div>
+      </div>
+      <div class="group">
+        <div class="group-title">Build in Public 起源</div>
+        <div class="row"><span class="k">Pieter Levels' build-in-public cheatsheet</span><span class="v"><a href="https://buildinpublic.simple.ink/pieter-levels-b9c4c6916cd84913859f1b079aebfff4" target="_blank">buildinpublic.simple.ink</a></span></div>
+        <div class="row"><span class="k">How To Build In Public 站点 - Pieter Levels 词条</span><span class="v"><a href="https://howtobuildinpublic.com/profile/pieter-levels/" target="_blank">howtobuildinpublic.com</a></span></div>
+      </div>
+      <div class="group">
+        <div class="group-title">生态资源</div>
+        <div class="row"><span class="k">DESIGN.md · Google 官方介绍</span><span class="v"><a href="https://blog.google/innovation-and-ai/models-and-research/google-labs/stitch-design-md/" target="_blank">blog.google/.../stitch-design-md</a></span></div>
+        <div class="row"><span class="k">DESIGN.md · GitHub</span><span class="v"><a href="https://github.com/google-labs-code/design.md" target="_blank">github.com/google-labs-code/design.md</a></span></div>
+        <div class="row"><span class="k">Claude Skills 市场</span><span class="v"><a href="https://github.com/anthropics/skills" target="_blank">anthropics/skills</a> · <a href="https://skills.sh/" target="_blank">skills.sh</a></span></div>
+        <div class="row"><span class="k">Impeccable design skill</span><span class="v"><a href="https://impeccable.style/" target="_blank">Impeccable.style</a></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div class="deck-footer">
+  <div>北大 HCI · sharing 2026-05-07 · 文史 108</div>
+  <div class="pager">
+    <button id="btn-toc" title="目录 (t)">目录</button>
+    <button id="btn-overview" title="缩略图 (o)">缩略图</button>
+    <button id="btn-prev">◂ prev</button>
+    <span id="pager-text">1 / 1</span>
+    <button id="btn-next">next ▸</button>
+    <button id="btn-help">?</button>
+  </div>
+</div>
+
+<div id="lightbox" aria-hidden="true">
+  <button id="lightbox-close" aria-label="close">×</button>
+  <img id="lightbox-img" src="" alt="" />
+  <div id="lightbox-hint">click anywhere · esc to close</div>
+</div>
+
+<div id="toc" aria-hidden="true">
+  <div class="toc-card">
+    <div class="toc-head">
+      <span class="title">目录 <span class="en">contents</span></span>
+      <span class="meta" id="toc-meta">0 sections · 0 slides</span>
+    </div>
+    <ul class="toc-list" id="toc-list"></ul>
+    <div class="toc-foot">
+      <kbd>↵</kbd> 跳转 &nbsp;·&nbsp; <kbd>Esc</kbd> 关闭 &nbsp;·&nbsp; <kbd>t</kbd> 目录 &nbsp;·&nbsp; <kbd>o</kbd> 缩略图
+    </div>
+  </div>
+</div>
+
+<div id="help">
+  <div style="max-width: 520px; line-height: 1.85;">
+    <h3 style="font-family: var(--serif-en); font-style: italic; font-size: 32px; margin-bottom: 16px;">Keyboard</h3>
+    <kbd>→</kbd> <kbd>Space</kbd> <kbd>PgDn</kbd> &nbsp;next slide<br/>
+    <kbd>←</kbd> <kbd>PgUp</kbd> &nbsp;previous slide<br/>
+    <kbd>Home</kbd> &nbsp;first slide &nbsp;&middot;&nbsp; <kbd>End</kbd> last<br/>
+    <kbd>t</kbd> &nbsp;toggle 目录 (sections)<br/>
+    <kbd>o</kbd> &nbsp;toggle 缩略图 (overview grid)<br/>
+    <kbd>e</kbd> &nbsp;toggle 编辑模式 (edit mode)<br/>
+    <kbd>⌘/Ctrl + S</kbd> &nbsp;在编辑模式下导出 HTML<br/>
+    <kbd>h</kbd> &nbsp;toggle 卡片聚光灯 (lecture spotlight)<br/>
+    <kbd>F</kbd> &nbsp;toggle fullscreen<br/>
+    <kbd>?</kbd> &nbsp;toggle this help<br/>
+    <kbd>Esc</kbd> &nbsp;close any overlay
+    <div style="margin-top: 24px; opacity: 0.6; font-size: 11px;">click anywhere to close</div>
+  </div>
+</div>
+
+<div id="edit-banner">
+  <span class="pulse"></span>
+  <span>编辑模式 · click any text to edit · ⌘/Ctrl+S 导出 · E 退出</span>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let idx = 0;
+
+// Tag each slide with its 1-based page number for the overview-mode label.
+slides.forEach((s, i) => s.setAttribute('data-page', String(i + 1)));
+
+// ============ Auto-mark .reveal on slide-inner direct children ============
+// Lets every slide get a staggered fade-in without manual HTML edits.
+// Skips elements that already opt out (data-no-reveal) or are decorative.
+slides.forEach(slide => {
+  const inner = slide.querySelector('.slide-inner');
+  if (!inner) return;
+  Array.from(inner.children).forEach(child => {
+    if (child.dataset.noReveal !== undefined) return;
+    if (child.tagName === 'STYLE' || child.tagName === 'SCRIPT') return;
+    child.classList.add('reveal');
+  });
+});
+
+// ============ Fit-to-viewport stage scaling ============
+// Stage is authored at a fixed 1600×1200; we scale it to fit any viewport.
+const STAGE_W = 1600, STAGE_H = 1200;
+function fitStage() {
+  if (document.body.classList.contains('overview')) return;  // grid mode handles its own layout
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const scale = Math.min(vw / STAGE_W, vh / STAGE_H);
+  document.documentElement.style.setProperty('--stage-scale', String(scale));
+}
+window.addEventListener('resize', fitStage);
+fitStage();
+
+const pagerText = document.getElementById('pager-text');
+const help = document.getElementById('help');
+const toc = document.getElementById('toc');
+const tocList = document.getElementById('toc-list');
+const tocMeta = document.getElementById('toc-meta');
+
+// ============ Build TOC ============
+// Section boundaries are detected by: (1) the cover slide, (2) any .divider
+// slide, (3) a top-level § N change inferred from the eyebrow text (so §2
+// works even though it has no explicit divider). Sub-sections like §3.1 do
+// NOT trigger a new section.
+function extractSectionKey(s) {
+  if (s.classList.contains('cover')) return 'cover';
+  const numEl = s.querySelector('.num');
+  if (numEl) {
+    const m = numEl.textContent.match(/§\s*(\d+)\b/);
+    if (m && !numEl.textContent.includes('§ ' + m[1] + '.')) return '§' + m[1];
+  }
+  const eb = s.querySelector('.eyebrow');
+  if (eb) {
+    const t = eb.textContent;
+    // Top-level §N only (skip §N.M sub-sections + 附 D etc.)
+    const m = t.match(/§\s*(\d+)(?!\.)/);
+    if (m) return '§' + m[1];
+    // Allow 附录 / appendix anchors as their own pseudo-section.
+    if (/附\s*[A-Z]/.test(t)) {
+      const am = t.match(/附\s*([A-Z])/);
+      if (am) return '附' + am[1];
+    }
+  }
+  return null;
+}
+
+function buildToc() {
+  const sections = [];
+  let lastKey = null;
+  slides.forEach((s, i) => {
+    const key = extractSectionKey(s);
+    if (key === null || key === lastKey) return;
+    lastKey = key;
+
+    let num, label;
+    if (key === 'cover') {
+      const titleEl = s.querySelector('h1.title-cn');
+      label = titleEl ? titleEl.innerHTML : '封面';
+      num = '封面';
+    } else {
+      const isDivider = s.classList.contains('divider');
+      if (isDivider) {
+        const titleEl = s.querySelector('h1.section-title') || s.querySelector('h2');
+        label = titleEl ? titleEl.innerHTML : (s.dataset.slide || '');
+        const numText = (s.querySelector('.num') || {}).textContent || '';
+        const m = numText.match(/(§\s*\d+)/);
+        num = m ? m[1].replace(/\s+/g, ' ') : key.replace(/^§/, '§ ');
+      } else {
+        // Section without explicit divider — derive title from first h2 or h1
+        const titleEl = s.querySelector('h2') || s.querySelector('h1');
+        label = titleEl ? titleEl.innerHTML : (s.dataset.slide || ('slide ' + (i + 1)));
+        if (key.startsWith('附')) {
+          num = '附 ' + key.slice(1);
+        } else {
+          num = key.replace(/^§/, '§ ');
+        }
+      }
+    }
+    sections.push({ start: i, num, label });
+  });
+  sections.forEach((sec, i) => {
+    sec.end = (i + 1 < sections.length) ? sections[i + 1].start - 1 : total - 1;
+  });
+  return sections;
+}
+
+function renderToc() {
+  const sections = buildToc();
+  tocMeta.textContent = `${sections.length} sections · ${total} slides`;
+  tocList.innerHTML = sections.map(sec => {
+    const pageRange = sec.start === sec.end
+      ? `P ${sec.start + 1}`
+      : `P ${sec.start + 1}–${sec.end + 1}`;
+    const isCurrent = idx >= sec.start && idx <= sec.end;
+    return `<li class="toc-row ${isCurrent ? 'current' : ''}" data-jump="${sec.start}">
+      <span class="num">${sec.num}</span>
+      <span class="label">${sec.label}</span>
+      <span class="pages">${pageRange}</span>
+    </li>`;
+  }).join('');
+}
+
+function showToc() {
+  renderToc();
+  toc.classList.add('show');
+  toc.setAttribute('aria-hidden', 'false');
+}
+function hideToc() {
+  toc.classList.remove('show');
+  toc.setAttribute('aria-hidden', 'true');
+}
+
+tocList.addEventListener('click', (e) => {
+  const row = e.target.closest('.toc-row');
+  if (!row) return;
+  const jumpTo = parseInt(row.dataset.jump);
+  if (!isNaN(jumpTo)) {
+    go(jumpTo);
+    hideToc();
+  }
+});
+toc.addEventListener('click', (e) => { if (e.target === toc) hideToc(); });
+
+// ============ Overview mode ============
+function setOverview(on) {
+  document.body.classList.toggle('overview', on);
+  if (on) {
+    // Scroll the active slide into view in the grid.
+    setTimeout(() => {
+      const active = slides[idx];
+      if (active && typeof active.scrollIntoView === 'function') {
+        active.scrollIntoView({ behavior: 'auto', block: 'center' });
+      }
+    }, 50);
+  } else {
+    // Re-apply fit-to-viewport scaling on exit
+    fitStage();
+  }
+}
+function toggleOverview() {
+  setOverview(!document.body.classList.contains('overview'));
+}
+
+// In overview mode, clicking a thumbnail jumps to it and exits.
+document.getElementById('deck').addEventListener('click', (e) => {
+  if (!document.body.classList.contains('overview')) return;
+  const slide = e.target.closest('.slide');
+  if (!slide) return;
+  e.preventDefault();
+  const i = slides.indexOf(slide);
+  if (i >= 0) {
+    setOverview(false);
+    go(i);
+  }
+});
+
+function go(n) {
+  idx = Math.max(0, Math.min(total - 1, n));
+  slides.forEach((s, i) => {
+    s.classList.toggle('active', i === idx);
+    // Strip animate-in from non-active slides so the next visit re-animates.
+    if (i !== idx) s.classList.remove('animate-in');
+  });
+  // Force a reflow so the active slide's reveal children restart from initial
+  // state when we re-add animate-in below (browsers batch class changes).
+  const active = slides[idx];
+  if (active) {
+    active.classList.remove('animate-in');
+    void active.offsetWidth;       // force reflow
+    requestAnimationFrame(() => active.classList.add('animate-in'));
+  }
+  pagerText.textContent = (idx + 1) + ' / ' + total;
+  history.replaceState(null, '', '#' + (idx + 1));
+}
+
+function next() { go(idx + 1); }
+function prev() { go(idx - 1); }
+
+document.getElementById('btn-prev').addEventListener('click', prev);
+document.getElementById('btn-next').addEventListener('click', next);
+document.getElementById('btn-help').addEventListener('click', () => help.classList.toggle('show'));
+document.getElementById('btn-toc').addEventListener('click', () => {
+  if (toc.classList.contains('show')) hideToc(); else showToc();
+});
+document.getElementById('btn-overview').addEventListener('click', toggleOverview);
+help.addEventListener('click', () => help.classList.remove('show'));
+
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lightbox-img');
+const lbClose = document.getElementById('lightbox-close');
+function openLb(src, alt) {
+  lbImg.src = src;
+  lbImg.alt = alt || '';
+  lb.classList.add('show');
+  lb.setAttribute('aria-hidden', 'false');
+}
+function closeLb() {
+  lb.classList.remove('show');
+  lb.setAttribute('aria-hidden', 'true');
+  setTimeout(() => { lbImg.src = ''; }, 300);
+}
+document.querySelectorAll('.slide img').forEach(img => {
+  if (img.classList.contains('logomark') || img.classList.contains('no-zoom')) return;
+  img.addEventListener('click', (e) => {
+    if (document.body.classList.contains('overview')) return; // overview clicks handled above
+    e.preventDefault();
+    e.stopPropagation();
+    openLb(img.src, img.alt);
+  });
+});
+lb.addEventListener('click', closeLb);
+lbClose.addEventListener('click', (e) => { e.stopPropagation(); closeLb(); });
+
+// ============ Inline editing mode ============
+// E key toggles. While active:
+//   - All marked text elements get contenteditable="true"
+//   - body.edit-active shows visual indicator + dashed outlines
+//   - Ctrl/Cmd+S exports the (now-modified) HTML, with edit state stripped
+const EDITABLE_SELECTOR = [
+  // Headings + paragraphs + list items
+  '.slide-inner h1', '.slide-inner h2', '.slide-inner h3', '.slide-inner h4',
+  '.slide-inner p', '.slide-inner li',
+  // Common utility text containers (v4)
+  '.slide-inner .lede', '.slide-inner .deck-line',
+  '.slide-inner .signoff', '.slide-inner .meta-line', '.slide-inner .meta',
+  '.slide-inner .quote-text', '.slide-inner .label',
+  '.slide-inner .keyword', '.slide-inner .chip', '.slide-inner .lead-text',
+  '.slide-inner .what', '.slide-inner .date', '.slide-inner small',
+  '.slide-inner .ask', '.slide-inner .who',
+  '.slide-inner .cat', '.slide-inner .pick', '.slide-inner .desc',
+  '.slide-inner .num', '.slide-inner .deliver', '.slide-inner .last',
+  '.slide-inner .next', '.slide-inner .group-title',
+  '.slide-inner .style-row .zh', '.slide-inner .style-row .en',
+  '.slide-inner .cat-block .cat-title',
+  '.slide-inner figcaption',
+  // Poll handraise cards
+  '.slide-inner .handraise .card .text',
+  // v5 component additions — cards / decision blocks / chains
+  '.slide-inner .tag',                                                 // style-card / migration-card / principle-card / resource-card / prompt-card
+  '.slide-inner blockquote', '.slide-inner .quote-eyebrow',
+  '.slide-inner .one-line', '.slide-inner .big-thesis', '.slide-inner .formula',
+  '.slide-inner .step strong', '.slide-inner .step span', '.slide-inner .step span em', // tool-decision
+  '.slide-inner .step-num', '.slide-inner .step-time', '.slide-inner .step-desc',       // demo-flow
+  '.slide-inner .q-num', '.slide-inner .q-sub', '.slide-inner .q-anti',                 // four-questions
+  '.slide-inner .big-num',                                                              // big-cards
+  '.slide-inner .cope-num', '.slide-inner .cope-why',                                   // cope-cards
+  '.slide-inner .chain-num', '.slide-inner .chain-out',                                 // channel-chain
+  '.slide-inner .p-num', '.slide-inner .anti',                                          // bip-principles
+  '.slide-inner .loop-step strong', '.slide-inner .loop-step span',                     // audit-loop
+  '.slide-inner .handle',                                                               // @levelsio etc.
+  '.slide-inner .resource-card .items a', '.slide-inner .resource-card .items span',
+  '.slide-inner .arrow',                                                                // migration-card arrow text
+  '.slide-inner pre',                                                                   // step-prompt code blocks
+].join(', ');
+
+const editBanner = document.getElementById('edit-banner');
+
+function enterEditMode() {
+  document.body.classList.add('edit-active');
+  editBanner.classList.add('show');
+  document.querySelectorAll(EDITABLE_SELECTOR).forEach(el => {
+    el.setAttribute('contenteditable', 'true');
+    el.spellcheck = false;
+  });
+}
+function exitEditMode() {
+  document.body.classList.remove('edit-active');
+  editBanner.classList.remove('show');
+  document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+    el.removeAttribute('contenteditable');
+  });
+  // Blur any focused contenteditable
+  if (document.activeElement && document.activeElement.blur) {
+    document.activeElement.blur();
+  }
+}
+function toggleEditMode() {
+  if (document.body.classList.contains('edit-active')) exitEditMode();
+  else enterEditMode();
+}
+
+// ============ Lecture spotlight (H key toggle) ============
+// Hover-to-zoom card focus for directing audience attention.
+// .no-spotlight on body disables the effect; default = enabled.
+function toggleSpotlight() {
+  const off = document.body.classList.toggle('no-spotlight');
+  showSpotlightToast(off ? '聚光灯：关' : '聚光灯：开');
+  try { localStorage.setItem('deck-spotlight-off', off ? '1' : '0'); } catch (_) {}
+}
+
+let spotlightToastTimer = null;
+function showSpotlightToast(text) {
+  let el = document.getElementById('spotlight-toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'spotlight-toast';
+    el.style.cssText = [
+      'position:fixed', 'left:50%', 'top:24px',
+      'transform:translateX(-50%) translateY(-12px)',
+      'background:#1A1A1A', 'color:#fff',
+      'padding:10px 22px', 'border-radius:8px',
+      'font-family:"Courier Prime",monospace', 'font-size:13px',
+      'letter-spacing:0.12em', 'opacity:0',
+      'transition:opacity 0.2s, transform 0.2s',
+      'z-index:10003', 'pointer-events:none',
+    ].join(';');
+    document.body.appendChild(el);
+  }
+  el.textContent = text;
+  requestAnimationFrame(() => {
+    el.style.opacity = '0.95';
+    el.style.transform = 'translateX(-50%) translateY(0)';
+  });
+  clearTimeout(spotlightToastTimer);
+  spotlightToastTimer = setTimeout(() => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(-50%) translateY(-12px)';
+  }, 1400);
+}
+
+// Restore spotlight pref from localStorage (default: ON)
+try {
+  if (localStorage.getItem('deck-spotlight-off') === '1') {
+    document.body.classList.add('no-spotlight');
+  }
+} catch (_) {}
+function exportEditedHtml() {
+  // Strip edit state so the saved file opens cleanly (no contenteditable, no banner)
+  const wasEditing = document.body.classList.contains('edit-active');
+  if (wasEditing) exitEditMode();
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  if (wasEditing) enterEditMode();   // restore for the user to keep editing
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const stamp = new Date().toISOString().slice(0, 10);
+  a.download = 'ppt-v5-cream-talk-edited-' + stamp + '.html';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 800);
+}
+
+// ============ 3D tilt on hover ============
+// Applied to card-like elements. Mouse position drives subtle rotateX/rotateY.
+class TiltEffect {
+  constructor(el, maxAngle = 5) {
+    this.el = el; this.maxAngle = maxAngle;
+    el.classList.add('tilt-host');
+    this._move = this.onMove.bind(this);
+    this._leave = this.onLeave.bind(this);
+    el.addEventListener('mousemove', this._move);
+    el.addEventListener('mouseleave', this._leave);
+  }
+  onMove(e) {
+    if (document.body.classList.contains('edit-active')) return;  // pause during editing
+    if (document.body.classList.contains('overview')) return;
+    const rect = this.el.getBoundingClientRect();
+    const cx = (e.clientX - rect.left) / rect.width  - 0.5;
+    const cy = (e.clientY - rect.top)  / rect.height - 0.5;
+    const ry = cx * this.maxAngle * 2;
+    const rx = -cy * this.maxAngle * 2;
+    this.el.style.transform =
+      `perspective(1400px) rotateY(${ry}deg) rotateX(${rx}deg) translateZ(0)`;
+  }
+  onLeave() {
+    this.el.style.transform = 'perspective(1400px) rotateY(0) rotateX(0)';
+  }
+}
+// Apply on init — selectors target visually card-like blocks
+document.querySelectorAll([
+  '.cover.with-image .image-col',
+  '.divider.with-image .image-col',
+  '.gallery .thumb',
+  '.contact-card',
+  '.case-clawputer-pair .frame',
+  'img.case-image',
+].join(', ')).forEach(el => new TiltEffect(el, 4));
+
+document.addEventListener('keydown', (e) => {
+  // ⌘/Ctrl + S → export edited file (only when in edit mode)
+  if ((e.metaKey || e.ctrlKey) && (e.key === 's' || e.key === 'S')) {
+    if (document.body.classList.contains('edit-active')) {
+      e.preventDefault();
+      exportEditedHtml();
+    }
+    return;
+  }
+
+  // Other modifier-bearing keys → don't intercept (browser shortcuts free)
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+  // While in edit mode, only Escape exits — let all typing through to contenteditable
+  if (document.body.classList.contains('edit-active')) {
+    if (e.key === 'Escape') {
+      // Escape blurs the active editable but keeps edit mode on
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+      e.preventDefault();
+    }
+    return;
+  }
+
+  if (lb.classList.contains('show')) {
+    if (e.key === 'Escape') { closeLb(); e.preventDefault(); }
+    return;
+  }
+  if (help.classList.contains('show')) {
+    if (e.key === 'Escape' || e.key === '?') { help.classList.remove('show'); e.preventDefault(); }
+    return;
+  }
+  if (toc.classList.contains('show')) {
+    if (e.key === 'Escape' || e.key === 't' || e.key === 'T') { hideToc(); e.preventDefault(); }
+    return;
+  }
+  if (document.body.classList.contains('overview')) {
+    if (e.key === 'Escape' || e.key === 'o' || e.key === 'O') { setOverview(false); e.preventDefault(); }
+    return;
+  }
+  switch (e.key) {
+    case 'ArrowRight': case ' ': case 'PageDown': next(); e.preventDefault(); break;
+    case 'ArrowLeft':  case 'PageUp': prev(); e.preventDefault(); break;
+    case 'Home': go(0); e.preventDefault(); break;
+    case 'End':  go(total - 1); e.preventDefault(); break;
+    case 'f': case 'F':
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+      e.preventDefault();
+      break;
+    case 't': case 'T':
+      showToc();
+      e.preventDefault();
+      break;
+    case 'o': case 'O':
+      toggleOverview();
+      e.preventDefault();
+      break;
+    case 'e': case 'E':
+      toggleEditMode();
+      e.preventDefault();
+      break;
+    case 'h': case 'H':
+      toggleSpotlight();
+      e.preventDefault();
+      break;
+    case '?':
+      help.classList.add('show');
+      e.preventDefault();
+      break;
+  }
+});
+
+const hashIdx = parseInt(location.hash.slice(1)) - 1;
+if (!isNaN(hashIdx) && hashIdx >= 0 && hashIdx < total) go(hashIdx);
+else go(0);
+</script>
+
+</body>
+</html>

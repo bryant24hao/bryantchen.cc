@@ -11,6 +11,23 @@ export interface TalkEntry {
 
 export const talks: TalkEntry[] = [
   {
+    slug: "pku-hci-2026-05-07",
+    date: "2026-05-07",
+    url: "/talk/pku-hci-2026-05-07/",
+    title: {
+      zh: "Agent 时代的产品实践 — 从想法到产品发布",
+      en: "Product Practice in the Agent Era — from idea to ship",
+    },
+    venue: {
+      zh: "北大 HCI 通识课业界讲座 · 文史 108 · 90 分钟",
+      en: "PKU HCI Guest Lecture · 90 min",
+    },
+    description: {
+      zh: "AI 从业者 + 独立开发者视角，分享过去一年的演进、AI Coding 完整链路（idea → 设计 → coding → eval → BIP）、2026 年工具箱的判断框架，以及给学生的建议。",
+      en: "An industry + indie maker view: a year in review, the full AI Coding loop (idea → design → coding → eval → build-in-public), how to think about the 2026 toolbox, and advice for students.",
+    },
+  },
+  {
     slug: "colorwander-2026-05-05",
     date: "2026-05-05",
     url: "/talk/colorwander-2026-05-05/",
