@@ -1,5 +1,5 @@
 ---
-date: "2026-05-01"
+date: "2026-05-12"
 tags: ["product", "content", "reflection"]
 ---
 Form is the medium — it decides what users and readers actually see. On WeChat, people look at the image and read the post body; on Video Accounts, people watch the video and largely skip the text.
