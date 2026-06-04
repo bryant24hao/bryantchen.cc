@@ -11,6 +11,23 @@ export interface TalkEntry {
 
 export const talks: TalkEntry[] = [
   {
+    slug: "colorwander-2026-06-04",
+    date: "2026-06-04",
+    url: "/talk/colorwander-2026-06-04/",
+    title: {
+      zh: "从颜色看世界 — 做了个叫 ColorWander 的 iOS app",
+      en: "Seeing the world in colors — building ColorWander",
+    },
+    venue: {
+      zh: "bonjour! 社区公开分享 · 10–15 分钟",
+      en: "bonjour! community talk · 10–15 min",
+    },
+    description: {
+      zh: "从一人公司的日常到产品上线：idea → 原型 → demo → 主色提取算法 + 文学引言匹配 → 增长 0→1000 → 用户作品 → 踩过的坑。",
+      en: "A one-person-company day to launch: idea → prototype → demo → color extraction & literary matching → growth 0→1000 → community works → lessons.",
+    },
+  },
+  {
     slug: "pku-hci-2026-05-07",
     date: "2026-05-07",
     url: "/talk/pku-hci-2026-05-07/",

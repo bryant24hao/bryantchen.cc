@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>从颜色看世界 — ColorWander · 2026-05-05</title>
+<title>从颜色看世界 — ColorWander · 2026-06-04 · bonjour!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600;1,700&family=Inter:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
@@ -268,6 +268,12 @@ a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
 .gallery figcaption .en a { color: var(--ink-faint); }
 .gallery figcaption .en a:hover { color: var(--dusk); }
 
+/* User-works gallery — portrait color cards, 4×2 */
+.gallery.works { gap: 18px; }
+.gallery.works .thumb { height: 244px; }
+.gallery.works figcaption { font-size: 15px; line-height: 1.3; }
+@media (max-width: 1100px) { .gallery.works .thumb { height: 200px; } }
+
 /* Contact cards on Thanks slide */
 .contact-row {
   display: flex;
@@ -307,6 +313,41 @@ a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
   letter-spacing: 0.06em;
   display: block;
   margin-top: 2px;
+}
+
+/* Thanks slide — Better Call HaoDa poster + QR */
+.thanks-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 52px;
+  align-items: center;
+  width: 100%;
+}
+.haoda-poster {
+  width: 100%;
+  max-width: 540px;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.24), 0 4px 12px rgba(0,0,0,0.10);
+  justify-self: center;
+  cursor: zoom-in;
+}
+.thanks-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 22px;
+}
+.thanks-split .contact-row { margin-top: 0; gap: 16px; justify-content: flex-start; }
+.thanks-split .contact-card { padding: 10px 10px 12px; }
+.thanks-split .contact-card img { width: 140px; height: 140px; }
+.thanks-split .contact-card .label { font-size: 13px; }
+.thanks-split .contact-card .label .en { font-size: 10px; }
+@media (max-width: 1100px) {
+  .thanks-split { grid-template-columns: 1fr; gap: 24px; }
+  .haoda-poster { max-width: 360px; }
+  .thanks-split .contact-card img { width: 120px; height: 120px; }
 }
 
 /* Quote slide */
@@ -472,13 +513,13 @@ a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
     <div class="row">
       <img src="brand/colorwander-marketing-logo.webp" alt="ColorWander logo" class="logomark" />
       <div>
-        <div class="eyebrow"><span class="dot">●</span> &nbsp;livestream &nbsp;&middot;&nbsp; 2026 &middot; 05 &middot; 05</div>
+        <div class="eyebrow"><span class="dot">●</span> &nbsp;bonjour! 社区分享 &nbsp;&middot;&nbsp; 2026 &middot; 06 &middot; 04</div>
         <div class="title-cn" style="margin-top: 18px;">从颜色看世界</div>
         <div class="subtitle" style="margin-top: 10px;">— 做了个叫 <em>ColorWander</em> 的 iOS app</div>
       </div>
     </div>
     <div class="meta">
-      a photo, a color, a day &nbsp;&middot;&nbsp; 10–15 min &nbsp;&middot;&nbsp; for vibe coders
+      a photo, a color, a day &nbsp;&middot;&nbsp; 10–15 min &nbsp;&middot;&nbsp; @ bonjour! 社区
     </div>
   </div>
 </section>
@@ -519,6 +560,19 @@ a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
         </figcaption>
       </figure>
     </div>
+  </div>
+</section>
+
+<!-- ░░░ 2b. 一人公司的日常 ░░░ -->
+<section class="slide" data-slide="solo-day">
+  <div class="slide-inner" style="align-items: center; text-align: center; gap: 16px; max-width: 1000px;">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;01 &nbsp;&middot;&nbsp; a day in the life</div>
+    <img src="assets/solo-company-day.webp"
+         alt="一人公司的日常 — 白天社交黑客 / 下午增长黑客 / 晚上产品黑客 / 深夜熬夜黑客"
+         style="display:block; margin: 2px auto; max-width: 100%; max-height: 66vh; object-fit: contain; border-radius: 10px; box-shadow: 0 16px 48px rgba(0,0,0,0.20);" />
+    <p style="font-family: var(--serif-cn); font-size: 19px; color: var(--ink-soft); line-height: 1.5;">
+      一人公司的日常：白天<strong style="color:var(--ink); font-weight:600;">社交黑客</strong>，下午<strong style="color:var(--ink); font-weight:600;">增长黑客</strong>，晚上<strong style="color:var(--ink); font-weight:600;">产品黑客</strong>，深夜<strong style="color:var(--ink); font-weight:600;">熬夜黑客</strong>。
+    </p>
   </div>
 </section>
 
@@ -640,10 +694,47 @@ a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
   </div>
 </section>
 
+<!-- ░░░ 9b. 主色提取算法 ░░░ -->
+<section class="slide" data-slide="color-engine">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;06 &nbsp;&middot;&nbsp; color engine</div>
+    <h2>主色，是怎么挑出来的 <span class="en">picking the color</span></h2>
+    <p class="lede" style="margin-top: 8px;">
+      难的不是提取颜色，是让推荐色「代表照片的气质」——既不抢原图的细节，又能和它融为一体。靠几百张评测图，反复调参到第一眼就舒服。
+    </p>
+    <ul class="bullets" style="margin-top: 12px;">
+      <li><strong>压到 64×64 降采样</strong> — 只留缩略图下大脑还记得住的那几种颜色</li>
+      <li><strong>滤掉灰 / 黑 / 白</strong> — 面积常常很大，却多半不构成情绪表达</li>
+      <li><strong>排序 = 出现次数 × (饱和度 + 0.3)</strong> — 人眼更先注意到高饱和，哪怕它面积小</li>
+      <li><strong>用 HSV 而非 RGB</strong> — 色相，才是人眼真正感知到的「颜色」</li>
+      <li><strong>颜色很杂的图？</strong> — 先按色相分进 24 个桶，通常只剩 4–5 个主色系，再让你来挑</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ░░░ 9c. 文学引言时间匹配 ░░░ -->
+<section class="slide" data-slide="literary-time">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;07 &nbsp;&middot;&nbsp; literary time</div>
+    <div class="split tight">
+      <div>
+        <h2>文学引言<br/>按「拍摄时刻」匹配 <span class="en">a line for the moment</span></h2>
+        <ul class="bullets" style="margin-top: 16px;">
+          <li>复用了文学时钟插件积累的近 <strong>2000 条</strong>语料</li>
+          <li>锚点是照片 EXIF 的<strong>拍摄时间</strong> — 把一天切成时间片，匹配「作家在这个点写下的句子」</li>
+          <li>不用算法定义「黄昏的气质」，<strong>用作家的集体共识来定义</strong> —— 一种「天涯共此时」</li>
+          <li>上午 9–10 点的句子极少，深夜与凌晨却很多 —— 那是作家的写作习惯，也常和我们按下快门的时刻重合</li>
+        </ul>
+      </div>
+      <img src="assets/lit-offwork.webp" alt="文学时间模式示例 · @洋洋 的下班" />
+    </div>
+  </div>
+</section>
+
 <!-- ░░░ 10. 上架 ░░░ -->
 <section class="slide" data-slide="launch">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="dot">●</span> &nbsp;06 &nbsp;&middot;&nbsp; ship it</div>
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;08 &nbsp;&middot;&nbsp; ship it</div>
     <h2>上架 <span class="en">submitting to the App Store</span></h2>
     <ul class="bullets" style="margin-top: 16px;">
       <li><strong>提前准备账号和材料</strong> — 开发者账号、隐私政策、截图、关键词…</li>
@@ -654,10 +745,58 @@ a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
   </div>
 </section>
 
+<!-- ░░░ 10a. 增长 0→1000 ░░░ -->
+<section class="slide" data-slide="growth">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;09 &nbsp;&middot;&nbsp; growth</div>
+    <h2>增长 — 从 0 到 1000 个用户 <span class="en">0 → 1000</span></h2>
+    <ul class="bullets" style="margin-top: 16px;">
+      <li><strong>日更 + 模仿 → 成为爆款</strong>
+        <ul><li>在小红书 / 抖音上日更，模仿被验证过的爆款形式；持续做大曝光面积，直到一条真正破圈</li></ul>
+      </li>
+      <li><strong>左脚踩右脚</strong>
+        <ul>
+          <li>爆款带来用户 → 用户产出色卡 → 作品本身又是新内容，再分发出去引来更多人</li>
+          <li>产品的产出 = 最好的素材，滚出一个自增强的飞轮</li>
+        </ul>
+      </li>
+      <li><strong>用户是谁、和用户在一起</strong>
+        <ul><li>想清楚用户画像，建种子社群、每天泡在一起 —— 听反馈、晒作品、做最佳实践分享，而不是隔着屏幕</li></ul>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ░░░ 10b. 用户作品集 ░░░ -->
+<section class="slide" data-slide="works">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;10 &nbsp;&middot;&nbsp; made with it</div>
+    <h2>大家用它，做出了什么 <span class="en">made by the community</span></h2>
+    <div class="gallery works" style="margin-top: 8px;">
+      <figure><div class="thumb"><img src="assets/uw-louvre.webp" alt="卢浮宫的女神" /></div>
+        <figcaption>卢浮宫的女神 · 一种平和的美<span class="en">作者随手拍</span></figcaption></figure>
+      <figure><div class="thumb"><img src="assets/uw-plums.webp" alt="洗李子" /></div>
+        <figcaption>原来洗水果也能捕捉颜色<span class="en">@小明同学 · Live</span></figcaption></figure>
+      <figure><div class="thumb"><img src="assets/uw-reeds.webp" alt="芦苇" /></div>
+        <figcaption>风从耳边吹过的芦苇<span class="en">@Faye</span></figcaption></figure>
+      <figure><div class="thumb"><img src="assets/uw-bridge.webp" alt="不知名大桥" /></div>
+        <figcaption>桥就在那，我在此刻为它凝眸<span class="en">@Cu&amp;Kit</span></figcaption></figure>
+      <figure><div class="thumb"><img src="assets/uw-fuzzy.webp" alt="毛茸茸的世界" /></div>
+        <figcaption>世界可以是毛茸茸的<span class="en">@小明同学</span></figcaption></figure>
+      <figure><div class="thumb"><img src="assets/uw-dog.webp" alt="海边的狗" /></div>
+        <figcaption>Happy Dog, Happy Life<span class="en">@洋洋</span></figcaption></figure>
+      <figure><div class="thumb"><img src="assets/uw-noonwind.webp" alt="午时风" /></div>
+        <figcaption>午时风<span class="en">@橙汁橙汁</span></figcaption></figure>
+      <figure><div class="thumb"><img src="assets/uw-798.webp" alt="午后798" /></div>
+        <figcaption>午后 798<span class="en">@托尼</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
 <!-- ░░░ 11. 踩过的坑 ░░░ -->
 <section class="slide" data-slide="lessons">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="dot">●</span> &nbsp;07 &nbsp;&middot;&nbsp; lessons</div>
+    <div class="eyebrow"><span class="dot">●</span> &nbsp;11 &nbsp;&middot;&nbsp; lessons</div>
     <h2>踩过的坑 <span class="en">things I'd do differently</span></h2>
     <ul class="bullets" style="margin-top: 16px;">
       <li><strong>有好的想法早点开始</strong>
@@ -673,37 +812,58 @@ a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
   </div>
 </section>
 
+<!-- ░░░ 11b. 产品理念金句 ░░░ -->
+<section class="slide quote-slide" data-slide="why-quote">
+  <div class="slide-inner">
+    <div class="quote-eyebrow">● &nbsp;&middot;&nbsp; why it matters</div>
+    <blockquote>颜色，常常先于细节打动我们。<br/>公园里那颗绿色的大气球，那一刻整个脑子都被它占满。</blockquote>
+    <blockquote>朝色夕拾 —— 无论何时何地拍下的照片，都值得被记录、被提取颜色，从一张色卡里唤起彼时彼刻。在乎日出日落、花开花落的人，都是自己生活的策展人。</blockquote>
+    <p style="margin-top: 22px; font-family: var(--serif-cn); font-size: 17px; color: var(--ink-soft); line-height: 1.6; border-top: 1px solid var(--ink-faint); padding-top: 16px;">
+      「简单的功能，却让人发现普通的生活原来这么色彩缤纷 —— 没受过专业摄影训练的普通人，也能拥有海报一样的照片与生活。」<span style="display:block; margin-top:6px; font-family: var(--mono); font-size: 12px; letter-spacing:0.08em; opacity:0.8;">—— 一位 ColorWander 用户</span>
+    </p>
+  </div>
+</section>
+
 <!-- ░░░ 12. 谢谢 + 联系方式 ░░░ -->
 <section class="slide cover" data-slide="thanks">
-  <div class="slide-inner" style="align-items: center; text-align: center; gap: 0;">
-    <div class="row" style="justify-content: center; gap: 32px;">
-      <img src="brand/colorwander-marketing-logo.webp" alt="ColorWander logo" class="logomark" style="width: 160px;" />
-      <div style="text-align: left;">
-        <div class="title-en" style="font-size: 64px;">Thanks</div>
-        <div class="title-cn" style="font-size: 36px; margin-top: 6px;">朝色夕拾 · ColorWander</div>
-        <div class="subtitle" style="font-size: 18px; margin-top: 10px;">a photo, a color, a day.</div>
-      </div>
-    </div>
+  <div class="slide-inner" style="max-width: 1180px;">
+    <div class="thanks-split">
+      <img class="haoda-poster" src="assets/better-call-haoda.webp" alt="Better Call HaoDa — 有需求？有反馈？随时找我！" />
+      <div class="thanks-right">
+        <div>
+          <div class="title-en" style="font-size: 56px; line-height: 0.95;">Thanks</div>
+          <div class="title-cn" style="font-size: 30px; margin-top: 4px;">朝色夕拾 · ColorWander</div>
+          <div class="subtitle" style="font-size: 17px; margin-top: 8px;">a photo, a color, a day.</div>
+        </div>
 
-    <div class="contact-row">
-      <div class="contact-card">
-        <img src="assets/1778741925974-2640.webp" alt="ColorWander 和 Ta 的 VibeFriends 微信群二维码" />
-        <div class="label">
-          ColorWander 和 Ta 的 VibeFriends
-          <span class="en">WeChat group · 5月21日前有效</span>
+        <div class="contact-row">
+          <div class="contact-card">
+            <img src="assets/wechat-haoda-qr.webp" alt="作者微信二维码 · 豪大" />
+            <div class="label">
+              加我微信 · 豪大
+              <span class="en">WeChat · 添加好友</span>
+            </div>
+          </div>
+          <div class="contact-card">
+            <img src="assets/appstore-qr.svg" alt="ColorWander App Store 下载二维码" />
+            <div class="label">
+              下载 ColorWander
+              <span class="en">App Store · iOS</span>
+            </div>
+          </div>
+          <div class="contact-card">
+            <img src="assets/xhs-puda-qr.webp" alt="小红书 @噗大可 二维码" />
+            <div class="label">
+              小红书 @ 噗大可
+              <span class="en">Xiaohongshu · 634901668</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="meta">
+          Q &nbsp;&amp;&nbsp; A &nbsp;&middot;&nbsp; 扫码加微信 / 下载 / 关注
         </div>
       </div>
-      <div class="contact-card">
-        <img src="assets/1777959200023-d616.webp" alt="小红书 @噗大可 二维码" />
-        <div class="label">
-          小红书 @ 噗大可
-          <span class="en">Xiaohongshu · 634901668</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="meta" style="margin-top: 22px;">
-      Q &nbsp;&amp;&nbsp; A &nbsp;&middot;&nbsp; 扫码加群 / 关注
     </div>
   </div>
 </section>
@@ -712,10 +872,10 @@ a:hover { color: var(--dawn); border-bottom-color: var(--dawn); }
 
 <!-- Footer -->
 <div class="deck-footer">
-  <div>colorwander · sharing 2026-05-05</div>
+  <div>colorwander · sharing 2026-06-04 · bonjour!</div>
   <div class="pager">
     <button id="btn-prev">◂ prev</button>
-    <span id="pager-text">1 / 12</span>
+    <span id="pager-text">1 / 18</span>
     <button id="btn-next">next ▸</button>
     <button id="btn-help">?</button>
   </div>
