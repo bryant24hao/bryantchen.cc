@@ -11,6 +11,23 @@ export interface TalkEntry {
 
 export const talks: TalkEntry[] = [
   {
+    slug: "multi-agent-2026-06-06",
+    date: "2026-06-06",
+    url: "/talk/multi-agent-2026-06-06/",
+    title: {
+      zh: "一人 × 多 Agent — 从 Demo 到生产的协作与踩坑实录",
+      en: "One person × many Agents — orchestration from demo to production",
+    },
+    venue: {
+      zh: "StepFun · Building Agents That Work · 北京中关村",
+      en: "StepFun · Building Agents That Work · Beijing",
+    },
+    description: {
+      zh: "一个产品经理,用一支 Agent 团队,独自跑通从想法到盈利:我的编排操作系统、协作踩坑实录,以及一人公司的模型取舍。",
+      en: "A product manager running a one-person company with a team of Agents — my orchestration OS, real collaboration pitfalls, and how a solo shop picks models.",
+    },
+  },
+  {
     slug: "colorwander-2026-06-04",
     date: "2026-06-04",
     url: "/talk/colorwander-2026-06-04/",
