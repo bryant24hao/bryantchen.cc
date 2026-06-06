@@ -84,6 +84,14 @@ html,body{height:100%;background:#000;overflow:hidden;
 /* architecture overview slide */
 .arch-slide{background:#0a0a0e;padding:30px 42px;align-items:center;justify-content:center}
 .arch-slide .arch{max-width:100%;max-height:100%;width:auto;height:auto;border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.6);display:block}
+/* sync/async comic slide (two-column: text + tall comic) */
+.comic-slide{background:#0a0a0e;flex-direction:row;align-items:center;gap:52px;padding:48px 72px}
+.comic-slide .comic-side{flex:1;min-width:0}
+.comic-slide .comic-eyebrow{font-size:18px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#6fbdf2}
+.comic-slide .comic-title{font-size:60px;font-weight:800;line-height:1.12;color:#fff;margin:14px 0 24px}
+.comic-slide .comic-lead{font-size:22px;line-height:1.6;color:#c6c6d0}
+.comic-slide .comic-lead b{color:#fff}
+.comic-slide .comic-img{flex:0 0 auto;max-height:100%;width:auto;border-radius:14px;box-shadow:0 22px 60px rgba(0,0,0,.6)}
 
 /* ---------- shared text ---------- */
 .eyebrow{font-size:18px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;opacity:.62;margin-bottom:20px}
@@ -334,6 +342,16 @@ html,body{height:100%;background:#000;overflow:hidden;
       <div class="card"><div class="ct">🧠 Memory & Context</div><div class="cs">把我教过的、踩过的固化下来,让 Agent 下次自动规避。</div></div>
     </div>
   </div>
+</section>
+
+<!-- 8.5 SYNC / ASYNC COMIC -->
+<section class="slide dark comic-slide">
+  <div class="comic-side">
+    <p class="comic-eyebrow">编排 Agent · 两种节奏</p>
+    <h2 class="comic-title">同步盯细节,<br>异步放手</h2>
+    <p class="comic-lead"><b>同步</b> 像结对 Debug —— 我盯着细节,一点点抠。<br><br><b>异步</b> 把任务拆好、交出去 —— Agent 才能真正放开手脚。</p>
+  </div>
+  <img class="comic-img" src="comic-sync-async.webp" alt="同步结对 Debug · 异步开发">
 </section>
 
 <!-- 9 DIVIDER 02 -->
