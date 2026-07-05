@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>闭门会分享 ｜ Bryant</title>
+<style>
+:root{
+  --paper:#f7f5f1; --ink:#191712; --muted:#6f6b62; --accent:#ff5a36; --line:rgba(25,23,18,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#e7e4dd;overflow:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue',Helvetica,'Microsoft YaHei',Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+.viewport{position:fixed;inset:0;overflow:hidden;background:#e7e4dd}
+.deck{width:1280px;height:720px;position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);transform-origin:center center}
+
+/* ---------- slide base ---------- */
+.slide{position:absolute;inset:0;overflow:hidden;background:var(--paper);color:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:78px 92px;opacity:0;visibility:hidden;
+  transition:opacity .45s ease, transform .5s cubic-bezier(.4,0,.2,1);transform:scale(.99)}
+.slide.active{opacity:1;visibility:visible;transform:scale(1)}
+.content{width:100%}
+.content>*{position:relative}
+
+/* ---------- kicker (section index) ---------- */
+.kicker{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.kicker .idx{font-size:19px;font-weight:800;letter-spacing:.14em;color:var(--accent)}
+.kicker .rule{height:2px;width:54px;background:var(--accent);border-radius:2px}
+
+/* ---------- titles ---------- */
+.title{font-size:50px;font-weight:800;line-height:1.16;letter-spacing:-.01em;max-width:1040px}
+.title .em{color:var(--accent)}
+
+/* ---------- body ---------- */
+.body{margin-top:38px}
+
+/* single flat list */
+.lst{list-style:none;display:flex;flex-direction:column;gap:17px}
+.lst>li{font-size:26px;line-height:1.4;font-weight:600;color:var(--ink);
+  padding-left:30px;position:relative}
+.lst>li::before{content:"";position:absolute;left:0;top:.62em;width:11px;height:11px;
+  border-radius:3px;background:var(--accent)}
+.lst ul{list-style:none;margin-top:11px;display:flex;flex-direction:column;gap:9px}
+.lst ul>li{font-size:20px;line-height:1.45;font-weight:500;color:var(--muted);
+  padding-left:22px;position:relative}
+.lst ul>li::before{content:"";position:absolute;left:2px;top:.66em;width:8px;height:8px;
+  border-radius:50%;border:2px solid var(--muted);background:transparent}
+.lst ul ul{margin-top:8px}
+.lst ul ul>li{font-size:18px;color:var(--muted);opacity:.9}
+.lst ul ul>li::before{width:12px;height:2px;border-radius:2px;border:0;background:var(--muted);top:.72em}
+
+/* grouped columns */
+.cols{display:grid;gap:34px;align-items:start}
+.cols.c2{grid-template-columns:1fr 1fr}
+.cols.c3{grid-template-columns:repeat(3,1fr)}
+.grp{border-top:2px solid var(--line);padding-top:20px}
+.grp-h{font-size:24px;font-weight:800;color:var(--ink);margin-bottom:16px;
+  display:flex;align-items:center;gap:11px}
+.grp-h::before{content:"";width:13px;height:13px;border-radius:4px;background:var(--accent);flex:0 0 auto}
+.grp .lst>li{font-size:21px}
+.grp .lst>li::before{width:9px;height:9px;top:.6em}
+.grp .lst ul>li{font-size:18px}
+
+/* ---------- cover ---------- */
+.cover{justify-content:center}
+.cover .eyebrow{font-size:22px;font-weight:700;letter-spacing:.32em;color:var(--accent);margin-bottom:30px}
+.cover h1{font-size:104px;font-weight:800;line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
+.cover .accent-bar{width:96px;height:8px;border-radius:6px;background:var(--accent);margin-top:40px}
+.cover .foot{margin-top:34px;font-size:20px;color:var(--muted);font-weight:600;letter-spacing:.02em}
+
+/* ---------- HUD ---------- */
+.hud{position:fixed;z-index:50;bottom:22px;right:30px;display:flex;align-items:center;gap:14px;
+  font-family:-apple-system,'PingFang SC',sans-serif}
+.hud button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(255,255,255,.7);color:var(--ink);font-size:20px;cursor:pointer;transition:.2s;
+  backdrop-filter:blur(6px)}
+.hud button:hover{background:#fff;border-color:var(--accent);color:var(--accent)}
+.counter{color:var(--muted);font-size:15px;font-variant-numeric:tabular-nums;min-width:54px;text-align:center}
+.bar{position:fixed;left:0;bottom:0;height:4px;width:100%;background:rgba(25,23,18,.08);z-index:50}
+.bar span{display:block;height:100%;width:0;background:var(--accent);transition:width .4s ease}
+.hint{position:fixed;left:30px;bottom:26px;color:var(--muted);opacity:.6;font-size:13px;z-index:50;letter-spacing:.04em}
+
+/* ---------- mobile ---------- */
+.rotate-hint{display:none}
+@media (max-width:900px){
+  .hud{bottom:16px;right:16px;gap:12px}
+  .hud button{width:54px;height:54px;font-size:26px}
+  .hint{display:none}
+}
+@media (max-width:900px) and (orientation:portrait){
+  .rotate-hint{display:flex;align-items:center;gap:7px;position:fixed;top:14px;left:50%;transform:translateX(-50%);
+    z-index:60;background:rgba(25,23,18,.9);color:#f7f5f1;padding:9px 17px;border-radius:999px;
+    font:600 13px/1 -apple-system,'PingFang SC',sans-serif;transition:opacity .6s;pointer-events:none;white-space:nowrap}
+}
+</style>
+</head>
+<body>
+<div class="viewport">
+<div class="deck">
+
+<!-- 1 COVER -->
+<section class="slide cover active">
+  <div class="content">
+    <div class="eyebrow">2026.07.05</div>
+    <h1>闭门会分享</h1>
+    <div class="accent-bar"></div>
+    <div class="foot">选题 · 冷启动 · 增长/验证 · 一些原则</div>
+  </div>
+</section>
+
+<!-- 2 选题 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">01</span><span class="rule"></span></div>
+    <h2 class="title">选题：做什么？</h2>
+    <div class="body">
+      <ul class="lst">
+        <li>用户是谁？</li>
+        <li>有没有类似的产品或者爆款？商业收入如何？</li>
+        <li>你要怎么收费？</li>
+        <li>怎么做增长？</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3 冷启动 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">02</span><span class="rule"></span></div>
+    <h2 class="title">冷启动：如何获得第一批种子用户【 1000 个付费用户】</h2>
+    <div class="body">
+      <div class="cols c3">
+        <div class="grp">
+          <div class="grp-h">社群</div>
+          <ul class="lst"><li>你的核心用户到底是谁</li></ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h">KOL</div>
+          <ul class="lst">
+            <li>钩子
+              <ul><li>相关性</li><li>利他</li></ul>
+            </li>
+          </ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h">产品侧</div>
+          <ul class="lst">
+            <li>关注哪些指标
+              <ul>
+                <li>下载/注册</li>
+                <li>留存：次留、七留</li>
+                <li>试用启动、付费</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 增长/验证 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">03</span><span class="rule"></span></div>
+    <h2 class="title">增长/验证</h2>
+    <div class="body">
+      <ul class="lst">
+        <li>两个核心问题
+          <ul>
+            <li>如何获得 100+ 付费用户？</li>
+            <li>如何获得 1w+ 下载？</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 5 一些原则 · 商业 / 产品 & 增长 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span></div>
+    <h2 class="title">一些原则</h2>
+    <div class="body">
+      <div class="cols c2">
+        <div class="grp">
+          <div class="grp-h">商业</div>
+          <ul class="lst"><li>Day 1 要收费、不要走低价</li></ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h">产品 &amp; 增长</div>
+          <ul class="lst"><li>Storytelling：没有想清楚如何获客/讲好产品故事的前面，不要做需求</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 一些原则 · 运营节奏 / 内容原则 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span></div>
+    <h2 class="title">一些原则</h2>
+    <div class="body">
+      <div class="cols c2">
+        <div class="grp">
+          <div class="grp-h">运营节奏</div>
+          <ul class="lst">
+            <li>一个版本对应的几个内容 &amp; 宣发节奏
+              <ul><li>功能快剪：15-30s</li></ul>
+            </li>
+          </ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h">内容原则：Attention &amp; 利他</div>
+          <ul class="lst">
+            <li>不用 AI 做自动化运营：活人感 &amp; 账号定位</li>
+            <li>一次只讲一件事</li>
+            <li>持续发、多平台应发尽发</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 什么样的内容是可能火的？ -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span></div>
+    <h2 class="title">什么样的内容是可能火的？</h2>
+    <div class="body">
+      <ul class="lst">
+        <li>关注平台话题、重视打标签</li>
+        <li>拆解爆款：理解、成为、超越…</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</div><!-- /deck -->
+</div><!-- /viewport -->
+
+<div class="bar"><span></span></div>
+<div class="hud">
+  <button id="prev" aria-label="上一页">‹</button>
+  <span class="counter">1 / 7</span>
+  <button id="next" aria-label="下一页">›</button>
+</div>
+<div class="hint">← → / 空格翻页</div>
+<div class="rotate-hint">↻ 横屏观看更清晰 · 左右滑动翻页</div>
+
+<script>
+(function(){
+  const deck=document.querySelector('.deck');
+  const slides=[...document.querySelectorAll('.slide')];
+  const counter=document.querySelector('.counter');
+  const bar=document.querySelector('.bar span');
+  let i=0;
+
+  function fit(){
+    var s=Math.min(window.innerWidth/1280, window.innerHeight/720);
+    deck.style.transform='translate(-50%,-50%) scale('+s+')';
+  }
+  function go(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    counter.textContent=(i+1)+' / '+slides.length;
+    bar.style.width=((i+1)/slides.length*100)+'%';
+  }
+  window.addEventListener('resize',fit); fit();
+  function fromHash(){var x=parseInt((location.hash||'').replace('#',''),10);return (isFinite(x)&&x>0)?x-1:0;}
+  go(fromHash());
+  window.addEventListener('hashchange',function(){go(fromHash())});
+
+  document.getElementById('next').addEventListener('click',e=>{e.stopPropagation();go(i+1)});
+  document.getElementById('prev').addEventListener('click',e=>{e.stopPropagation();go(i-1)});
+  window.addEventListener('keydown',e=>{
+    if(['ArrowRight',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();go(i+1)}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();go(i-1)}
+    else if(e.key==='Home'){go(0)} else if(e.key==='End'){go(slides.length-1)}
+  });
+  var vpEl=document.querySelector('.viewport'), _tx=0, _ty=0;
+  vpEl.addEventListener('touchstart',function(e){var t=e.changedTouches[0];_tx=t.clientX;_ty=t.clientY;},{passive:true});
+  vpEl.addEventListener('touchend',function(e){
+    var t=e.changedTouches[0], dx=t.clientX-_tx, dy=t.clientY-_ty;
+    if(Math.abs(dx)>40 && Math.abs(dx)>Math.abs(dy)*1.3){ go(dx<0?i+1:i-1); }
+  },{passive:true});
+  window.addEventListener('orientationchange',function(){setTimeout(fit,200);});
+  var _rh=document.querySelector('.rotate-hint');
+  if(_rh){ setTimeout(function(){_rh.style.opacity='0';},4500); }
+})();
+</script>
+</body>
+</html>

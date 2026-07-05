@@ -11,6 +11,23 @@ export interface TalkEntry {
 
 export const talks: TalkEntry[] = [
   {
+    slug: "closed-door-2026-07-05",
+    date: "2026-07-05",
+    url: "/talk/closed-door-2026-07-05/",
+    title: {
+      zh: "闭门会分享",
+      en: "Closed-door session",
+    },
+    venue: {
+      zh: "闭门会 · 内部分享",
+      en: "Closed-door session",
+    },
+    description: {
+      zh: "选题 · 冷启动 · 增长/验证 · 一些原则 —— 一次闭门分享的提纲。",
+      en: "Topic · cold-start · growth/validation · principles — a closed-door session outline.",
+    },
+  },
+  {
     slug: "multi-agent-2026-06-06",
     date: "2026-06-06",
     url: "/talk/multi-agent-2026-06-06/",
