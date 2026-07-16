@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>一人 × 多 Agent 的独立开发实践 ｜ Bryant</title>
+<style>
+:root{
+  --paper:#f7f5f1; --ink:#191712; --muted:#6f6b62; --accent:#ff5a36; --line:rgba(25,23,18,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#e7e4dd;overflow:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue',Helvetica,'Microsoft YaHei',Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+.viewport{position:fixed;inset:0;overflow:hidden;background:#e7e4dd}
+.deck{width:1280px;height:720px;position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);transform-origin:center center}
+
+/* ---------- slide base ---------- */
+.slide{position:absolute;inset:0;overflow:hidden;background:var(--paper);color:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:70px 88px;opacity:0;visibility:hidden;
+  transition:opacity .45s ease, transform .5s cubic-bezier(.4,0,.2,1);transform:scale(.99)}
+.slide.active{opacity:1;visibility:visible;transform:scale(1)}
+.content{width:100%}
+.content>*{position:relative}
+
+/* ---------- kicker ---------- */
+.kicker{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.kicker .idx{font-size:19px;font-weight:800;letter-spacing:.14em;color:var(--accent)}
+.kicker .rule{height:2px;width:54px;background:var(--accent);border-radius:2px}
+.kicker .tag{font-size:15px;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+
+/* ---------- titles ---------- */
+.title{font-size:46px;font-weight:800;line-height:1.16;letter-spacing:-.01em;max-width:1080px}
+.title .em{color:var(--accent)}
+.subtitle{margin-top:14px;font-size:21px;font-weight:600;color:var(--muted)}
+
+/* ---------- body ---------- */
+.body{margin-top:34px}
+
+/* flat list */
+.lst{list-style:none;display:flex;flex-direction:column;gap:16px}
+.lst>li{font-size:25px;line-height:1.4;font-weight:600;color:var(--ink);
+  padding-left:30px;position:relative}
+.lst>li::before{content:"";position:absolute;left:0;top:.62em;width:11px;height:11px;
+  border-radius:3px;background:var(--accent)}
+.lst>li .dim{color:var(--muted);font-weight:500}
+.lst ul{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.lst ul>li{font-size:20px;line-height:1.45;font-weight:500;color:var(--muted);
+  padding-left:22px;position:relative}
+.lst ul>li::before{content:"";position:absolute;left:2px;top:.66em;width:8px;height:8px;
+  border-radius:50%;border:2px solid var(--muted);background:transparent}
+
+/* grouped columns */
+.cols{display:grid;gap:32px;align-items:start}
+.cols.c2{grid-template-columns:1fr 1fr}
+.cols.c3{grid-template-columns:repeat(3,1fr)}
+.grp{border-top:2px solid var(--line);padding-top:18px}
+.grp-h{font-size:23px;font-weight:800;color:var(--ink);margin-bottom:14px;
+  display:flex;align-items:center;gap:11px}
+.grp-h::before{content:"";width:13px;height:13px;border-radius:4px;background:var(--accent);flex:0 0 auto}
+.grp-h.noq::before{display:none}
+.grp-h .en{font-size:14px;font-weight:700;letter-spacing:.1em;color:var(--muted)}
+.grp .lst{gap:12px}
+.grp .lst>li{font-size:20px}
+.grp .lst>li::before{width:9px;height:9px;top:.6em}
+.grp .lst ul>li{font-size:17px}
+.grp p{font-size:19px;line-height:1.5;font-weight:500;color:var(--muted)}
+.grp p b{color:var(--ink);font-weight:700}
+
+/* accent strip */
+.strip{margin-top:32px;padding:15px 22px;background:rgba(255,90,54,.08);
+  border-left:4px solid var(--accent);font-size:21px;font-weight:700;line-height:1.4}
+.strip .dim{color:var(--muted);font-weight:600}
+
+/* ---------- cover ---------- */
+.cover{justify-content:center}
+.cover .eyebrow{font-size:21px;font-weight:700;letter-spacing:.28em;color:var(--accent);margin-bottom:30px}
+.cover h1{font-size:92px;font-weight:800;line-height:1.06;letter-spacing:-.02em;color:var(--ink)}
+.cover .accent-bar{width:96px;height:8px;border-radius:6px;background:var(--accent);margin-top:38px}
+.cover .foot{margin-top:32px;font-size:20px;color:var(--muted);font-weight:600;letter-spacing:.02em}
+
+/* ---------- divider (dark) ---------- */
+.divider{background:var(--ink);color:var(--paper);justify-content:center}
+.dwrap{display:flex;align-items:center;justify-content:space-between;gap:56px}
+.divider .num{font-size:30px;font-weight:800;letter-spacing:.18em;color:var(--accent);margin-bottom:26px}
+.divider h2{font-size:68px;font-weight:800;line-height:1.1;letter-spacing:-.01em}
+.divider .sub{margin-top:24px;font-size:22px;font-weight:600;color:rgba(247,245,241,.55);letter-spacing:.04em}
+.dart{flex:0 0 auto}
+.dart img{height:420px;width:auto;border-radius:18px;display:block}
+.dart.pad{background:#fff;border-radius:18px;padding:34px 40px}
+.dart.pad img{height:auto;width:330px;border-radius:0}
+
+/* ---------- quote ---------- */
+.quote{justify-content:center;align-items:flex-start}
+.quote .mark{font-size:120px;line-height:.6;font-weight:800;color:var(--accent);font-family:Georgia,serif;margin-bottom:8px}
+.quote .qt{font-size:44px;font-weight:800;line-height:1.42;letter-spacing:-.005em;max-width:1020px}
+.quote .qt .em{color:var(--accent)}
+.quote .who{margin-top:30px;font-size:19px;font-weight:600;color:var(--muted)}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:10px}
+.stat{border-top:2px solid var(--line);padding-top:20px}
+.stat .num{font-size:58px;font-weight:800;letter-spacing:-.02em;color:var(--accent);font-variant-numeric:tabular-nums}
+.stat .lbl{margin-top:8px;font-size:20px;font-weight:700;color:var(--ink)}
+.stat .sub{margin-top:5px;font-size:15px;font-weight:500;color:var(--muted);line-height:1.4}
+/* vertical stat rows (used beside images) */
+.vstats{display:flex;flex-direction:column}
+.vstats .stat{padding:16px 0 14px}
+.vstats .num{font-size:44px}
+.vstats .lbl{margin-top:4px;font-size:18px}
+.vstats .sub{font-size:14px}
+
+/* ---------- agenda ---------- */
+.agenda{display:flex;flex-direction:column;margin-top:6px}
+.agenda .row{display:flex;align-items:baseline;gap:26px;padding:19px 4px;border-top:2px solid var(--line)}
+.agenda .row:last-child{border-bottom:2px solid var(--line)}
+.agenda .no{font-size:26px;font-weight:800;color:var(--accent);letter-spacing:.06em;font-variant-numeric:tabular-nums;flex:0 0 56px}
+.agenda .tt{font-size:28px;font-weight:800}
+.agenda .ds{font-size:18px;font-weight:500;color:var(--muted);margin-left:auto;text-align:right}
+
+/* ---------- flow ---------- */
+.flow{display:flex;align-items:stretch;margin-top:8px}
+.fstep{flex:1;border-top:2px solid var(--line);padding:18px 14px 0 0;position:relative}
+.fstep+.fstep{padding-left:26px}
+.fstep+.fstep::before{content:"→";position:absolute;left:-2px;top:22px;color:var(--accent);font-size:22px;font-weight:800}
+.fstep .fno{font-size:14px;font-weight:800;letter-spacing:.12em;color:var(--accent)}
+.fstep .fh{margin-top:6px;font-size:22px;font-weight:800}
+.fstep p{margin-top:9px;font-size:15.5px;line-height:1.5;font-weight:500;color:var(--muted)}
+.fstep p b{color:var(--ink)}
+.stepno{width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;
+  font-size:20px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+
+/* ---------- cards ---------- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:6px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:6px}
+.card{border:1.5px solid var(--line);border-radius:14px;padding:22px 26px;background:#fff}
+.card .ch{font-size:23px;font-weight:800;margin-bottom:9px}
+.card p{font-size:18px;line-height:1.5;font-weight:500;color:var(--muted)}
+.card p b{color:var(--ink);font-weight:700}
+.ci{width:50px;height:50px;border-radius:13px;background:rgba(255,90,54,.1);
+  display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px}
+.bigsym{font-size:52px;font-weight:800;color:var(--accent);line-height:1;margin-bottom:12px;letter-spacing:-.02em}
+.badge{display:inline-block;padding:4px 12px;border-radius:999px;background:var(--accent);color:#fff;
+  font-size:14px;font-weight:800;letter-spacing:.08em;margin-bottom:12px}
+.badge.ghost{background:rgba(255,90,54,.1);color:var(--accent)}
+
+/* ---------- pairs (A ↔ B) ---------- */
+.pairs{display:flex;flex-direction:column;margin-top:6px}
+.pairs .pr{display:grid;grid-template-columns:1fr 64px 1fr;align-items:center;padding:15px 0;border-top:2px solid var(--line)}
+.pairs .pr:last-child{border-bottom:2px solid var(--line)}
+.pairs .pr>div{font-size:22.5px;font-weight:650}
+.pairs .pm{color:var(--accent);text-align:center;font-weight:800;font-size:24px}
+.pairs .pr.head{border-top:0;padding:0 0 12px}
+.pairs .pr.head>div{font-size:17px;font-weight:800;letter-spacing:.08em;color:var(--accent)}
+
+/* ---------- chain (pill flow) ---------- */
+.chain{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+.chain .pill{padding:11px 22px;border:1.5px solid var(--line);border-radius:999px;background:#fff;
+  font-size:20px;font-weight:750}
+.chain .pill.hot{border-color:var(--accent);color:var(--accent);background:rgba(255,90,54,.06)}
+.chain .arw{color:var(--accent);font-weight:800;font-size:22px}
+.chain .loop{color:var(--accent);font-weight:800;font-size:26px}
+.chain-lbl{margin-top:26px;font-size:17px;font-weight:800;letter-spacing:.1em;color:var(--muted)}
+.chain-lbl:first-child{margin-top:0}
+
+/* ---------- images ---------- */
+.figrow{display:flex;gap:26px;align-items:flex-start}
+.figrow .txt{flex:1;min-width:0}
+.fig{border:1.5px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;flex:0 0 auto}
+.fig img{display:block}
+.fig .cap{padding:8px 12px;font-size:13px;font-weight:600;color:var(--muted);border-top:1px solid var(--line)}
+.bigimg{display:flex;justify-content:center;margin-top:8px}
+.bigimg img{max-width:100%;max-height:470px;border:1.5px solid var(--line);border-radius:14px;background:#fff}
+.phones{display:flex;gap:20px;justify-content:center}
+
+/* product cards */
+.prods{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px}
+.prod{border:1.5px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.prod img{width:100%;height:180px;object-fit:cover;object-position:top;display:block;border-bottom:1px solid var(--line)}
+.prod .pn{padding:13px 16px 3px;font-size:20px;font-weight:800}
+.prod .pn .st{font-size:13px;font-weight:700;color:var(--accent);margin-left:8px;letter-spacing:.04em}
+.prod .pd{padding:0 16px 14px;font-size:15px;font-weight:500;color:var(--muted);line-height:1.45}
+
+/* works wall */
+.wall{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px}
+.wall .w{border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.wall img{width:100%;height:170px;object-fit:cover;display:block}
+.wall .cap{padding:6px 10px;font-size:12.5px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* contact */
+.qrs{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;margin-top:16px;max-width:820px}
+.qr{text-align:center}
+.qr img{width:170px;height:170px;object-fit:contain;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:10px}
+.qr .qn{margin-top:12px;font-size:19px;font-weight:800}
+.qr .qs{margin-top:3px;font-size:14px;font-weight:600;color:var(--muted)}
+
+/* ---------- HUD ---------- */
+.hud{position:fixed;z-index:50;bottom:22px;right:30px;display:flex;align-items:center;gap:14px;
+  font-family:-apple-system,'PingFang SC',sans-serif}
+.hud button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(255,255,255,.7);color:var(--ink);font-size:20px;cursor:pointer;transition:.2s;
+  backdrop-filter:blur(6px)}
+.hud button:hover{background:#fff;border-color:var(--accent);color:var(--accent)}
+.counter{color:var(--muted);font-size:15px;font-variant-numeric:tabular-nums;min-width:54px;text-align:center}
+.bar{position:fixed;left:0;bottom:0;height:4px;width:100%;background:rgba(25,23,18,.08);z-index:50}
+.bar span{display:block;height:100%;width:0;background:var(--accent);transition:width .4s ease}
+.hint{position:fixed;left:30px;bottom:26px;color:var(--muted);opacity:.6;font-size:13px;z-index:50;letter-spacing:.04em}
+
+/* ---------- mobile ---------- */
+.rotate-hint{display:none}
+@media (max-width:900px){
+  .hud{bottom:16px;right:16px;gap:12px}
+  .hud button{width:54px;height:54px;font-size:26px}
+  .hint{display:none}
+}
+@media (max-width:900px) and (orientation:portrait){
+  .rotate-hint{display:flex;align-items:center;gap:7px;position:fixed;top:14px;left:50%;transform:translateX(-50%);
+    z-index:60;background:rgba(25,23,18,.9);color:#f7f5f1;padding:9px 17px;border-radius:999px;
+    font:600 13px/1 -apple-system,'PingFang SC',sans-serif;transition:opacity .6s;pointer-events:none;white-space:nowrap}
+}
+</style>
+</head>
+<body>
+<div class="viewport">
+<div class="deck">
+
+<!-- 1 COVER -->
+<section class="slide cover active">
+  <div class="content">
+    <div class="eyebrow">2026.07.17 · 微软产品实习生分享</div>
+    <h1>一人 × 多 Agent 的<br>独立开发实践</h1>
+    <div class="accent-bar"></div>
+    <div class="foot">从想法到产品发布 ｜ 陈正豪 Bryant Chen · 独立开发者 · 前 Motiff（妙多）AI 产品负责人</div>
+  </div>
+</section>
+
+<!-- 2 QUOTE 开场 -->
+<section class="slide quote">
+  <div class="content">
+    <div class="mark">“</div>
+    <div class="qt">我曾是产品经理，不会写代码。<br>但因为 Agent ——<br>我也走上了<span class="em">一人 × 多 Agent</span> 的路。</div>
+  </div>
+</section>
+
+<!-- 3 关于我 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">00</span><span class="rule"></span><span class="tag">ABOUT</span></div>
+    <h2 class="title">关于我：从大厂 PM，到全职一人公司</h2>
+    <div class="subtitle">2019–2026.01 产品经理（网易 · 猿辅导 · Motiff 妙多 AI 产品负责人）→ 2026.01 起全职一人公司</div>
+    <div class="prods">
+      <div class="prod"><img src="assets/colorwander-home.webp" alt="ColorWander" style="object-position:center 38%">
+        <div class="pn">ColorWander<span class="st">Swift · iOS</span></div>
+        <div class="pd">第一个 App · 上线当月即有正向现金流</div></div>
+      <div class="prod"><img src="assets/clawputer-shot.webp" alt="ClawPuter">
+        <div class="pn">ClawPuter<span class="st">C++ · 固件</span></div>
+        <div class="pd">开源 140★ · 全网累计百万播放</div></div>
+      <div class="prod"><img src="assets/memoryx-shot.webp" alt="MemoryX">
+        <div class="pn">MemoryX<span class="st">TypeScript</span></div>
+        <div class="pd">自研的记忆 & 上下文工作台 · 自用</div></div>
+    </div>
+    <div class="strip">三个产品、三种完全不同的技术栈 —— <span class="dim">写代码的不是我，是我的 Agent。</span></div>
+  </div>
+</section>
+
+<!-- 4 用量 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">00</span><span class="rule"></span><span class="tag">HOW DEEP</span></div>
+    <h2 class="title">这不是试用，<span class="em">是我的工作方式</span></h2>
+    <div class="subtitle">开启一人公司后的头 6 周 · 仅一个 coding agent 的用量</div>
+    <div class="body">
+      <div class="stats">
+        <div class="stat"><div class="num">90k+</div><div class="lbl">条消息</div><div class="sub">与 Agent 的对话总量</div></div>
+        <div class="stat"><div class="num">12,700</div><div class="lbl">条 prompt</div><div class="sub">我亲手下的指令</div></div>
+        <div class="stat"><div class="num">30</div><div class="lbl">个项目</div><div class="sub">并行推进</div></div>
+        <div class="stat"><div class="num">1,411</div><div class="lbl">单日峰值工具调用</div><div class="sub">Agent 替我干的活</div></div>
+      </div>
+      <div class="strip">每天都在编排 —— <span class="dim">这还只是一个 agent 的数字，实际只多不少。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 AGENDA -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">00</span><span class="rule"></span><span class="tag">AGENDA</span></div>
+    <h2 class="title">今天聊五块</h2>
+    <div class="body">
+      <div class="agenda">
+        <div class="row"><span class="no">01</span><span class="tt">Agent 时代发生了什么</span><span class="ds">两条主线 · 角色演进</span></div>
+        <div class="row"><span class="no">02</span><span class="tt">一人 × 多 Agent 如何协作</span><span class="ds">流水线 · 习惯 · 踩坑实录</span></div>
+        <div class="row"><span class="no">03</span><span class="tt">ColorWander：从 0 到 1</span><span class="ds">idea → 原型 → coding → 打磨 → 上架</span></div>
+        <div class="row"><span class="no">04</span><span class="tt">增长与冷启动</span><span class="ds">选题 · 种子用户 · Grow in Public</span></div>
+        <div class="row"><span class="no">05</span><span class="tt">工具箱与判断力</span><span class="ds">不选产品，选判断力</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 DIVIDER 01 -->
+<section class="slide divider">
+  <div class="content dwrap">
+    <div>
+      <div class="num">01</div>
+      <h2>Agent 时代<br>发生了什么</h2>
+      <div class="sub">两条主线 · 一个判断</div>
+    </div>
+    <div class="dart"><img src="assets/div-evolution.jpg" alt=""></div>
+  </div>
+</section>
+
+<!-- 7 两条主线 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">01</span><span class="rule"></span><span class="tag">TIMELINE</span></div>
+    <h2 class="title">过去两年的两条主线</h2>
+    <div class="body">
+      <div class="cols c2">
+        <div class="grp">
+          <div class="grp-h noq">💻 主线一 · AI Coding：「能用」→「吞噬一切」</div>
+          <ul class="lst">
+            <li>2024 中 <span class="dim">· coding 跨过实用门槛</span></li>
+            <li>2025 初 <span class="dim">· coding agent 范式确立：终端原生 · 长任务 · 自主执行</span></li>
+            <li>2026 <span class="dim">· 月级迭代成为常态，SOTA 每两个月换一轮</span></li>
+          </ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h noq">🎨 主线二 · AI 生图：两次跨越</div>
+          <ul class="lst">
+            <li>文本渲染 <span class="dim">· 从西文突破，到中文等多语言接近完美</span></li>
+            <li>可控性 <span class="dim">· 从「抽卡」到一句话出成套可用素材</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="strip">像素 + 代码，日新月异 —— <span class="dim">今天记住的工具名，半年后可能已经过期。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 宏观 + 微观 -->
+<section class="slide" style="padding:56px 80px">
+  <div class="content">
+    <div class="kicker"><span class="idx">01</span><span class="rule"></span><span class="tag">SO WHAT</span></div>
+    <h2 class="title" style="font-size:40px">这意味着什么</h2>
+    <div class="body" style="margin-top:24px">
+      <div class="figrow">
+        <div class="txt">
+          <ul class="lst">
+            <li>宏观 · Agent 正在吞噬传统软件
+              <ul>
+                <li>Figma 股价 12 个月累计 <b style="color:var(--accent)">-50%</b>；AI 设计工具每次大发布，当日再跌 4–5%</li>
+                <li>当 60 分够用时，AI 就够了</li>
+              </ul>
+            </li>
+            <li>微观 · 生产门槛压到地板
+              <ul>
+                <li>「就差一个程序员」的时代结束了</li>
+                <li>真正稀缺的变成：<b style="color:var(--ink)">品味 · 想法 · 交付能力 · 营销与增长</b></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="fig"><img src="assets/comic-scarcity.jpg" alt="过去 vs 现在：真正稀缺的四件事" style="height:400px;width:auto"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 三阶段演进 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">01</span><span class="rule"></span><span class="tag">ROLES</span></div>
+    <h2 class="title">产品角色的三阶段演进</h2>
+    <div class="body">
+      <div class="flow">
+        <div class="fstep"><div class="fno">STAGE 1 · 过去</div><div class="fh">线性分工</div>
+          <p>PM → UX → UI → FE/BE<br>每步等下一个角色接手<br><b>hand-off · slow</b></p></div>
+        <div class="fstep"><div class="fno">STAGE 2 · 近十年</div><div class="fh">UX + UI 合并</div>
+          <p>PM → Product Designer → FE/BE<br>边界变模糊，但仍是交接流<br><b>仍 hand-off · faster</b></p></div>
+        <div class="fstep"><div class="fno">STAGE 3 · 现在</div><div class="fh">一个人 + Agents</div>
+          <p>需求 → <b>一个人 + agents</b> → 上线<br>人管不确定性，Agent 管确定性<br><b>闭环 · realtime</b></p></div>
+      </div>
+      <div class="strip">关键迁移：执行力 → <span style="color:var(--accent)">需求定义 · 品味 · 增长</span> —— <span class="dim">「代码能力」不再是入门门槛。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 DIVIDER 02 -->
+<section class="slide divider">
+  <div class="content dwrap">
+    <div>
+      <div class="num">02</div>
+      <h2>一人 × 多 Agent<br>如何协作</h2>
+      <div class="sub">我每天到底怎么用这一队 Agent</div>
+    </div>
+    <div class="dart"><img src="assets/div-maker.jpg" alt=""></div>
+  </div>
+</section>
+
+<!-- 11 PM = 编排者 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">02</span><span class="rule"></span><span class="tag">ORCHESTRATOR</span></div>
+    <h2 class="title">PM 的活，本来就是<span class="em">编排一支专家团队</span></h2>
+    <div class="body">
+      <div class="pairs">
+        <div class="pr head"><div>我做产品经理时</div><div></div><div>我编排 AGENT 时</div></div>
+        <div class="pr"><div>拆需求、定优先级</div><div class="pm">↔</div><div>拆任务、分配时间 / 预算</div></div>
+        <div class="pr"><div>写 PRD、对齐目标</div><div class="pm">↔</div><div>写 prompt / spec</div></div>
+        <div class="pr"><div>协调多职能团队</div><div class="pm">↔</div><div>调度多个 Agent 角色</div></div>
+        <div class="pr"><div>把关验收质量</div><div class="pm">↔</div><div>review 门禁、验证</div></div>
+      </div>
+      <div class="strip">同一件事 —— <span class="dim">只是团队，换成了一支 Agent 团队。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 架构图 -->
+<section class="slide" style="padding:52px 72px">
+  <div class="content">
+    <div class="kicker"><span class="idx">02</span><span class="rule"></span><span class="tag">ARCHITECTURE</span></div>
+    <div class="bigimg"><img src="assets/architecture.webp" alt="一人公司：编排与协作架构"></div>
+  </div>
+</section>
+
+<!-- 13 流水线 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">02</span><span class="rule"></span><span class="tag">PIPELINE</span></div>
+    <h2 class="title">从一个想法，到上线</h2>
+    <div class="body">
+      <div class="flow">
+        <div class="fstep"><div class="fno">01 想法</div><div class="fh">💡 机会发现</div>
+          <p>碎片丢进「<b>100 bad ideas</b>」→ 建 issue → skill 自动跑调研</p></div>
+        <div class="fstep"><div class="fno">02 PRD</div><div class="fh">📄 方案</div>
+          <p>Agent 出方案，我只读关键决策 + <b>写死验收标准、测试用例</b></p></div>
+        <div class="fstep"><div class="fno">03 开发</div><div class="fh">⚙️ 并行执行</div>
+          <p><b>10+ worktree 并行</b> · issue 当状态机 · 闲时自动跑、白天人验收</p></div>
+        <div class="fstep"><div class="fno">04 门禁</div><div class="fh">🚦 质量关</div>
+          <p>合并前双 agent <b>交叉 review</b> + /ship 流程不可跳过</p></div>
+        <div class="fstep"><div class="fno">05 发布</div><div class="fh">🚀 运营</div>
+          <p>自动填提审 / 出素材；<b>发声靠真人</b>，Agent 只做调研</p></div>
+      </div>
+      <div class="strip">我不写代码，我编排 Agent 协作 —— <span class="dim">我管的是一支 Agent 团队。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 四个习惯 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">02</span><span class="rule"></span><span class="tag">HABITS</span></div>
+    <h2 class="title">几个我离不开的习惯</h2>
+    <div class="body">
+      <div class="grid2">
+        <div class="card"><div class="ci">🌙</div><div class="ch">昼夜分工</div>
+          <p>闲时让 Agent 自动跑完第一版 + 自动化测试；<b>白天我做验收</b>和精细调整。</p></div>
+        <div class="card"><div class="ci">📋</div><div class="ch">issue 当状态机</div>
+          <p><b>TODO → Design → DEV → Validate → Done / Reject</b>，每个任务状态可追。</p></div>
+        <div class="card"><div class="ci">🔀</div><div class="ch">交叉 review</div>
+          <p>合并前让两个 coding agent <b>互相 review</b> + 安全 / 冲突检查。</p></div>
+        <div class="card"><div class="ci">🧠</div><div class="ch">Memory & Context</div>
+          <p>把我教过的、踩过的<b>固化下来</b>，让 Agent 下次自动规避。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 两种节奏 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">02</span><span class="rule"></span><span class="tag">TEMPO</span></div>
+    <h2 class="title">同步盯细节，<span class="em">异步放手</span></h2>
+    <div class="body">
+      <div class="figrow">
+        <div class="fig"><img src="assets/comic-sync-async.webp" alt="同步结对 / 异步开发" style="height:420px;width:auto"></div>
+        <div class="txt">
+          <ul class="lst">
+            <li>同步 · 像结对 Debug
+              <ul><li>我盯着细节，一点点抠 —— 和当年 PM 站在工程师背后指指点点没区别</li></ul>
+            </li>
+            <li>异步 · 拆好任务、交出去
+              <ul><li>issue 写清边界和验收，你不在场 Agent 也能放心干活</li><li>Agent 才能真正放开手脚</li></ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 QUOTE 猜 -->
+<section class="slide quote">
+  <div class="content">
+    <div class="mark">“</div>
+    <div class="qt">代码质量上，我印象最深的几件事，<br>其实是同一个毛病 ——<br>它特别爱<span class="em">「猜」</span>，而不肯老实<span class="em">「看」</span>。</div>
+    <div class="who">踩坑实录 🔥</div>
+  </div>
+</section>
+
+<!-- 17 三种样子 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">02</span><span class="rule"></span><span class="tag">PITFALLS</span></div>
+    <h2 class="title">同一个毛病的三种样子</h2>
+    <div class="body">
+      <div class="grid3">
+        <div class="card"><div class="ci">🎲</div><div class="ch">不复现就猜</div>
+          <p>界面卡顿，它二话不说就改 → <b>拆东墙补西墙、越修越多</b>；真实触发路径跟它猜的根本不是一回事。</p></div>
+        <div class="card"><div class="ci">🔁</div><div class="ch">不记得就重犯</div>
+          <p>换了个对话、隔了一阵，它又把同一类错误<b>原样犯了一遍</b> —— 它不记得上次栽过。</p></div>
+        <div class="card"><div class="ci">🙈</div><div class="ch">不看就改</div>
+          <p>用户在评论里贴了参考图，它<b>看都没看</b>，只凭文字描述改，自然改不到点子上。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 18 我的做法 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">02</span><span class="rule"></span><span class="tag">MY MOVES</span></div>
+    <h2 class="title">所以我的做法</h2>
+    <div class="body">
+      <div class="grid3">
+        <div class="card"><div class="bigsym">A</div><div class="ch">换个 agent，别死磕</div>
+          <p>改三五轮还不行就换 —— 这个卡死了<b>丢给另一个</b>，反过来也一样。</p></div>
+        <div class="card"><div class="bigsym">B</div><div class="ch">喂足信息，先摸清现状</div>
+          <p>把图、日志、上下文喂足；<b>视觉问题一定亲自看图</b>，不靠文字描述。</p></div>
+        <div class="card"><div class="bigsym">C</div><div class="ch">坦白：评测还在摸索</div>
+          <p>怎么给产出搭一套靠谱的评测，<b>还没有标准答案</b> —— 是我下一步要做扎实的。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 19 还有三块坑 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">02</span><span class="rule"></span><span class="tag">MORE PITFALLS</span></div>
+    <h2 class="title">还有三块坑</h2>
+    <div class="body">
+      <div class="grid3">
+        <div class="card"><div class="ci">🔀</div><div class="ch">并行开发</div>
+          <p>好几个分支一起开，会重叠、打架。前提是<b>真隔离</b> + 动手前先看清在哪个分支 + <b>关键写操作串行</b>。</p></div>
+        <div class="card"><div class="ci">📣</div><div class="ch">内容运营</div>
+          <p>纯靠 Agent 跑的产品号几乎做不成 —— 平台风控 + 活人味两关。<b>真人写为主</b>，Agent 只做前期调研。</p></div>
+        <div class="card"><div class="ci">🧠</div><div class="ch">需求 & 验收</div>
+          <p>瓶颈不是 Agent 的产能，是<b>我自己的脑子</b>。优化流程是为了把脑子腾出来想真问题。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 QUOTE 失控 -->
+<section class="slide quote">
+  <div class="content">
+    <div class="mark">“</div>
+    <div class="qt">一个人 + 一群 Agent，<br>真正的敌人不是产能，<br>是<span class="em">失控</span>。</div>
+  </div>
+</section>
+
+<!-- 21 DIVIDER 03 -->
+<section class="slide divider">
+  <div class="content dwrap">
+    <div>
+      <div class="num">03</div>
+      <h2>ColorWander<br>从 0 到 1 的完整链路</h2>
+      <div class="sub">a photo, a color, a day</div>
+    </div>
+    <div class="dart pad"><img src="assets/cw-logo.webp" alt="ColorWander"></div>
+  </div>
+</section>
+
+<!-- 22 是什么 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">03</span><span class="rule"></span><span class="tag">WHAT IT IS</span></div>
+    <h2 class="title">用颜色看世界</h2>
+    <div class="body">
+      <div class="figrow">
+        <div class="txt">
+          <ul class="lst">
+            <li>从你的照片中提取颜色，作为相框背景，生成一张 ColorWalk 照片</li>
+            <li>差异化功能
+              <ul>
+                <li>自动标注 — Location · Emoji · Time</li>
+                <li>文学时间模式 — 照片的时刻，自动匹配一句文学中的句子</li>
+                <li>相框 — 多种排版与画幅</li>
+              </ul>
+            </li>
+            <li class="dim" style="font-weight:600">— 直接看真机演示 —</li>
+          </ul>
+        </div>
+        <div class="fig"><img src="assets/cw-demo.webp" alt="ColorWander 示例" style="height:430px;width:auto"></div>
+        <div class="fig"><img src="assets/cw-littime.webp" alt="文学时间模式" style="height:430px;width:auto"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 23 idea 验证 -->
+<section class="slide" style="padding:56px 80px">
+  <div class="content">
+    <div class="kicker"><span class="idx">3.1</span><span class="rule"></span><span class="tag">IDEA</span></div>
+    <h2 class="title" style="font-size:40px">Idea 验证：多数需求<span class="em">不值得做</span></h2>
+    <div class="body" style="margin-top:24px">
+      <div class="figrow">
+        <div class="txt">
+          <ul class="lst">
+            <li>主观 · Agent 跑 BRD
+              <ul><li>六维度：趋势 / 痛点 / 竞品 / 画像 / 定价 / GO-NO-GO —— 3 小时 &gt; 3 个月</li></ul>
+            </li>
+            <li>客观 · 真实付费信号
+              <ul><li>Fiverr 订单反推需求；Google Trends 看 5 年 —— 已付钱的事 &gt; 调研问卷</li></ul>
+            </li>
+            <li>习惯 · 100 Bad Ideas 仓库
+              <ul><li>一切 idea 默认是 bad：先找反例 → 埋葬 / 孵化 / 继续观察</li></ul>
+            </li>
+          </ul>
+        </div>
+        <div class="fig"><img src="assets/bad-ideas-repo.jpg" alt="100 Bad Ideas 仓库" style="height:400px;width:auto"><div class="cap">100 Bad Ideas · 真实仓库：多数想法的归宿是被划掉</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 24 起源 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">3.1</span><span class="rule"></span><span class="tag">ORIGIN</span></div>
+    <h2 class="title">ColorWander 的起源</h2>
+    <div class="body">
+      <div class="figrow">
+        <div class="txt">
+          <ul class="lst">
+            <li>流行趋势 <span class="dim">— ColorWalk 一词开始流行，小红书在推话题；预判会有不错的流量</span></li>
+            <li>很早就把它放进了 100 bad ideas <span class="dim">— 之前先做了文学时钟插件，攒下近 2000 条语料</span></li>
+            <li>用 HEX 色值认知世界和时间 <span class="dim">— 本身就是一件很酷的事</span></li>
+            <li>把两个主题结合，做成 iOS App 会怎么样？</li>
+          </ul>
+          <div class="strip">热点来的时候，<span style="color:var(--accent)">「在场」</span>很重要 —— <span class="dim">话题正热 + 五一出行季，是绝佳窗口期。</span></div>
+        </div>
+        <div class="fig"><img src="assets/litclock.webp" alt="文学时钟插件" style="width:330px;height:auto"><div class="cap">前作 · 文学时钟插件：语料的起点</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 25 四问 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">3.2</span><span class="rule"></span><span class="tag">DEFINE</span></div>
+    <h2 class="title">动手前，先答四个问题</h2>
+    <div class="body">
+      <div class="grid2">
+        <div class="card"><span class="badge">Q1</span><div class="ch">你想做什么？</div>
+          <p>一句话概括产品 + 目标用户。<b>说不清 = 还没准备好画原型。</b></p></div>
+        <div class="card"><span class="badge">Q2</span><div class="ch">对标谁？</div>
+          <p>明确说出你想接近哪一类产品。<b>「Notion + Figma + Linear 综合体」= 没对标。</b></p></div>
+        <div class="card"><span class="badge">Q3</span><div class="ch">视觉风格？</div>
+          <p>引用真实产品 / 风格名 / 关键词。<b>「高级一点」= 没风格。</b></p></div>
+        <div class="card"><span class="badge">Q4</span><div class="ch">差异化是什么？</div>
+          <p>为什么用户选你不选对标？<b>「AI 加持」= 没差异。</b></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 26 design brief + 实操 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">3.2</span><span class="rule"></span><span class="tag">PROTOTYPE</span></div>
+    <h2 class="title">原型：从语音到 Demo</h2>
+    <div class="body">
+      <div class="cols c2">
+        <div class="grp">
+          <div class="grp-h noq">🧭 方法 · 先给 agent 一个 design brief</div>
+          <ul class="lst">
+            <li>风格坐标 <span class="dim">— 明确要接近哪类产品、哪种视觉气质</span></li>
+            <li>设计约束 <span class="dim">— 颜色、字体、圆角、密度、动效可复用</span></li>
+            <li>可迭代记忆 <span class="dim">— DESIGN.md 把审美沉淀成上下文，多轮改稿不跑偏</span></li>
+          </ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h noq">⚡ 实操 · ColorWander 的第一版</div>
+          <ul class="lst">
+            <li>用<b>语音输入</b>沟通完整需求，design agent 出一版核心页面设计
+              <ul><li>10 个 layout 的 canvas，一眼挑出方向</li></ul>
+            </li>
+            <li>coding agent <b>半天</b>完成第一版 Demo 的开发</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 27 AI Coding 三时代 + 入门 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">3.3</span><span class="rule"></span><span class="tag">AI CODING</span></div>
+    <h2 class="title">AI Coding：叫法在变，核心不变</h2>
+    <div class="subtitle">Vibe Coding → Agentic Engineering → …… 本质都是：人利用 AI 做出可用产品</div>
+    <div class="body">
+      <div class="cols c2">
+        <div class="grp">
+          <div class="grp-h noq">🕰️ 三个时代</div>
+          <ul class="lst">
+            <li>补全 <span class="dim">— 编辑器内单词级建议，"AI as autocomplete"</span></li>
+            <li>AI IDE <span class="dim">— 理解整个项目、多文件改动，"AI as collaborator"</span></li>
+            <li>Coding Agent <span class="dim">— 终端原生 · 长任务 · 自主执行，"AI as autonomous engineer"</span></li>
+          </ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h noq">🚪 如何入门</div>
+          <ul class="lst">
+            <li>Build First <span class="dim">— 选一个很小的真实需求，今晚跑通第一版</span></li>
+            <li>Use SOTA <span class="dim">— 初学优先用最强模型，先降低失败率</span></li>
+            <li>Spend Tokens <span class="dim">— 先提升使用量；没有体感就没有判断力</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 28 工作流三步 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">3.3</span><span class="rule"></span><span class="tag">WORKFLOW</span></div>
+    <h2 class="title">每个任务的三步工作流</h2>
+    <div class="body">
+      <div class="flow">
+        <div class="fstep"><div class="stepno">1</div><div class="fh">Plan <span style="font-size:14px;color:var(--muted);letter-spacing:.08em">~1 MIN</span></div>
+          <p>让 agent <b>先写计划 + 验收标准</b>，再写代码。不满意就改计划，比改代码便宜。</p></div>
+        <div class="fstep"><div class="stepno">2</div><div class="fh">Execute <span style="font-size:14px;color:var(--muted);letter-spacing:.08em">~3 MIN</span></div>
+          <p>同意计划后让它一次写完；<b>边界用 ASCII wireframe / issue</b> 说清楚。</p></div>
+        <div class="fstep"><div class="stepno">3</div><div class="fh">Review <span style="font-size:14px;color:var(--muted);letter-spacing:.08em">~1 MIN</span></div>
+          <p>审<b>规格 + 真实跑通</b>，不逐行读代码 —— 浏览器里点一下，发现问题再返工。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 29 从 50 到 80 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">3.4</span><span class="rule"></span><span class="tag">CRAFT</span></div>
+    <h2 class="title">想清楚自己要做<span class="em">几十分</span>的产品</h2>
+    <div class="body">
+      <div class="figrow">
+        <div class="fig"><img src="assets/comic-50-80.webp" alt="50 到 80 的鸿沟" style="height:390px;width:auto"></div>
+        <div class="txt">
+          <ul class="lst">
+            <li>结对 Debug
+              <ul><li>就像坐在 Agent 身边，对着电脑指指点点</li></ul>
+            </li>
+            <li>异步开发
+              <ul><li>GitHub 管理 issue 和 Milestone</li><li>你不在场时，Agent 也可以放心干活</li></ul>
+            </li>
+            <li>Eval & Ship
+              <ul><li>AI 写测试 · 回归用例；人看真实体验</li><li>发布前固定扫安全 / 隐私 / key 泄漏</li></ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 30 差异化打磨 -->
+<section class="slide" style="padding:56px 80px">
+  <div class="content">
+    <div class="kicker"><span class="idx">3.4</span><span class="rule"></span><span class="tag">DIFFERENTIATION</span></div>
+    <h2 class="title" style="font-size:40px">差异化，藏在最后一公里的细节里</h2>
+    <div class="body" style="margin-top:24px">
+      <div class="figrow">
+        <div class="txt">
+          <ul class="lst">
+            <li>📖 文学时间
+              <ul>
+                <li>近 2000 条语料，按照片 EXIF 的<b style="color:var(--ink)">拍摄时刻</b>匹配</li>
+                <li>不用算法定义「黄昏的气质」，用作家的集体共识 —— 天涯共此时</li>
+              </ul>
+            </li>
+            <li>🎨 色彩引擎
+              <ul>
+                <li>64×64 降采样 → 滤灰黑白 → 频次 ×（饱和度+0.3）→ HSV → 24 桶</li>
+                <li>难的不是提取颜色，是让推荐色「代表照片的气质」—— 几百张评测图调到第一眼舒服</li>
+              </ul>
+            </li>
+          </ul>
+          <div class="strip" style="margin-top:22px">AI 负责放大产能，<span class="dim">人负责最后一公里的判断。</span></div>
+        </div>
+        <div class="fig"><img src="assets/lit-offwork.webp" alt="文学时间实例" style="height:420px;width:auto"><div class="cap">文学时间 · 真实作品</div></div>
+        <div class="fig"><img src="assets/feat-sort.jpg" alt="按颜色整理照片" style="height:420px;width:auto"><div class="cap">按颜色浏览照片</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 31 上架 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">3.4</span><span class="rule"></span><span class="tag">SHIP IT</span></div>
+    <h2 class="title">上架 App Store</h2>
+    <div class="body">
+      <div class="grid3">
+        <div class="card"><div class="ci">📦</div><div class="ch">材料提前备</div>
+          <p>开发者账号、隐私政策、截图、关键词…… <b>别到提审前一天才开始。</b></p></div>
+        <div class="card"><div class="ci">🚀</div><div class="ch">第一版 ready 就提审</div>
+          <p><b>别憋大招</b> —— 审核周期本身就是节奏的一部分。</p></div>
+        <div class="card"><div class="ci">💳</div><div class="ch">付费版要准备更多</div>
+          <p>IAP、订阅、Privacy Manifest…… <b>提前留出时间。</b></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 32 增长信号（抖音实录） -->
+<section class="slide" style="padding:56px 80px">
+  <div class="content">
+    <div class="kicker"><span class="idx">3.5</span><span class="rule"></span><span class="tag">TRACTION</span></div>
+    <h2 class="title" style="font-size:40px">冷启动的信号：<span class="em">内容先爆</span>，产品才被看见</h2>
+    <div class="body" style="margin-top:20px">
+      <div class="figrow">
+        <div class="txt">
+          <div class="vstats">
+            <div class="stat"><div class="num">100w+</div><div class="lbl">全网累计观看</div><div class="sub">看过这个 App 内容的人</div></div>
+            <div class="stat"><div class="num">39.6w</div><div class="lbl">抖音最大单条播放</div><div class="sub">4.1w 赞 · 1.5w 收藏（起源故事）</div></div>
+            <div class="stat"><div class="num">P1</div><div class="lbl">小红书 KOL 自然发现</div><div class="sub">#VibeCoding 话题引爆第一波</div></div>
+          </div>
+          <div class="strip" style="margin-top:18px;font-size:18px">爆量带来下载，但转化要靠产品自己 —— <span class="dim">两条路径分开设计。</span></div>
+        </div>
+        <div class="fig"><img src="assets/dy-profile.jpg" alt="抖音账号作品墙" style="height:430px;width:auto"><div class="cap">抖音 · 置顶三条 28w / 38.4w / 4.3w</div></div>
+        <div class="fig"><img src="assets/dy-collection.jpg" alt="抖音合集" style="height:430px;width:auto"><div class="cap">「VibeCoding 大赏」合集 · 33w 播放</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 33 作品墙 -->
+<section class="slide" style="padding:56px 80px">
+  <div class="content">
+    <div class="kicker"><span class="idx">3.5</span><span class="rule"></span><span class="tag">MADE BY COMMUNITY</span></div>
+    <h2 class="title" style="font-size:40px">大家用它，做出了什么</h2>
+    <div class="body" style="margin-top:24px">
+      <div class="wall">
+        <div class="w"><img src="assets/uw-louvre.webp" alt=""><div class="cap">卢浮宫的女神 · 一种平和的美</div></div>
+        <div class="w"><img src="assets/uw-plums.webp" alt=""><div class="cap">原来洗水果也能捕捉颜色</div></div>
+        <div class="w"><img src="assets/uw-reeds.webp" alt=""><div class="cap">风从耳边吹过的芦苇</div></div>
+        <div class="w"><img src="assets/uw-bridge.webp" alt=""><div class="cap">桥就在那，我在此刻为它凝眸</div></div>
+        <div class="w"><img src="assets/uw-fuzzy.webp" alt=""><div class="cap">世界可以是毛茸茸的</div></div>
+        <div class="w"><img src="assets/uw-dog.webp" alt=""><div class="cap">Happy Dog, Happy Life</div></div>
+        <div class="w"><img src="assets/uw-noonwind.webp" alt=""><div class="cap">午时风</div></div>
+        <div class="w"><img src="assets/uw-798.webp" alt=""><div class="cap">午后 798</div></div>
+      </div>
+      <div class="strip" style="margin-top:22px;font-size:18px">「简单的功能，却让人发现普通的生活原来这么色彩缤纷。」<span class="dim">—— 一位 ColorWander 用户</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 34 DIVIDER 04 -->
+<section class="slide divider">
+  <div class="content">
+    <div class="num">04</div>
+    <h2>增长与冷启动</h2>
+    <div class="sub">选题 · 种子用户 · 增长/验证 · 一些原则</div>
+  </div>
+</section>
+
+<!-- 35 选题 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span><span class="tag">TOPIC</span></div>
+    <h2 class="title">选题：做什么？</h2>
+    <div class="body">
+      <div class="grid2">
+        <div class="card"><div class="ci">👤</div><div class="ch">用户是谁？</div>
+          <p>说不出具体的人，就还没想清楚。</p></div>
+        <div class="card"><div class="ci">🔍</div><div class="ch">有没有类似的产品或爆款？</div>
+          <p><b>商业收入如何？</b>被验证过的需求才值得跟。</p></div>
+        <div class="card"><div class="ci">💰</div><div class="ch">你要怎么收费？</div>
+          <p>收费方式在写代码之前就要想好。</p></div>
+        <div class="card"><div class="ci">📈</div><div class="ch">怎么做增长？</div>
+          <p>获客路径不清楚，产品做完也没人看见。</p></div>
+      </div>
+      <div class="strip"><span class="dim">这四个问题，在写第一行代码之前就要能回答。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 36 冷启动 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span><span class="tag">COLD START</span></div>
+    <h2 class="title">冷启动：如何获得第一批种子用户【1000 个用户】</h2>
+    <div class="body">
+      <div class="cols c3">
+        <div class="grp">
+          <div class="grp-h noq">👥 社群</div>
+          <ul class="lst"><li>你的核心用户到底是谁</li></ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h noq">🎯 KOL</div>
+          <ul class="lst">
+            <li>钩子
+              <ul><li>相关性</li><li>利他</li></ul>
+            </li>
+          </ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h noq">📊 产品侧</div>
+          <ul class="lst">
+            <li>关注哪些指标
+              <ul>
+                <li>下载 / 注册</li>
+                <li>留存：次留、七留</li>
+                <li>试用启动、付费</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 37 种子社群实录 -->
+<section class="slide" style="padding:56px 80px">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span><span class="tag">COMMUNITY</span></div>
+    <h2 class="title" style="font-size:40px">种子社群实录：<span class="em">和用户泡在一起</span></h2>
+    <div class="body" style="margin-top:20px">
+      <div class="phones">
+        <div class="fig"><img src="assets/group-chat-3.jpg" alt="交流群 · 许愿池" style="height:400px;width:auto"><div class="cap">许愿池：用户提，我实现 +1</div></div>
+        <div class="fig"><img src="assets/group-chat-1.jpg" alt="交流群 · 晒作品" style="height:400px;width:auto"><div class="cap">晒作品 · 互相安利玩法</div></div>
+        <div class="fig"><img src="assets/group-chat-2.jpg" alt="交流群 · 偷师学艺" style="height:400px;width:auto"><div class="cap">「偷师学艺」· 反馈直达开发者</div></div>
+      </div>
+      <div class="strip" style="margin-top:20px;font-size:18px">133 人的交流群 —— <span class="dim">听反馈、晒作品、做最佳实践分享；需求从「许愿池」直接进 issue。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 38 增长/验证 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span><span class="tag">GROWTH</span></div>
+    <h2 class="title">增长 / 验证：两个核心问题</h2>
+    <div class="body">
+      <div class="grid2">
+        <div class="card"><div class="bigsym">100+</div><div class="ch">如何获得 100+ 付费用户？</div>
+          <p>验证的是<b>价值和定价</b> —— 有人真金白银投票。</p></div>
+        <div class="card"><div class="bigsym">1w+</div><div class="ch">如何获得 1w+ 下载？</div>
+          <p>验证的是<b>渠道和内容</b> —— 增长路径能不能复制。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 39 Grow in Public -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span><span class="tag">GROW IN PUBLIC</span></div>
+    <h2 class="title">Grow in Public：普通人最易得的<span class="em">调研 + 增长</span>方法</h2>
+    <div class="body">
+      <div class="cols c2">
+        <div class="grp">
+          <div class="grp-h noq">🌱 是什么</div>
+          <ul class="lst">
+            <li>Devlog 文化 <span class="dim">— 游戏 / 开源社区：过程本身就是内容</span></li>
+            <li>Pieter Levels <span class="dim">— 公开 MRR、用户、失败，一个人也能造一家公司</span></li>
+            <li>Indie Maker 圈 <span class="dim">— 进度 / 失败 / 收入 / 反馈都是市场信号</span></li>
+          </ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h noq">💡 为什么</div>
+          <ul class="lst">
+            <li>Attention <span class="dim">— 产品需要被看见；注意力是最早的市场信号</span></li>
+            <li>Feedback <span class="dim">— 评论、私信、转发，比闭门访谈更快暴露真实兴趣</span></li>
+            <li>Compound <span class="dim">— 过去的内容，持续为未来版本带来新用户</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 40 四原则 + 四节奏 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span><span class="tag">PRINCIPLES</span></div>
+    <h2 class="title">怎么做好：四条原则，一条链路</h2>
+    <div class="body">
+      <div class="chain-lbl">四条原则 · 有先后，缺前一条后面都白做</div>
+      <div class="chain">
+        <span class="pill hot">01 真诚 · 像真实的人</span><span class="arw">→</span>
+        <span class="pill hot">02 利他 · 让读者有收获</span><span class="arw">→</span>
+        <span class="pill hot">03 持续 · 反复出现</span><span class="arw">→</span>
+        <span class="pill hot">04 匹配 · 靠近目标用户</span>
+      </div>
+      <div class="chain-lbl">增长链路 · 四种节奏都要有</div>
+      <div class="chain">
+        <span class="pill">社媒引流 <span style="color:var(--muted);font-size:15px">日常曝光</span></span><span class="arw">→</span>
+        <span class="pill">产品页承接 <span style="color:var(--muted);font-size:15px">中枢</span></span><span class="arw">→</span>
+        <span class="pill">首发爆发 <span style="color:var(--muted);font-size:15px">集中</span></span><span class="arw">→</span>
+        <span class="pill">SEO 沉淀 <span style="color:var(--muted);font-size:15px">长尾复利</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 41 原则 · 商业 / 产品 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span><span class="tag">RULES</span></div>
+    <h2 class="title">一些原则</h2>
+    <div class="body">
+      <div class="cols c2">
+        <div class="grp">
+          <div class="grp-h noq">💰 商业</div>
+          <ul class="lst"><li>Day 1 要收费、不要走低价</li></ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h noq">📖 产品 &amp; 增长</div>
+          <ul class="lst"><li>Storytelling：没有想清楚如何获客 / 讲好产品故事之前，不要做需求</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 42 原则 · 运营 / 内容 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span><span class="tag">RULES</span></div>
+    <h2 class="title">一些原则</h2>
+    <div class="body">
+      <div class="cols c2">
+        <div class="grp">
+          <div class="grp-h noq">🎬 运营节奏</div>
+          <ul class="lst">
+            <li>一个版本对应的几个内容 &amp; 宣发节奏
+              <ul><li>功能快剪：15–30s</li></ul>
+            </li>
+          </ul>
+        </div>
+        <div class="grp">
+          <div class="grp-h noq">🧑 内容原则：Attention &amp; 利他</div>
+          <ul class="lst">
+            <li>不用 AI 做自动化运营：活人感 &amp; 账号定位</li>
+            <li>一次只讲一件事</li>
+            <li>持续发、多平台应发尽发</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 43 什么内容可能火 + 飞轮 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">04</span><span class="rule"></span><span class="tag">VIRAL</span></div>
+    <h2 class="title">什么样的内容是可能火的？</h2>
+    <div class="body">
+      <ul class="lst">
+        <li>关注平台话题、重视打标签</li>
+        <li>拆解爆款：理解、成为、超越……</li>
+      </ul>
+      <div class="chain-lbl" style="margin-top:30px">COLORWANDER 实例 · 左脚踩右脚飞轮</div>
+      <div class="chain">
+        <span class="pill hot">日更 + 模仿爆款</span><span class="arw">→</span>
+        <span class="pill hot">内容爆量</span><span class="arw">→</span>
+        <span class="pill hot">新用户进来</span><span class="arw">→</span>
+        <span class="pill hot">用户产出作品</span><span class="arw">→</span>
+        <span class="pill hot">作品 = 新素材</span><span class="loop">⟲</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 44 DIVIDER 05 -->
+<section class="slide divider">
+  <div class="content dwrap">
+    <div>
+      <div class="num">05</div>
+      <h2>工具箱与判断力</h2>
+      <div class="sub">每 ~2 个月一变 · 不选产品，选判断力</div>
+    </div>
+    <div class="dart"><img src="assets/div-toolbox.jpg" alt=""></div>
+  </div>
+</section>
+
+<!-- 45 判断力三原则 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">05</span><span class="rule"></span><span class="tag">JUDGMENT</span></div>
+    <h2 class="title">不要背工具清单，<span class="em">要建立判断标准</span></h2>
+    <div class="subtitle">现在听到的工具名，半年后可能已经过期 —— 三条原则比任何列表都活得久</div>
+    <div class="body">
+      <div class="grid3">
+        <div class="card"><div class="ci">🎯</div><div class="ch">任务原生</div>
+          <p>写代码选 coding agent，做原型选 design agent，内容生产选多模态工具。</p></div>
+        <div class="card"><div class="ci">🔄</div><div class="ch">工作流重塑</div>
+          <p>优先选择<b>改变工作方式</b>的工具，而不是只多一个 AI 按钮的工具。</p></div>
+        <div class="card"><div class="ci">📡</div><div class="ch">生态信号</div>
+          <p>看 Frontier Labs、开源社区、真实 builder 是否在<b>持续使用</b>。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 46 任务地图 + 盘点 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">05</span><span class="rule"></span><span class="tag">PRACTICE</span></div>
+    <h2 class="title">把工具放进任务地图，每 2 个月盘点一次</h2>
+    <div class="body">
+      <div class="chain-lbl">任务地图 · 想的是「我要完成什么任务」</div>
+      <div class="chain">
+        <span class="pill hot">Build · coding agent</span><span class="arw">→</span>
+        <span class="pill hot">Prototype · design agent</span><span class="arw">→</span>
+        <span class="pill hot">Content · 图 / 视频 / 语音 / 音乐</span>
+      </div>
+      <div class="chain-lbl" style="margin-top:30px">每 2 个月 · 盘点四问</div>
+      <div class="grid2" style="margin-top:14px;grid-template-columns:repeat(4,1fr);gap:18px">
+        <div class="card" style="padding:18px 20px"><div class="ci" style="width:42px;height:42px;font-size:21px;margin-bottom:10px">🗑️</div><div class="ch" style="font-size:19px">删除</div><p style="font-size:15px">哪些工具已经不用了？</p></div>
+        <div class="card" style="padding:18px 20px"><div class="ci" style="width:42px;height:42px;font-size:21px;margin-bottom:10px">♻️</div><div class="ch" style="font-size:19px">替换</div><p style="font-size:15px">哪些模型开始显得笨？</p></div>
+        <div class="card" style="padding:18px 20px"><div class="ci" style="width:42px;height:42px;font-size:21px;margin-bottom:10px">⬆️</div><div class="ch" style="font-size:19px">升级</div><p style="font-size:15px">哪个工作流值得重配？</p></div>
+        <div class="card" style="padding:18px 20px"><div class="ci" style="width:42px;height:42px;font-size:21px;margin-bottom:10px">📦</div><div class="ch" style="font-size:19px">沉淀</div><p style="font-size:15px">哪些经验该写进 skill？</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 47 两句话 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">06</span><span class="rule"></span><span class="tag">LAST WORDS</span></div>
+    <h2 class="title">给大家的两句话</h2>
+    <div class="body">
+      <div class="grid2">
+        <div class="card"><div class="bigsym">100×</div><div class="ch">门槛比你想象的低</div>
+          <p>脑子里那个想法，<b>今晚可能就能跑通</b> —— Get Hands Dirty Now，不要等「我学完了再开始」。</p></div>
+        <div class="card"><div class="bigsym">∞</div><div class="ch">每个人都会是 Agent 编排者</div>
+          <p>未来未必所有人都做 PM / 工程师，但<b>管理好 agent 是我们这一代的事</b> —— 某种程度上，agent 的可控性和聪明度比人更高。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 48 三个迁移 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">06</span><span class="rule"></span><span class="tag">SHIFTS</span></div>
+    <h2 class="title">一些心得：去年 → 今年的迁移</h2>
+    <div class="body">
+      <ul class="lst">
+        <li>Dive into AI → <b style="color:var(--accent)">Collaborate with Agents</b>
+          <ul><li>不再是把 AI 加进工具，而是把 agent 当作协作者编排</li></ul>
+        </li>
+        <li>Stay Curious → <b style="color:var(--accent)">Context &amp; Taste</b>
+          <ul><li>好奇心是入场券；差异来自你的上下文、审美、经历和活人感 —— 这些 AI 复制不来</li></ul>
+        </li>
+        <li>Find PMF → <b style="color:var(--accent)">Play Your Game</b>
+          <ul><li>先想清楚：你到底在为谁吸引注意力？</li></ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 49 Play Your Game -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">06</span><span class="rule"></span><span class="tag">PLAY YOUR GAME</span></div>
+    <h2 class="title">你在为谁吸引注意力？</h2>
+    <div class="subtitle">同样一份精力，受众选择不同，决定的事完全不一样</div>
+    <div class="body">
+      <div class="grid3">
+        <div class="card"><span class="badge ghost">SELF</span><div class="ch">自己</div>
+          <p>做到极致是<b>艺术</b>，做不到极致大多数时候是自嗨。</p></div>
+        <div class="card"><span class="badge ghost">AGENT</span><div class="ch">Agent</div>
+          <p>新的设计对象 —— 为 agent 设计 <b>prompt / context / workflow</b>，是当下和未来都要做的事。</p></div>
+        <div class="card"><span class="badge ghost">OTHERS</span><div class="ch">其他人</div>
+          <p>用户规模决定<b>商业模式</b>和天花板。1000 个真粉 vs 100 万用户，是两种产品。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 50 应对快变 -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">06</span><span class="rule"></span><span class="tag">SUSTAIN</span></div>
+    <h2 class="title">如何应对快速变化</h2>
+    <div class="body">
+      <div class="grid2">
+        <div class="card"><div class="ci">🏃</div><div class="ch">保持健康的身心</div>
+          <p>运动 · 睡眠 · 可持续的节奏。变化越快，<b>能持续就赢一半</b> —— 身心是这个时代独立开发者的底层资产。</p></div>
+        <div class="card"><div class="ci">❤️</div><div class="ch">先做自己喜欢的事</div>
+          <p>从兴趣出发，先利己，再利他。不喜欢的事坚持不了 6 个月；喜欢的事能熬过低谷，<b>持续就是壁垒</b>。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 51 QUOTE 金句 -->
+<section class="slide quote">
+  <div class="content">
+    <div class="mark">“</div>
+    <div class="qt">我没有变成十个工程师，<br>我还是那个产品经理 ——<br>只是我的团队，现在是<span class="em">一支 Agent 团队</span>。</div>
+    <div class="who">祝大家在 Agent 时代，Make Something Wonderful！</div>
+  </div>
+</section>
+
+<!-- 52 Q&A -->
+<section class="slide">
+  <div class="content">
+    <div class="kicker"><span class="idx">Q&A</span><span class="rule"></span><span class="tag">THANKS</span></div>
+    <h2 class="title">Q&amp;A · 多多交流</h2>
+    <div class="body">
+      <div class="qrs">
+        <div class="qr"><img src="assets/wechat-haoda-qr.webp" alt="微信"><div class="qn">微信 · 豪大</div><div class="qs">WeChat · 添加好友</div></div>
+        <div class="qr"><img src="assets/xhs-puda-qr.webp" alt="小红书"><div class="qn">小红书 @噗大可</div><div class="qs">Xiaohongshu · 634901668</div></div>
+        <div class="qr"><img src="assets/appstore-qr.svg" alt="App Store"><div class="qn">下载 ColorWander</div><div class="qs">App Store · iOS</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /deck -->
+</div><!-- /viewport -->
+
+<div class="bar"><span></span></div>
+<div class="hud">
+  <button id="prev" aria-label="上一页">‹</button>
+  <span class="counter">1 / 52</span>
+  <button id="next" aria-label="下一页">›</button>
+</div>
+<div class="hint">← → / 空格翻页</div>
+<div class="rotate-hint">↻ 横屏观看更清晰 · 左右滑动翻页</div>
+
+<script>
+(function(){
+  const deck=document.querySelector('.deck');
+  const slides=[...document.querySelectorAll('.slide')];
+  const counter=document.querySelector('.counter');
+  const bar=document.querySelector('.bar span');
+  let i=0;
+
+  function fit(){
+    var s=Math.min(window.innerWidth/1280, window.innerHeight/720);
+    deck.style.transform='translate(-50%,-50%) scale('+s+')';
+  }
+  function go(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    counter.textContent=(i+1)+' / '+slides.length;
+    bar.style.width=((i+1)/slides.length*100)+'%';
+  }
+  window.addEventListener('resize',fit); fit();
+  function fromHash(){var x=parseInt((location.hash||'').replace('#',''),10);return (isFinite(x)&&x>0)?x-1:0;}
+  go(fromHash());
+  window.addEventListener('hashchange',function(){go(fromHash())});
+
+  document.getElementById('next').addEventListener('click',e=>{e.stopPropagation();go(i+1)});
+  document.getElementById('prev').addEventListener('click',e=>{e.stopPropagation();go(i-1)});
+  window.addEventListener('keydown',e=>{
+    if(['ArrowRight',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();go(i+1)}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();go(i-1)}
+    else if(e.key==='Home'){go(0)} else if(e.key==='End'){go(slides.length-1)}
+  });
+  var vpEl=document.querySelector('.viewport'), _tx=0, _ty=0;
+  vpEl.addEventListener('touchstart',function(e){var t=e.changedTouches[0];_tx=t.clientX;_ty=t.clientY;},{passive:true});
+  vpEl.addEventListener('touchend',function(e){
+    var t=e.changedTouches[0], dx=t.clientX-_tx, dy=t.clientY-_ty;
+    if(Math.abs(dx)>40 && Math.abs(dx)>Math.abs(dy)*1.3){ go(dx<0?i+1:i-1); }
+  },{passive:true});
+  window.addEventListener('orientationchange',function(){setTimeout(fit,200);});
+  var _rh=document.querySelector('.rotate-hint');
+  if(_rh){ setTimeout(function(){_rh.style.opacity='0';},4500); }
+})();
+</script>
+</body>
+</html>

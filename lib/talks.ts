@@ -11,6 +11,23 @@ export interface TalkEntry {
 
 export const talks: TalkEntry[] = [
   {
+    slug: "ms-interns-2026-07-17",
+    date: "2026-07-17",
+    url: "/talk/ms-interns-2026-07-17/",
+    title: {
+      zh: "一人 × 多 Agent 的独立开发实践 — 从想法到产品发布",
+      en: "One person × many Agents — indie building from idea to launch",
+    },
+    venue: {
+      zh: "微软产品实习生分享",
+      en: "Microsoft PM interns session",
+    },
+    description: {
+      zh: "PM 是天生的 Agent 编排者：一人 × 多 Agent 的协作流水线与踩坑实录、ColorWander 从 0 到 1 的完整链路、增长与冷启动方法、工具箱判断力。",
+      en: "PMs are natural agent orchestrators: my one-person × many-agents pipeline and pitfalls, ColorWander from 0 to 1, growth & cold-start playbook, and how to judge the toolbox.",
+    },
+  },
+  {
     slug: "closed-door-2026-07-05",
     date: "2026-07-05",
     url: "/talk/closed-door-2026-07-05/",
