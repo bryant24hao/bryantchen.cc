@@ -14,13 +14,23 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: "ColorWander",
+    description: {
+      zh: "把一张照片变成一张色卡的 iOS app。自动提取照片配色，做成色卡、手账日历、Live Photo，一键分享。目前的主力项目。",
+      en: "An iOS app that turns any photo into a color card. Auto-extracts the palette, composes journal, calendar, and Live Photo layouts, ready to share. My main project right now.",
+    },
+    url: "https://apps.apple.com/app/id6765602238",
+    tags: ["Swift", "iOS", "Design"],
+    status: "earning",
+  },
+  {
     name: "deskpet-firmware",
     description: {
       zh: "M5 Cardputer 上的像素桌面宠物，通过 BLE 实时响应 Claude Code 的编码状态。基于 anthropics/claude-desktop-buddy 的社区移植版。[查看演示](https://x.com/bryantChenzh/status/2045789893931282475)",
       en: "Pixel desk pet on M5 Cardputer that reacts to Claude Code activity over BLE. Community port of anthropics/claude-desktop-buddy. [View demo](https://x.com/bryantChenzh/status/2045789893931282475)",
     },
     repo: "https://github.com/bryant24hao/deskpet-firmware",
-    stars: 9,
+    stars: 33,
     tags: ["C++", "ESP32", "BLE"],
     status: "live",
   },
@@ -31,19 +41,18 @@ export const projects: Project[] = [
       en: "Pixel desktop companion for M5Stack Cardputer (ESP32-S3). AI chat, voice input, real-time weather, synced macOS desktop pet. [View slides](https://bryantchen.cc/talk/clawputer-story/)",
     },
     repo: "https://github.com/bryant24hao/ClawPuter",
-    stars: 100,
+    stars: 142,
     tags: ["C++", "ESP32", "IoT"],
     status: "live",
   },
   {
     name: "MemoryX",
     description: {
-      zh: "你的 AI 记忆伙伴。Chrome 插件已上线，帮你在浏览中自动记住、整理、浮现重要的信息。桌面端正在探索和 dogfooding 中，未来适时发布。",
-      en: "Your AI memory companion. Chrome extension is live — automatically remembers, organizes, and surfaces what matters as you browse. Desktop app in exploration and dogfooding, to be released when ready.",
+      zh: "你的 AI 记忆伙伴，在浏览中自动记住、整理、浮现重要的信息。目前暂停迭代，留着自己用。",
+      en: "Your AI memory companion — automatically remembers, organizes, and surfaces what matters as you browse. Paused; kept around for personal use.",
     },
-    url: "https://chromewebstore.google.com/detail/lkfndjgbfadcaiooidegddhplcpifkge?utm_source=bryantchen.cc",
     tags: ["Chrome Extension", "AI"],
-    status: "live",
+    status: "paused",
   },
   {
     name: "AIBT",

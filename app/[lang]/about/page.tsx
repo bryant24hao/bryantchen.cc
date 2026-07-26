@@ -63,15 +63,15 @@ export default async function AboutPage({ params }: PageProps) {
     status: ProjectStatus;
   }> = [
     {
-      name: "MemoryX",
-      desc: projDesc.MemoryX,
-      href: "https://chromewebstore.google.com/detail/lkfndjgbfadcaiooidegddhplcpifkge?utm_source=bryantchen.cc",
-      status: "live",
+      name: "ColorWander",
+      desc: projDesc.ColorWander,
+      href: "https://apps.apple.com/app/id6765602238",
+      status: "earning",
     },
     {
       name: "ClawPuter",
       desc: projDesc.ClawPuter,
-      extra: `94 ${t.stars}`,
+      extra: `142 ${t.stars}`,
       href: "https://github.com/bryant24hao/ClawPuter",
       status: "live",
     },
@@ -80,6 +80,11 @@ export default async function AboutPage({ params }: PageProps) {
       desc: projDesc.AIBT,
       href: "https://aibtapp.com",
       status: "earning",
+    },
+    {
+      name: "MemoryX",
+      desc: projDesc.MemoryX,
+      status: "paused",
     },
     {
       name: "Curioso",

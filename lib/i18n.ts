@@ -13,7 +13,7 @@ const dictionaries = {
     },
     home: {
       intro:
-        "我是 Bryant — 做了 7 年产品经理，现在全职做独立开发。造 AI 伙伴和开发者工具。一个住在桌面上，一个住在口袋里。",
+        "我是 Bryant — 做了 7 年产品经理，现在全职做独立开发。主力项目是 ColorWander，一个把照片变成色卡的 iOS app。也造 AI 伙伴和开发者工具，一个住在桌面上，一个住在口袋里。",
       recentThoughts: "最近的碎碎念",
       recentPosts: "最近的文章",
       all: "全部",
@@ -40,7 +40,7 @@ const dictionaries = {
     about: {
       title: "关于",
       intro1:
-        "我是 Bryant — 做了 7 年产品经理，现在全职做独立开发。造 AI 伙伴和开发者工具。一个住在桌面上，一个住在口袋里。",
+        "我是 Bryant — 做了 7 年产品经理，现在全职做独立开发。主力项目是 ColorWander，一个把照片变成色卡的 iOS app。也造 AI 伙伴和开发者工具，一个住在桌面上，一个住在口袋里。",
       intro2Pre: "前",
       intro2Link: "Motiff",
       intro2Post: "（AI 设计工具）产品经理。2026 年出来独立做自己想做的东西。",
@@ -61,8 +61,10 @@ const dictionaries = {
       },
     },
     projectDescriptions: {
+      ColorWander:
+        "把一张照片变成一张色卡的 iOS app。自动提取照片配色，做成色卡、手账日历、Live Photo，一键分享。目前的主力项目。",
       MemoryX:
-        "你的 AI 记忆伙伴。Chrome 插件已上线，帮你在浏览中自动记住、整理、浮现重要的信息。桌面端正在探索和 dogfooding 中，未来适时发布。",
+        "你的 AI 记忆伙伴，在浏览中自动记住、整理、浮现重要的信息。目前暂停迭代，留着自己用。",
       ClawPuter:
         "M5Stack Cardputer（ESP32-S3）上的像素桌面伙伴。AI 聊天、语音输入、实时天气、macOS 桌面宠物同步。[查看演示](https://bryantchen.cc/talk/clawputer-story/)",
       Curioso: "一个用 AI 驱动对话把好奇心变成知识的 iOS app。",
@@ -91,7 +93,7 @@ const dictionaries = {
     },
     home: {
       intro:
-        "Hi, I'm Bryant — PM turned builder. 7 years in product, now building AI companions and developer tools. One lives on your desktop, the other lives in your pocket.",
+        "Hi, I'm Bryant — PM turned builder. 7 years in product, now shipping solo. My main project is ColorWander, an iOS app that turns any photo into a color card. I also build AI companions and developer tools — one lives on your desktop, the other lives in your pocket.",
       recentThoughts: "Recent thoughts",
       recentPosts: "Recent posts",
       all: "all",
@@ -118,7 +120,7 @@ const dictionaries = {
     about: {
       title: "About",
       intro1:
-        "I'm Bryant — 7 years in product, now building AI companions. One lives on your desktop, the other lives in your pocket.",
+        "I'm Bryant — 7 years in product, now shipping solo. My main project is ColorWander, an iOS app that turns any photo into a color card. I also build AI companions — one lives on your desktop, the other lives in your pocket.",
       intro2Pre: "Former PM at ",
       intro2Link: "Motiff",
       intro2Post:
@@ -140,8 +142,10 @@ const dictionaries = {
       },
     },
     projectDescriptions: {
+      ColorWander:
+        "An iOS app that turns any photo into a color card. Auto-extracts the palette, composes journal, calendar, and Live Photo layouts, ready to share. My main project right now.",
       MemoryX:
-        "Your AI memory companion. Chrome extension is live — automatically remembers, organizes, and surfaces what matters as you browse. Desktop app in exploration and dogfooding, to be released when ready.",
+        "Your AI memory companion — automatically remembers, organizes, and surfaces what matters as you browse. Paused; kept around for personal use.",
       ClawPuter:
         "A pixel desktop companion for M5Stack Cardputer (ESP32-S3). AI chat, voice input, real-time weather, synced macOS desktop pet. [View slides](https://bryantchen.cc/talk/clawputer-story/)",
       Curioso:
