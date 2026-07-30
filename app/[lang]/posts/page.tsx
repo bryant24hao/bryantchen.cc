@@ -25,7 +25,9 @@ export default async function PostsPage({ params }: PageProps) {
       {posts.length === 0 ? (
         <p className="text-neutral-500">{t.empty}</p>
       ) : (
-        posts.map((post) => <PostCard key={post.slug} lang={lang} {...post} />)
+        posts.map((post) => (
+          <PostCard key={post.slug} lang={lang} {...post} showCover />
+        ))
       )}
     </div>
   );
