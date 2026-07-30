@@ -30,7 +30,7 @@ test("PostCard offers the list cover as an optional presentation", () => {
   assert.match(postCard, /showCover\s*&&/);
 });
 
-test("only the full posts index enables list thumbnails", () => {
-  assert.match(postsPage, /<PostCard[\s\S]*?showCover[\s\S]*?\/>/);
+test("post lists stay text-only until thumbnails are explicitly enabled", () => {
+  assert.doesNotMatch(postsPage, /<PostCard[\s\S]*?showCover[\s\S]*?\/>/);
   assert.doesNotMatch(homePage, /<PostCard[\s\S]*?showCover[\s\S]*?\/>/);
 });

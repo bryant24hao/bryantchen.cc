@@ -4,7 +4,7 @@
 
 **Goal:** Produce and integrate brand cover assets for `bryantchen.cc` that share the approved “行走中的蓝窗” visual system.
 
-**Architecture:** Generate a canonical 3:5 ZINE poster with the installed `gc-minimal-zine-poster-v0-1` prompt compiler, then create a wide homepage interpretation from the same visual grammar. Derive the compact list preview from the wide asset so the symbol, color, and paper treatment remain consistent. Add the wide image once at the top of the homepage and show the compact image only on the full posts index, keeping the homepage's recent-post list text-only to avoid repetition.
+**Architecture:** Generate a canonical 3:5 ZINE poster with the installed `gc-minimal-zine-poster-v0-1` prompt compiler, then create a wide homepage interpretation from the same visual grammar. Derive and retain a compact list preview from the wide asset so it is available for later use, but keep both the homepage recent-post list and the full posts index text-only for now. Add only the wide image at the top of the homepage.
 
 **Tech Stack:** Built-in image generation, ImageMagick for deterministic resizing/cropping, local PNG assets.
 
@@ -54,7 +54,7 @@
 **Files:**
 - Create: `scripts/brand-cover-integration.test.mjs`
 
-**Step 1:** Assert that the homepage references the wide cover, `PostCard` supports an optional cover, and the full posts index enables it.
+**Step 1:** Assert that the homepage references the wide cover, `PostCard` supports an optional cover, and current post lists keep it disabled.
 
 **Step 2:** Run `node --test scripts/brand-cover-integration.test.mjs` and confirm it fails because the cover has not been integrated.
 
@@ -69,7 +69,7 @@
 
 **Step 2:** Add an optional `showCover` presentation to `PostCard`, keeping the existing text-only rendering as the default.
 
-**Step 3:** Enable `showCover` only from the full posts index.
+**Step 3:** Keep `showCover` disabled in current post lists while retaining the optional presentation for later use.
 
 **Step 4:** Run `node --test scripts/brand-cover-integration.test.mjs` and confirm it passes.
 
