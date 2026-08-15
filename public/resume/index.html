@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>陈正豪 · 独立开发者</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        /* Apply saved theme before first paint (no flash) */
+        (function () {
+            try {
+                if (localStorage.getItem('cw-resume-theme') === 'light') {
+                    document.documentElement.dataset.theme = 'light';
+                }
+                document.documentElement.dataset.accent =
+                    localStorage.getItem('cw-resume-accent') || 'green';
+            } catch (e) {
+                document.documentElement.dataset.accent = 'green';
+            }
+        })();
+    </script>
     <style>
         :root {
             --bg-color: #0f1115;
@@ -16,7 +29,70 @@
             --card-bg: #16181d;
             --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            /* Derived tokens (dark defaults) */
+            --heading-color: #fff;
+            --muted-color: #ccc;
+            --quote-color: #777;
+            --quote-border: #333;
+            --hairline: rgba(255,255,255,0.1);
+            --hairline-faint: rgba(255,255,255,0.05);
+            --card-line: rgba(255, 255, 255, 0.08);
+            --card-line-faint: rgba(255, 255, 255, 0.04);
+            --card-fill: rgba(255, 255, 255, 0.03);
+            --grid-line: rgba(255,255,255,0.03);
+            --logo-bg: rgba(255, 255, 255, 0.1);
+            --tag-bg: #2a2d35;
+            --tag-color: #fff;
+            --footer-color: rgba(255, 255, 255, 0.5);
+            --accent-tint: color-mix(in srgb, var(--accent-color) 12%, transparent);
+            /* Content sheet (light mode renders it as a paper card) */
+            --sheet-bg: var(--bg-color);
+            --sheet-shadow: none;
         }
+
+        /* ---- Light theme ---- */
+        :root[data-theme="light"] {
+            --bg-color: #f4f5f7;
+            --text-primary: #2a2e36;
+            --text-secondary: #6a7280;
+            --accent-secondary: #14171d;
+            --border-color: #d7dbe2;
+            --card-bg: #ffffff;
+            --heading-color: #14171d;
+            --muted-color: #4c525c;
+            --quote-color: #6f747d;
+            --quote-border: #d0d4da;
+            --hairline: rgba(0,0,0,0.12);
+            --hairline-faint: rgba(0,0,0,0.07);
+            --card-line: rgba(0, 0, 0, 0.10);
+            --card-line-faint: rgba(0, 0, 0, 0.06);
+            --card-fill: rgba(0, 0, 0, 0.025);
+            --grid-line: transparent; /* No graph-paper grid on light */
+            --logo-bg: #ffffff;
+            --tag-bg: #e7eaef;
+            --tag-color: #2a2e36;
+            --footer-color: rgba(0,0,0,0.55);
+            --sheet-bg: #ffffff;
+            --sheet-shadow: 0 2px 28px rgba(22, 28, 40, 0.09);
+        }
+
+        /* Light mode: content area floats as a paper sheet */
+        :root[data-theme="light"] .resume-container {
+            border-radius: 10px;
+            margin: 8mm auto;
+        }
+
+        /* ---- Accent palettes (dark / light adaptive) ---- */
+        :root[data-accent="green"] { --accent-color: #00ff9d; }
+        :root[data-theme="light"][data-accent="green"] { --accent-color: #00875a; }
+        :root[data-accent="blue"] { --accent-color: #58b0ff; }
+        :root[data-theme="light"][data-accent="blue"] { --accent-color: #0b6bd4; }
+        :root[data-accent="amber"] { --accent-color: #ffb454; }
+        :root[data-theme="light"][data-accent="amber"] { --accent-color: #9a6100; }
+        :root[data-accent="pink"] { --accent-color: #ff6b9d; }
+        :root[data-theme="light"][data-accent="pink"] { --accent-color: #d02469; }
+        :root[data-accent="violet"] { --accent-color: #a78bff; }
+        :root[data-theme="light"][data-accent="violet"] { --accent-color: #6d3fd4; }
 
         @page {
             size: A4;
@@ -61,9 +137,10 @@
             flex-direction: column;
             gap: 7mm;
             background: 
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px) 0 0 / 20mm 20mm,
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px) 0 0 / 20mm 20mm;
-            background-color: var(--bg-color);
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 20mm 20mm,
+                linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 20mm 20mm;
+            background-color: var(--sheet-bg);
+            box-shadow: var(--sheet-shadow);
         }
 
         /* Remove old Sidebar Styling */
@@ -269,11 +346,11 @@
         .vision-statement {
             font-size: 10pt; /* Match list title size */
             font-weight: 600; /* Slightly lighter than titles (700) or match it */
-            color: #fff;
+            color: var(--heading-color);
             line-height: 1.5;
             margin-bottom: 5mm;
             padding-bottom: 4mm;
-            border-bottom: 1px dashed rgba(255,255,255,0.1); /* Subtle separator */
+            border-bottom: 1px dashed var(--hairline); /* Subtle separator */
         }
         
         .vision-highlight {
@@ -332,7 +409,7 @@
 
         .summary-box ul li strong {
             display: block;
-            color: #fff;
+            color: var(--heading-color);
             font-family: var(--font-main);
             font-size: 10pt;
             font-weight: 700;
@@ -364,7 +441,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5mm;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid var(--hairline-faint);
             padding-bottom: 1.5mm;
         }
         
@@ -378,7 +455,7 @@
             font-family: var(--font-mono);
             font-size: 7.5pt;
             color: var(--accent-color);
-            background: rgba(0, 255, 157, 0.1);
+            background: var(--accent-tint);
             padding: 1px 4px;
             border-radius: 2px;
             white-space: nowrap;
@@ -394,7 +471,7 @@
         .highlight-num {
             font-family: var(--font-mono);
             font-weight: 600;
-            color: #fff;
+            color: var(--heading-color);
         }
 
         /* Experience Section */
@@ -420,7 +497,7 @@
             height: 10mm;
             border-radius: 4px;
             object-fit: contain;
-            background-color: rgba(255, 255, 255, 0.1); /* Slight background */
+            background-color: var(--logo-bg); /* Slight background */
             border: 1px solid var(--border-color);
         }
 
@@ -445,8 +522,8 @@
         }
 
         .job-tag {
-            background: #2a2d35;
-            color: #fff;
+            background: var(--tag-bg);
+            color: var(--tag-color);
             padding: 1px 6px;
             border-radius: 10px;
             font-size: 7.5pt;
@@ -456,11 +533,11 @@
 
         .quote-block {
             font-style: italic;
-            color: #777;
+            color: var(--quote-color);
             font-size: 9pt;
             margin-bottom: 3mm;
             padding-left: 3mm;
-            border-left: 2px solid #333;
+            border-left: 2px solid var(--quote-border);
         }
         
         .job-detail-block {
@@ -469,26 +546,28 @@
 
         /* Highlighted Project Block */
         .project-highlight {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--card-fill);
+            border: 1px solid var(--card-line);
             border-radius: 4px;
             padding: 3mm;
             margin-bottom: 3mm;
             position: relative;
+            break-inside: avoid; /* Keep card (and its rail logo) on one printed page */
         }
 
         /* Normal Project Block */
         .project-normal {
-            border: 1px solid rgba(255, 255, 255, 0.04); /* Subtler border */
+            border: 1px solid var(--card-line-faint); /* Subtler border */
             border-radius: 4px;
             padding: 3mm;
             margin-bottom: 3mm;
             /* No background for visual hierarchy */
             position: relative; /* Anchor for left-rail project logo */
+            break-inside: avoid; /* Keep card (and its rail logo) on one printed page */
         }
 
         .project-highlight-title, .project-normal-title {
-            color: #fff;
+            color: var(--heading-color);
             font-weight: 700;
             font-size: 9.5pt;
             margin-bottom: 1.5mm;
@@ -505,7 +584,7 @@
             font-family: var(--font-mono);
             font-size: 7.5pt;
             color: var(--accent-color);
-            background: rgba(0, 255, 157, 0.1);
+            background: var(--accent-tint);
             padding: 1px 6px;
             border-radius: 2px;
             font-weight: 600;
@@ -519,17 +598,17 @@
             min-width: 0;
         }
 
-        /* Hang project logos in the same left rail as company logos
-           (company: 10mm at -14mm → rail center -9mm; project 8mm → -13mm) */
+        /* Hang project logos in the same rail as .company-logo
+           (extra 1px compensates the card border inset) */
         .project-logo {
             position: absolute;
-            left: -13mm;
-            top: 2.5mm;
-            width: 8mm;
-            height: 8mm;
+            left: calc(-14mm - 1px);
+            top: 2mm;
+            width: 10mm;
+            height: 10mm;
             border-radius: 4px;
             object-fit: contain;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: var(--logo-bg);
             border: 1px solid var(--border-color);
         }
 
@@ -552,15 +631,15 @@
 
         .project-summary {
             font-size: 9pt;
-            color: #ccc;
+            color: var(--muted-color);
             margin-bottom: 2mm;
             padding-bottom: 2mm;
-            border-bottom: 1px dashed rgba(255,255,255,0.1);
+            border-bottom: 1px dashed var(--hairline);
             font-weight: 500;
         }
         
         .job-detail-title {
-            color: #ccc;
+            color: var(--muted-color);
             font-weight: 600;
             font-size: 9.5pt;
             margin-bottom: 1mm;
@@ -654,7 +733,7 @@
             text-align: center;
             font-family: var(--font-mono);
             font-size: 9pt;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--footer-color);
             margin-top: 5mm;
             padding-bottom: 4mm;
             letter-spacing: 0.5px;
@@ -666,7 +745,7 @@
                 width: 100% !important;
                 max-width: 100vw !important;
                 min-height: auto !important;
-                background-color: #0f1115;
+                background-color: var(--bg-color);
                 overflow-x: hidden;
             }
 
@@ -675,7 +754,7 @@
                 max-width: 100% !important;
                 min-height: auto !important;
                 padding: 20px;
-                background: none;
+                background-image: none; /* Drop grid only; keep --sheet-bg (light-mode legibility) */
                 gap: 20px;
                 box-sizing: border-box;
             }
@@ -769,7 +848,7 @@
                 gap: 4px;
                 margin-bottom: 15px;
                 padding-bottom: 10px;
-                border-bottom: 1px dashed rgba(255,255,255,0.1);
+                border-bottom: 1px dashed var(--hairline);
             }
             
             .edu-row:last-child {
@@ -788,16 +867,82 @@
             }
         }
 
+        /* Theme controls (screen only) */
+        .theme-controls {
+            position: fixed;
+            top: 8px;
+            right: 12px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 11px;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            background: var(--card-bg); /* Fallback when color-mix unsupported */
+            background: color-mix(in srgb, var(--card-bg) 88%, transparent);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .tc-mode {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 13px;
+            line-height: 1;
+            padding: 2px;
+            width: 18px; /* Fixed slot so ☀/☾ swap doesn't shift the pill */
+            text-align: center;
+        }
+
+        .tc-sep {
+            width: 1px;
+            height: 14px;
+            background: var(--border-color);
+        }
+
+        .tc-dot {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            border: 1px solid var(--hairline);
+            background: var(--dot);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .tc-dot.active,
+        .tc-mode:focus-visible,
+        .tc-dot:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+
         /* Print adjustments */
         @media print {
             html, body {
-                background-color: #0f1115 !important;
+                background-color: var(--bg-color) !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
+
+            .theme-controls {
+                display: none !important;
+            }
             .resume-container {
                 min-height: auto;
-                background: #0f1115; /* Maintain dark theme in print */
+                background: var(--sheet-bg); /* Follow active theme in print */
+                box-shadow: none;
+                margin: 0 auto;
+                border-radius: 0;
+            }
+
+            /* Must out-specify the light-mode sheet rule (0,3,0) */
+            :root[data-theme="light"] .resume-container {
+                margin: 0 auto;
+                border-radius: 0;
             }
             .page-number {
                 position: fixed;
@@ -808,6 +953,15 @@
     </style>
 </head>
 <body>
+    <div class="theme-controls" role="group" aria-label="外观设置">
+        <button type="button" class="tc-mode" id="tcMode" aria-label="切换明暗模式" aria-pressed="false">☀</button>
+        <span class="tc-sep" aria-hidden="true"></span>
+        <button type="button" class="tc-dot" data-a="green" style="--dot:#00c67a" aria-label="绿色主题色"></button>
+        <button type="button" class="tc-dot" data-a="blue" style="--dot:#3f9df5" aria-label="蓝色主题色"></button>
+        <button type="button" class="tc-dot" data-a="amber" style="--dot:#e79a2e" aria-label="琥珀主题色"></button>
+        <button type="button" class="tc-dot" data-a="pink" style="--dot:#f2508a" aria-label="粉色主题色"></button>
+        <button type="button" class="tc-dot" data-a="violet" style="--dot:#8b66e8" aria-label="紫色主题色"></button>
+    </div>
     <div class="resume-container">
         <!-- Decor -->
         <div class="corner-decor top-right"></div>
@@ -863,7 +1017,7 @@
                             <span class="summary-num">04</span>
                             <div class="summary-content">
                                 <strong>AI 原生工作流</strong>
-                                需求、开发、测试、素材、数据分析全流程 AI 化（Claude Code / Cursor 深度用户），一个人保持一支小团队的交付速度。
+                                需求、开发、测试、素材、数据分析全流程 AI 化（Claude Code / Codex 深度用户），一个人保持一支小团队的交付速度。
                             </div>
                         </li>
                         <li>
@@ -908,7 +1062,7 @@
                             <li><strong>全链路独立完成</strong>：产品设计、SwiftUI 原生开发、App Store 上架，上线 3 个月内迭代至 v1.4。</li>
                             <li><strong>数据驱动</strong>：自建 PostHog 埋点与经营数据看板，以转化、留存与分区收入数据驱动版本和定价决策。</li>
                             <li><strong>内容驱动增长</strong>：自运营小红书 / 抖音 / 公众号，单条爆款教程内容即带来当周收入峰值。</li>
-                            <li><strong>商业化</strong>：买断 + 订阅双模式并行，新加坡、澳洲等市场 ARPPU 为大陆的数倍。</li>
+                            <li><strong>商业化</strong>：买断 + 订阅双模式并行，按市场差异化定价。</li>
                         </ul>
                     </div>
 
@@ -1140,7 +1294,7 @@
                 </div>
                 <div class="skill-item">
                     <div class="skill-title">写作、动手与创造</div>
-                    <div class="skill-desc">公众号「豪大说」持续写作 10 年；最近在 Vibe Writing —— 基于 Cursor + Obsidian 打造了从内容输入到输出的完整自动化工作流。业余时间都在 Vibe coding 各种好玩的项目；最近沉迷于拓竹 3D 打印各种小物件。</div>
+                    <div class="skill-desc">公众号「豪大说」持续写作 10 年；最近在 Vibe Writing —— 基于 Claude Code + Obsidian 打造了从内容输入到输出的完整自动化工作流。业余时间都在 Vibe coding 各种好玩的项目；最近沉迷于拓竹 3D 打印各种小物件。</div>
                 </div>
             </section>
 
@@ -1150,8 +1304,57 @@
             了解更多 <a href="https://bryantchen.cc" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline; text-underline-offset: 2px;">bryantchen.cc</a>
         </div>
     </div>
+    <script src="lucide.min.js"></script>
     <script>
-        lucide.createIcons();
+        /* Icons are decorative — never let their failure reach other scripts */
+        try { lucide.createIcons(); } catch (e) { /* no-op */ }
+    </script>
+    <script>
+        /* Theme + accent switcher */
+        (function () {
+            var root = document.documentElement;
+            var modeBtn = document.getElementById('tcMode');
+            var dots = document.querySelectorAll('.tc-dot');
+
+            function save(key, val) {
+                try { localStorage.setItem(key, val); } catch (e) { /* private mode */ }
+            }
+            function renderMode() {
+                var light = root.dataset.theme === 'light';
+                modeBtn.textContent = light ? '☾' : '☀';
+                modeBtn.setAttribute('aria-pressed', String(light));
+            }
+            function renderDots() {
+                var cur = root.dataset.accent || 'green';
+                dots.forEach(function (d) {
+                    var on = d.dataset.a === cur;
+                    d.classList.toggle('active', on);
+                    d.setAttribute('aria-pressed', String(on));
+                });
+            }
+
+            modeBtn.addEventListener('click', function () {
+                if (root.dataset.theme === 'light') {
+                    delete root.dataset.theme;
+                    save('cw-resume-theme', 'dark');
+                } else {
+                    root.dataset.theme = 'light';
+                    save('cw-resume-theme', 'light');
+                }
+                renderMode();
+            });
+
+            dots.forEach(function (d) {
+                d.addEventListener('click', function () {
+                    root.dataset.accent = d.dataset.a;
+                    save('cw-resume-accent', d.dataset.a);
+                    renderDots();
+                });
+            });
+
+            renderMode();
+            renderDots();
+        })();
     </script>
 </body>
 </html>
