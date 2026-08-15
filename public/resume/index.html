@@ -484,6 +484,7 @@
             padding: 3mm;
             margin-bottom: 3mm;
             /* No background for visual hierarchy */
+            position: relative; /* Anchor for left-rail project logo */
         }
 
         .project-highlight-title, .project-normal-title {
@@ -518,13 +519,18 @@
             min-width: 0;
         }
 
+        /* Hang project logos in the same left rail as company logos
+           (company: 10mm at -14mm → rail center -9mm; project 8mm → -13mm) */
         .project-logo {
-            width: 5.2mm;
-            height: 5.2mm;
-            border-radius: 1.5px;
+            position: absolute;
+            left: -13mm;
+            top: 2.5mm;
+            width: 8mm;
+            height: 8mm;
+            border-radius: 4px;
             object-fit: contain;
-            background-color: #fff;
-            flex-shrink: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
         }
 
         .project-link {
@@ -683,6 +689,14 @@
                 position: relative !important;
                 left: 0 !important;
                 margin-bottom: 10px;
+            }
+
+            .project-logo {
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 20px;
+                height: 20px;
             }
 
             /* Header */
