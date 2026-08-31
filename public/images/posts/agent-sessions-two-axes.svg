@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="900" height="240" fill="#fafafa" rx="12"/>
+  <text x="450" y="28" text-anchor="middle" font-size="14" font-weight="600" fill="#71717a">Two axes for live agent tabs</text>
+
+  <rect x="24" y="48" width="410" height="168" rx="12" fill="#fff" stroke="#e4e4e7" stroke-width="1.5"/>
+  <rect x="24" y="48" width="410" height="36" rx="12" fill="#eff6ff"/>
+  <text x="229" y="72" text-anchor="middle" font-size="13" font-weight="600" fill="#2563eb">Product</text>
+  <text x="44" y="108" font-size="13" fill="#3f3f46">Has a repo. Has versions. Something to ship.</text>
+  <text x="44" y="132" font-size="13" fill="#3f3f46">One workspace per product.</text>
+  <text x="44" y="156" font-size="13" fill="#3f3f46">Tab = one event (a release, a board, a bug).</text>
+  <text x="44" y="188" font-size="12" fill="#71717a">Folder = the repo. Leave it where it is.</text>
+
+  <rect x="466" y="48" width="410" height="168" rx="12" fill="#fff" stroke="#e4e4e7" stroke-width="1.5"/>
+  <rect x="466" y="48" width="410" height="36" rx="12" fill="#f0fdf4"/>
+  <text x="671" y="72" text-anchor="middle" font-size="13" font-weight="600" fill="#16a34a">Practice</text>
+  <text x="486" y="108" font-size="13" fill="#3f3f46">Recurs for years. May never be a product.</text>
+  <text x="486" y="132" font-size="13" fill="#3f3f46">Learning / writing / indie-ops buckets.</text>
+  <text x="486" y="156" font-size="13" fill="#3f3f46">Tab = one episode or one errand.</text>
+  <text x="486" y="188" font-size="12" fill="#71717a">Do not mix these into a product repo.</text>
+</svg>
