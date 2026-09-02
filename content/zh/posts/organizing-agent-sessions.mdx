@@ -1,0 +1,79 @@
+---
+title: "终端里十几条 AI 会话，怎么按「项目制」和「长期习惯」收起来"
+date: "2026-08-21T00:00:00"
+description: "Ghostty 里堆满 Claude / Grok tab 时，不要按文件夹分。用项目制和长期个人习惯两条轴，把原会话 resume 进 Herdr。附可给 agent 跑的 skill，以及口播提纲。"
+tags: ["工作流", "AI", "独立开发"]
+draft: false
+---
+
+终端里同时开着十几条还活着的 Claude、Grok，是独立开发者很常见的一种脏。不是「标签页太多」那么简单：每条都是一段没写完的工作记忆。关掉会心虚，留着又找不到。
+
+我后来用的方法不是再买一个笔记软件，而是换分类轴，再把会话原样接进一个不会因为关窗口而死掉的 multiplexer。工具层我用的是 [Herdr](https://herdr.dev) 和 Ghostty；方法本身不绑死这两样。
+
+给 agent 跑的版本在 skill `organizing-agent-sessions`。下面这篇是给人看的。
+
+## 先换轴，再搬家
+
+默认直觉是按文件夹分：这个目录是产品 A，那个目录是学习材料。这会错。tab 开在哪，只说明你当时站在哪，不说明这段对话在干什么。
+
+我改成两条轴：
+
+![把活着的 agent tab 分成项目制和长期个人习惯](/images/posts/agent-sessions-two-axes.svg)
+
+**项目制**：有仓库、有版本、要交付。一个产品一个 workspace。里面的 tab 是事件：某次发版、一块看板、一个 bug。
+
+**长期个人习惯**：你会反复做、不一定变成产品。常见三个桶：
+
+- **个人学习**：播客、逐字稿、Knowledge Pack，一期一个 tab
+- **独立开发**：不绑某个 app 的事，比如商店计划、分享稿、报税和运营复盘
+- **inbox**：正在做「把这些 tab 收起来」这件事的对话，留在原地
+
+判定只问一句：这段工作有没有一个要 ship 的产品和仓库？有，走项目制。没有，但是你会反复做，走习惯。说不清，停下来问人，不要猜。
+
+有一条会话特别能说明 cwd 不可信：它开在学习材料的目录里，聊的却是某个产品的调研。按目录会进「个人学习」；按内容应该 resume 进那个产品的仓库。**按内容，cwd 跟着改。**
+
+## 不要把进程「搬过去」
+
+Ghostty 的 tab 搬不进 Herdr。Herdr 是另一套还活着的终端。正确做法是：在对应目录里，用**原来的 session ID** 再打开一次。
+
+```bash
+claude --resume <uuid>
+grok --resume <uuid>
+```
+
+不要 fork。fork 看起来更安全，其实是丢掉连续性。
+
+冷掉、已经告一段落的事件：只建一个挂名 tab，shell 里留一行 resume 命令，这轮不要全部拉起来。
+
+## 五步，且顺序不能反
+
+![先盘点、确认，再搭布局、resume，最后才关源 tab](/images/posts/agent-sessions-migrate-flow.svg)
+
+1. **盘点**。每个活 tab：agent、session ID、cwd、用户最近在干什么。按内容标轴，不要按标题。
+2. **确认**。把地图拿给人看。轴、桶、哪些 resume、哪些只挂名，人点头再动。
+3. **搭布局**。还在当前这个 Herdr session 里做，不要再开一个 named session。调用处改名为 inbox。每个桶一个 workspace，每个事件一个 tab。
+4. **resume**。只拉热的、还在用的。同一 UUID 不要 Ghostty 和 Herdr 双开太久。
+5. **确认历史还在，再关源 tab**。关的是旧的 Claude / Grok tab，不是跑着 Herdr 的那一个窗口。
+
+文件夹这轮可以不动。会话先按轴站好队；目录归拢是另一件事。
+
+Agent 如果弹出「信不信这个文件夹」「用不用 Chrome」，停下来问人。不要为了迁完而代点。
+
+## 一次真实的规模，隐去产品名
+
+大约 14 个活 tab，收成：
+
+- 项目制：两三个产品仓库，热事件 resume，已 ship / 已归档的只挂名
+- 习惯：一期学习录音两条会话、独立开发者运营两条、当前 inbox 一条
+
+Grok 的会话 ID 对得上，标题也还在。Claude 有时会先停在许可框上——那不是失败，是新环境的第一道门。源 tab 先留着，直到你在 Herdr 里看见原来的对话。
+
+## 给下次的自己，也给别的 agent
+
+方法写成了一个 skill，叫 `organizing-agent-sessions`（目前只在我本机用，还没公开发布）。
+
+以后只要说「把这些 tab 收进 Herdr」，agent 应该先画双轴地图，而不是把所有东西倒进当前 workspace。
+
+公开分享时不要带上真实 UUID、本机绝对路径、未公开的收入数字。案例用「产品 A / 一期播客」就够了。
+
+口播提纲在仓库 `docs/scripts/organizing-agent-sessions-talk.md`，大约 7 分钟。这轮只出稿，不拍。
