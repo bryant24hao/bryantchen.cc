@@ -243,8 +243,10 @@ html,body{height:100%;background:var(--ground);overflow:hidden;
 .qr img{width:170px;height:170px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px}
 .qr .qn{margin-top:12px;font-size:16px;font-weight:600}
 .qr .qs{margin-top:3px;font-size:14px;font-weight:600;color:var(--muted)}
-.checkin{display:flex;justify-content:center;margin-top:22px}
+.checkin{display:flex;justify-content:center;gap:56px;margin-top:22px;flex-wrap:wrap}
 .checkin img{width:300px;height:300px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+.checkin .qb{display:flex;flex-direction:column;align-items:center;gap:10px}
+.checkin .qb .ql{font-size:15px;font-weight:700;color:var(--muted)}
 
 /* ---------- placeholder (备课占位) ---------- */
 .ph{margin-top:26px;border:1px dashed var(--line);border-radius:8px;padding:20px 22px;
@@ -2249,9 +2251,12 @@ html[data-mode="dark"] .hud #mode .ico-sun{opacity:1;pointer-events:none}
 <section class="slide">
   <div class="content">
     <div class="kicker"><span class="idx">Q&A</span><span class="rule"></span><span class="tag">调研</span></div>
-    <h2 class="title">请【推推】扫码完成满意度调研</h2>
-    <div class="subtitle">结束前麻烦扫一下，帮助我们改进后面的分享</div>
-    <div class="checkin"><img src="assets/qr-survey.png" alt="满意度调研二维码"></div>
+    <h2 class="title">请【推推】扫码签到 + 完成满意度调研</h2>
+    <div class="subtitle">来晚了还没签到的，和结束前的评分，一起在这页扫</div>
+    <div class="checkin">
+      <div class="qb"><img src="assets/qr-checkin.png" alt="签到二维码"><span class="ql">签到</span></div>
+      <div class="qb"><img src="assets/qr-survey.png" alt="满意度调研二维码"><span class="ql">满意度调研</span></div>
+    </div>
   </div>
 </section>
 
