@@ -7,8 +7,876 @@
     <link>https://bryantchen.cc/en</link>
     <description>Bryant&apos;s personal website — indie dev, AI, product thinking</description>
     <language>en</language>
-    <lastBuildDate>Thu, 16 Apr 2026 04:44:45 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 07 Sep 2026 13:17:19 GMT</lastBuildDate>
     <atom:link href="https://bryantchen.cc/en/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Indie Maker W32 | A Talk, Reply to Everything, and Rereading Small Giants</title>
+      <link>https://bryantchen.cc/en/posts/indie-maker-w32</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/indie-maker-w32</guid>
+      <pubDate>Mon, 07 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Day 228 of my one-person company. A well-received talk at a big company, swapping a reply filter for &apos;reply to everything,&apos; rereading Small Giants, Zheng Qinwen&apos;s seven-game comeback, and a week whose theme color was coffee brown.</description>
+      <content:encoded><![CDATA[> Today is day 228 of my one-person company. This *Indie Maker* column is where I record my own growth and how the business is going. I hope you find something useful in it.
+>
+> This week:
+> 1. I gave a talk, and it landed
+> 2. Marketing: redundancy instead of filtering
+> 3. Rereading *Small Giants*
+> 4. Zheng Qinwen's comeback at the US Open
+> 5. ColorWander: this week's theme color was coffee brown
+> 6. Did I run? Easy runs
+
+The first week of a month is never my best state. I did last month's business and marketing review, handled a pile of miscellaneous work, and the week was gone.
+
+## A talk that landed
+
+Thursday I gave a talk at a large company and got a lot of kind feedback. Thinking about it afterwards, the part I did best was holding practice and theory in the same room.
+
+I walked through the full loop of the past year — one person plus agents, from research and product design through engineering, marketing, and the business dashboard. Preparing it, I also sat the talk next to practices from frontier labs like Anthropic and OpenAI, and marked where my own loop still has room.
+
+It doubled as a review of myself. I'll try to publish the parts that can be shared as a post. And if your organization would like me to give the talk, you're welcome to get in touch.
+
+## Marketing: redundancy instead of filtering
+
+Early this week I reviewed August's marketing work and distilled a scoring rule for which posts to reply to — relevance, quality of the original poster, quality of existing replies — a 1–10 "should I reply" index.
+
+The rule ran for one day and I successfully missed a viral thread. I saw the post, handed it to the AI, it said skip, I trusted it — and the thread blew up, replies did well too. I slapped my thigh and changed the policy: reply to everything worth a shot.
+
+If something is cheap to do, hard to attribute, and huge when it hits, use redundancy. Don't filter it.
+
+## Rereading *Small Giants*
+
+I started rereading *Small Giants* (the Chinese edition is titled *小而美：持续盈利的经营法则*). I'd heard of it early in my career and read a bit. Coming back to it now feels completely different. Years ago I landed on "small and beautiful." Now I land on "operating principles for staying profitable." That might count as growth.
+
+Places that now resonate — the same pages I bounced off years ago and quit. Whether a book fits *this* version of you is a strange, real thing.
+
+A few examples.
+
+One principle I use now: before I formally start a product, I try a WeChat Moment or a video, recruit a small community of people who care, and run the idea as a community rather than as a product. If I can keep that community going, I probably have the stamina to build the product. If I can't even keep the community, I probably can't ship the product either. Then I hit this line and felt seen:
+
+> Like me, what they care about first is connecting with each other — having the space, time, and freedom to explore what they love, and eventually turning that love into a life's work in a way that means something.
+
+![A passage from Small Giants on turning what you love into work](/images/posts/indie-maker-w32-small-giants-community.jpg)
+
+And on building in public:
+
+When I got to "work in public, teach everything you know, create every day," I thought: that's exactly what I'm doing.
+
+![A passage from Small Giants on working in public](/images/posts/indie-maker-w32-small-giants-build-in-public.jpg)
+
+Still reading. When I finish I might write a proper reading note.
+
+## Witnessing a miracle: Zheng Qinwen at the US Open
+
+Early Sunday morning I watched Zheng Qinwen vs. Madison Keys in the US Open women's third round. First set 1–6, a wipeout. Second set she took the tiebreak. Deciding set 0–5, Keys held match point, I thought this was going to be a bagel. Instead I watched the first comeback in the Open Era of women's Grand Slam singles from 0–5 in a deciding set to 7–5 — she saved the match point, won seven games in a row, and went through.
+
+![A ColorWander card of Zheng Qinwen's seven-game comeback](/images/posts/indie-maker-w32-zheng-qinwen.jpg)
+
+That's sport: you don't know until it's over. And for the player, staying on the next point, one point at a time, is maybe how miracles get made. In the interview afterwards Zheng said that at 0–5 she was thinking she had to take at least one game — getting bagelled would be too embarrassing. (Not the exact words. That's the gist. I didn't go look up the quote.)
+
+## ColorWander: this week's theme color was coffee brown
+
+I noticed by accident that the theme colors pulled from the photos I snapped this week were all coffee brown.
+
+### A new café
+
+Monday afternoon I worked with a friend at il gatto, in the embassy area. The space is bright; I like the glass skylight. I took the photo below. The tables aren't great for laptops (too small), but they're good for talking.
+
+![A ColorWander card: Ritan Park, Beijing, the glass skylight at il gatto](/images/posts/indie-maker-w32-il-gatto.jpg)
+
+### Light on the water
+
+Tuesday evening after dinner I passed Beixiaohe and caught the sunset sitting on the river. Beautiful.
+
+![A ColorWander card: sunset on Beixiaohe](/images/posts/indie-maker-w32-beixiaohe.jpg)
+
+### Grid on Sunday
+
+September at Grid Coffee is Yunnan season. I like the sleeves and the bags.
+
+![A ColorWander card: Grid Coffee's Yunnan season](/images/posts/indie-maker-w32-grid-coffee.jpg)
+
+### Did I run? Easy runs
+
+Still four runs this week, mostly easy.
+
+![A ColorWander card from an easy run](/images/posts/indie-maker-w32-easy-run.jpg)
+
+That's the week.]]></content:encoded>
+    </item>
+    <item>
+      <title>Indie Maker W30 | Aesthetic Fatigue, Token Surplus, and Learning to Be Lazy</title>
+      <link>https://bryantchen.cc/en/posts/indie-maker-w30</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/indie-maker-w30</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Day 214 of my one-person company. Only 130 days left in the year, a conversation about aesthetic fatigue and scarcity, automating my business dashboard with an API, token surplus as cognitive surplus, and what to do while waiting on AI.</description>
+      <content:encoded><![CDATA[> Today is day 214 of my one-person company. This *Indie Maker* column is where I record my own growth and how the business is going. I hope you find something useful in it.
+>
+> This week:
+> 1. Only 130 days left in the year
+> 2. A conversation about "aesthetic fatigue"
+> 3. Learning to be lazy
+> 4. Token surplus
+> 5. The products that surprised me this week: Grok Build and Grok Bot
+> 6. I play chess while waiting on AI — what about you?
+
+## Only 130 days left in the year
+
+Here's a horror story: there are only 130 days left in the year. Which isn't hard to make sense of — today is day 214 of my one-person company, so the two clocks are running almost in sync. Still, realizing the year wraps up in four months makes time feel like it's flying.
+
+Friday evening I stepped outside, looked up, and caught this sunset. I snapped it and saved it as an August calendar in ColorWander — and the literary line it paired with landed exactly on how I felt standing there.
+
+![An August calendar card made with ColorWander: a city skyline at sunset](/images/posts/indie-maker-w30-august-calendar.jpg)
+
+## A conversation about "aesthetic fatigue"
+
+> This week I happened to scroll past a post that went: "I've hit aesthetic fatigue on the whole black-white-grey + polka dots + pink bows + music notes + angel wings thing, plus the thin-weight English and Korean lettering. It's blanketed the lower-tier platforms. What used to look cool has turned into a plate of leftover combo food someone's shoving in my mouth."
+>
+> A really thought-provoking observation.
+
+These past couple of years, as AI has pushed down the cost of producing every kind of content, people keep reaching for the words "aesthetics" or "taste." Riffing on that post, I started a conversation with AI:
+
+**1. Why do I no longer like something I used to find good-looking?**
+
+Taste isn't really about "does this look good." It's more like: a group of people share one set of symbols for a stretch of time, and through sheer use that set goes from "has taste" to "instantly nameable." Once you can name it, the beauty demotes itself to inventory.
+
+In a word: taste is a function of scarcity.
+
+**2. Does blindly following a trend make a good-looking thing lose its beauty through overexposure?**
+
+Yes, it loses beauty through overexposure — but not because the thing got uglier. The bow is still the same bow. What changed is that it no longer says anything. It used to say "I noticed this, I chose this"; after the pile-on it only says "I use the same set as everyone in the feed." The beauty is still in the object; what stops working is the distinction. So it isn't "used too much, therefore ugly" — it's that spreading it everywhere, at the same time, in the same form, with no restraint, exhausted the signal.
+
+Which is exactly where *Think different* and *Make something different* earn their keep. *Think different* means noticing that a set of symbols has become nameable and choosing not to add to it. *Make something different* is the real work: building something that can't be named at a glance. Treat *Think different* as nothing but a slogan and the slogan itself becomes inventory soon enough.
+
+## Learning to be lazy
+
+Friday night I rebuilt my marketing and business dashboard. Until now, pulling ASC (App Store Connect, Apple's data console for developers) numbers meant exporting them by hand — which meant it couldn't update daily, and it was a chore.
+
+So I asked AI whether it could be automated, and sure enough there's an API. Which is the lesson: on work like this, don't be too industrious. Learn to be lazy and let AI do it.
+
+Business dashboard officially upgraded.
+
+At some point I'd like to write a proper piece on how I use AI to pull the data automatically and run business diagnostics and tracking on top of it. Curious whether anyone would actually be interested in this dashboard setup of mine?
+
+## Token surplus
+
+Years ago I read a book called *Cognitive Surplus*. I can't remember much of what was in it, but I've always liked the phrase — and in the AI era, I'd say "token surplus = cognitive surplus." Why?
+
+The moment that brought this home recently:
+
+I'd just bought Grok's $300 plan (more on that below), and I had usage to spare, so this week I built ColorWander with one hand and did a full cleanup of my Obsidian vault with the other — basically housework for my knowledge base.
+
+Once the vault was tidy, all the context about me finally had somewhere to settle. A few things came out of it. One was pulling together every post I've ever published on my personal site and my regular social accounts, in full. That'll make it much easier to sit down with AI later and do some self-analysis.
+
+The point of the example: because I had tokens to spare, I started looking for the things I'd never had the time or resources to do, and spending the surplus on them. A related observation — every time Codex hands out a usage reset, either I or someone I know ends up making something new.
+
+So: in the AI era, no amount of tokens is too many. Keep a token surplus (you don't have to spend it, but you do need to have it).
+
+## The products that surprised me this week: Grok Build and Grok Bot
+
+Picking up from "token surplus" — early Sunday morning last week I came across a Grok discount, took one look at how good the deal was, and grabbed it on the principle that getting in is winning.
+
+Since then I've been using Grok's CLI agent — Grok Build (their answer to Claude Code / Codex) — in some of my non-core work.
+
+Grok's TUI (terminal UI): the design quality, how good it looks, how transparent and friendly it is about what's happening mid-task — saying it runs circles around Claude Code is no exaggeration.
+
+![The Grok Build TUI launch screen](/images/posts/indie-maker-w30-grok-build-tui.png)
+
+For casual chat I use Grok Bot. How to describe it — Grok Bot is like a certain kind of colleague: not the smartest, not the strongest at the actual craft, but genuinely fast, and reliably delivers a 70-out-of-100 result. If your bar for the output isn't that high, it's a pleasant surprise.
+
+Grok Bot has also absorbed a bunch of the ideas that made OpenClaw take off earlier this year (heartbeats, plugin-ecosystem connections, agent group chats). Given how weak Grok has been in the past, what they shipped here is decent enough (rumor has it the Cursor team is behind it). My weekly notes and diary this week were all put together on walks, in the car, or on the subway — talking to Grok Bot and dumping it straight into Notion.
+
+That said, Grok's raw intelligence still can't touch the SOTA models (Fable5, GPT5.6 Sol), so I can't hand it my most important work.
+
+## I play chess while waiting on AI — what about you?
+
+Two months ago I started playing chess in the Duolingo app. Something I've noticed about myself lately: I've been playing a lot of chess. It's all during the gaps while I wait for AI to finish, but it still pulls my attention away.
+
+So I've started deliberately cutting back. Now, while I'm waiting on AI, I go reply to posts on my social accounts and work on growing them instead.
+
+So — what do you do while you're waiting on AI?
+
+## Finally
+
+Shot on a run on Sunday night, saved as a ticket stub with ColorWander.
+
+![A running ticket stub made with ColorWander: a North 5th Ring Road sign at night](/images/posts/indie-maker-w30-night-run.jpg)
+
+That's it for this week. See you next week 👋]]></content:encoded>
+    </item>
+    <item>
+      <title>How to file a pile of live AI terminal sessions: product vs practice</title>
+      <link>https://bryantchen.cc/en/posts/organizing-agent-sessions</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/organizing-agent-sessions</guid>
+      <pubDate>Fri, 21 Aug 2026 00:00:00 GMT</pubDate>
+      <description>When Ghostty is full of Claude and Grok tabs, do not sort by folder. File them on two axes — product vs long-running personal practice — and resume the original session IDs into Herdr.</description>
+      <content:encoded><![CDATA[A dozen live Claude and Grok tabs is a common kind of dirt for a solo developer. Each tab is unfinished working memory. Closing them feels reckless. Keeping them makes them unfindable.
+
+The fix is not another notes app. It is a different axis, then resuming those sessions into a multiplexer that does not die when you close a window. I used [Herdr](https://herdr.dev) and Ghostty. The method is not married to either.
+
+The agent-facing version is the skill `organizing-agent-sessions`. This post is the human one.
+
+## Change the axis before you move anything
+
+The default instinct is folders: this directory is Product A, that one is study material. That fails. Where a tab was opened is where you were standing, not what the conversation is doing.
+
+Use two axes:
+
+![Split live agent tabs into product work and long-running practice](/images/posts/agent-sessions-two-axes.svg)
+
+**Product**: a repo, versions, something to ship. One workspace per product. Tabs are events: a release, a board, a bug.
+
+**Practice**: work you will repeat for years and that may never become a product. Three buckets I keep:
+
+- **Learning** — podcasts, transcripts, knowledge packs; one episode per tab
+- **Indie-ops** — not bound to one app: store programs, talks, tax and ops reviews
+- **Inbox** — the conversation that is doing the filing. Leave it where it is.
+
+One question: does this work have a product and a repo to ship? If yes, product. If no, but you will keep doing it, practice. If you cannot tell, stop and ask. Do not guess.
+
+Cwd lies. A session can sit in a learning folder and still be product research. File it on the product axis and resume with the product repo as cwd.
+
+## You cannot drag a process across
+
+A Ghostty tab cannot be moved into Herdr. Herdr owns another set of live terminals. Re-open the same conversation in the right directory with the **original session ID**:
+
+```bash
+claude --resume <uuid>
+grok --resume <uuid>
+```
+
+Do not fork. Fork looks safer and throws continuity away.
+
+Cold, finished events get a named tab and a resume one-liner in the shell. Do not bring every archive back to life in this pass.
+
+## Five steps, in this order
+
+![Inventory, confirm, lay out, resume, then close the source tab](/images/posts/agent-sessions-migrate-flow.svg)
+
+1. **Inventory.** Agent, session ID, cwd, last intent. Classify by content.
+2. **Confirm.** Show the map. Axes, buckets, resume vs stub. Wait for a yes.
+3. **Layout.** Stay in the current Herdr session. Rename the caller to inbox. One workspace per bucket, one tab per event.
+4. **Resume** only hot work. Do not dual-run the same UUID for long.
+5. **See the history, then close the source tab.** Close the old agent tabs, not the multiplexer client.
+
+Leave folders alone unless you explicitly decided to relocate them. Filing is sessions.
+
+If the agent asks whether to trust a folder or use the browser, stop and ask the human.
+
+## A real pass, with names removed
+
+About fourteen live tabs became:
+
+- Product: a couple of app repos; hot events resumed; shipped work stubbed
+- Practice: two sessions from one learning episode, two indie-ops errands, plus inbox
+
+Grok came back idle with the same titles. Claude sometimes stops on a permission gate first — that is a new environment, not a failed resume. Keep the source tab until the old conversation is on screen.
+
+## For the next agent, and for publishing
+
+The method is now a skill, `organizing-agent-sessions` (local only for now, not published). Next time, “file these tabs into Herdr” should produce a two-axis map, not a dump into the current workspace.
+
+Do not publish real UUIDs, home-directory paths, or private revenue. “Product A / one podcast episode” is enough.
+
+The talking-head outline is `docs/scripts/organizing-agent-sessions-talk.md`, about seven minutes. Script only this round — no shoot.]]></content:encoded>
+    </item>
+    <item>
+      <title>Indie Maker W29 | On Work, Marketing, and a Few Product Milestones</title>
+      <link>https://bryantchen.cc/en/posts/indie-maker-w29</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/indie-maker-w29</guid>
+      <pubDate>Mon, 17 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Day 207 of my one-person company. Four lines from Toni Morrison on work, a few moments from marketing the product, finally getting into Apple&apos;s Small Business Program, passing 1k followers, and running into an Android knockoff.</description>
+      <content:encoded><![CDATA[> Today is day 207 of my one-person company. This *Indie Maker* column is where I record my own growth and how the business is going. I hope you find something useful in it.
+>
+> This week:
+> - Four lines about how to work
+> - A few moments from marketing the product
+> - Five weeks later, Apple's Small Business Program finally came through
+> - The product's official account passed 1k followers, and an Android knockoff showed up
+
+## 0810: On work
+
+Monday afternoons usually aren't my most productive, so I spent some time reading instead. I came across four lines from Toni Morrison about work, and they really landed.
+
+The four lines come from Toni Morrison's [*The Work You Do, the Person You Are*](https://www.newyorker.com/magazine/2017/06/05/toni-morrison-the-work-you-do-the-person-you-are). I made them into a poster.
+
+1. Whatever the work is, do it well — not for the boss but for yourself.
+2. You make the job; it doesn't make you.
+3. Your real life is with your family.
+4. You are not the work you do; you are the person you are.
+
+![A poster of Toni Morrison's four lines about work](/images/posts/indie-maker-w29-morrison-poster.jpg)
+
+I don't work for a company at the moment, but I'm still creating, working, and building products — and some of the principles above are always worth sitting with:
+
+- Work for yourself, and don't let the work alienate you from who you are.
+- Good work shapes a better version of you.
+
+## 0814: On marketing the product
+
+I've put real effort into posting and replying these past couple of days, and yet the offhand replies seem to work better. Why? I need to look into it more, but one guess: when you're trying hard to share from a selling posture, even genuine effort carries a whiff of self-interest.
+
+The posts I reply to offhand are mostly written when I have downtime, or when I'm out somewhere — and chances are the people on the other side of that post are in the same state. On top of that, when I reply from that place, it comes from real enthusiasm and honest sharing.
+
+A few moments that moved me this week, all from users:
+
+The first was a note of encouragement: "your passion for making software comes through the screen — I'm sure your app will be a success." See? As long as you express and share honestly, users can feel it.
+
+![Encouragement from a user in my DMs](/images/posts/indie-maker-w29-user-dm.png)
+
+The other one also came from an overseas user, who even typed out "jiayou" in pinyin for me. That was touching — and it's exactly what makes continuous iteration worth it.
+
+![An overseas user writing "jiā yóu" in pinyin](/images/posts/indie-maker-w29-threads-reply.png)
+
+## 0815: Apple's Small Business Program finally came through
+
+After more than a month of waiting — three emails to support along the way, plus a phone call yesterday — my Small Business Program application was finally approved.
+
+![The Small Business Program welcome email from Apple](/images/posts/indie-maker-w29-sbp-email.png)
+
+What's the upside? Previously every user subscription charge had 30% taken off the top; from here on it drops to 15%. Effectively a 15% raise without doing anything.
+
+So, another reminder to anyone planning to build an iOS app: apply for the Small Business Program the moment you launch!
+
+## 0816: A few product milestones
+
+Today the product's official Xiaohongshu account passed 1k followers. That account is only two months old.
+
+The other thing — half funny, half not — is that the product is now being ripped off. Friends who follow along know my product is currently Apple-only; I haven't had the bandwidth to ship on Android. But today I got a message from a user: "I downloaded this product on xx platform, and it doesn't seem like the one in your video." I took a look: it borrows the ColorWander name and its logo is a malicious AI-mangled version of mine. Beyond that, it has nothing to do with my product.
+
+If you're a ColorWander user, please keep your eyes open: the only official version right now is on iOS. Android is in the works, and I'll announce it properly when it ships. Please don't support pirated copies.
+
+## Finally
+
+There were a few days this week where I didn't write my product diary, so when I sat down on Sunday night to recall what I'd done that day, nothing felt worth expanding on. Next week I'll go back to writing something down every day, so I'm not drawing a blank at the weekend.]]></content:encoded>
+    </item>
+    <item>
+      <title>Indie Maker W28 | User Feedback, a Breakthrough Overseas, My First Time Bouldering, and a Day at POPLAND</title>
+      <link>https://bryantchen.cc/en/posts/indie-maker-w28</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/indie-maker-w28</guid>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Day 200 of my one-person company. Why listening to users is the highest-ROI thing I do, a breakthrough on an overseas platform, what to do when a minor update is stuck in review, ten lessons on Threads, my first bouldering session, and a third trip to POPLAND.</description>
+      <content:encoded><![CDATA[> Today is day 200 of my one-person company. This *Indie Maker* column is where I record my own growth and how the business is going. I hope you find something useful in it.
+
+## Taking user feedback seriously is a great deal
+
+In an era where every other sentence is about AI/Agents replacing everything, I still firmly believe in the value of listening to your users. This week, after I shipped a new version, I got several little love letters about the product.
+
+![User feedback from comments and DMs](/images/posts/indie-maker-w28-user-feedback.png)
+
+"Listen to users carefully, and turn what they say into an excellent product experience" — I think that's what I've been chasing since day one of building products, and it's a product value that won't change just because AI arrived.
+
+## 0807: A breakthrough in my overseas marketing
+
+Lately I've started to develop a bit of a feel for one overseas social platform. It proves the point again: if you want to find your footing on a platform, you have to post a lot! And if nobody replies to your posts, try going and replying under other people's posts instead.
+
+I also worked out a strategy that suits me — when I can't sleep at night, or when I'm anxious about traffic, I force myself to scroll the feed and look for things worth posting or commenting on. A few comments, one post, then go to sleep. You might wake up to something you didn't expect.
+
+I wrote the above on Thursday night, after doing this for several nights in a row before bed. Every morning brought some unexpected result (and on Sunday, my product broke into the Top 50 of a category chart in one overseas region).
+
+## What to do when a minor update is stuck in review
+
+Lately I've heard a lot of developers complain that Apple's App Review is too slow. I never really felt that way myself — almost every version I've submitted got approved within 48 hours. But this time a minor update sat there for 7 days with no movement at all.
+
+So on Thursday morning I tried requesting an expedited review. The moment I submitted the ticket, the review status changed within minutes! It went into review shortly after and was approved a few minutes later. So it turns out that when you've been waiting too long, expediting really does work.
+
+If you've run into the same thing and are interested, I'll write a separate walkthrough next week.
+
+## How do you actually do well on Threads?
+
+> To get better at Threads, I've basically been living on it for the past couple of days. I happened to scroll past this post, thought it made a lot of sense, and screenshotted it.
+
+![A post by @itsjia_jia on Threads about how to run a Threads account](/images/posts/indie-maker-w28-threads-tips.png)
+
+Let me rewrite it in my own words:
+- Don't care too much about the numbers (including, but not limited to, repeatedly asking why the algorithm isn't pushing you)
+- Your first 30 posts are practice and exploration (a few people are naturals; most of us find the feel and the rhythm through practice — and the ones who fail all die of not posting enough)
+- No likes and no comments doesn't mean nobody is reading (some of my posts have thousands of views and almost no engagement)
+- Stay in your lane (if you're building an indie product, build your content around the product; don't post at random)
+- First make sure people understand what you're even talking about (don't talk to yourself)
+- Consistent output matters more than anything (a steady cadence — don't stop posting just because there's no feedback)
+- Engage; leaving your point of view somewhere beats grinding out posts in silence (when you have no reach yet, replying under popular posts is a way to get some — good content gets seen)
+- Sincerity beats tactics (true on every platform; sincerity is the real weapon)
+- Publishing isn't an exam — you don't have to wait until you're ready, and you don't need a perfect score to hit post (shipping beats perfect)
+- Give it at least 3 months
+
+Do all of the above *before* you judge whether a platform is worth it. I think these principles apply to marketing on most platforms.
+
+## 0808: Two observations
+
+Another habit I've picked up before bed is scrolling through user reviews of similar products. Two sharp takes after doing that:
+
+If a product chases whatever's hot at the moment, what you end up with is a product that's: \_ \_ \_ (fill in the blank yourself — I wanted to write this after reading a one-star review of some product before bed, and it was a useful warning).
+
+If a product can't get to positive cash flow, then it will \_ \_ (same origin: looking at vibe coding projects that had a small moment on social media and haven't been updated in a long time).
+
+## Outside of work: unlocking bouldering
+
+This Monday I tried climbing for the first time. Plenty of friends around me love it and keep recommending it, but I always assumed my arms and back were too weak and I was too heavy to handle it at all.
+
+Then last week my friend Boss He, a serious climber, told me none of that is a problem and invited me to his gym on Monday for a private lesson. That cleared my hesitation, so I spent Monday afternoon learning to boulder with him.
+
+![My first bouldering session](/images/posts/indie-maker-w28-bouldering.jpg)
+
+Two small takeaways from climbing:
+
+First, safety awareness. The lesson started with how to come down and how to land, practiced over and over, and only then moved on to the moves themselves. What I noticed about myself: I was a bit tense before starting a new sport, but with a friend's encouragement and patient teaching, I got more and more comfortable as I went.
+
+Second, reading a route's solution and reviewing your failures:
+- Before you get on a route, you have to learn to observe it and simulate the possible solutions in your head. In that sense it really is a bit like chess.
+- And rather than brute-forcing it, summarize from the points where you failed. If you fail at the same spot several times in a row, think about why you couldn't generate force there — including watching the video of your failed attempts to see what could be better.
+
+From that angle, no wonder so many people are obsessed with this sport. The above is what one beginner with exactly one session under their belt took away — writing it down, and I may well be wrong.
+
+A footnote: that night my fingers and arms hurt like hell. Clearly I don't train those parts of my body nearly enough.
+
+## A daytime trip to POPLAND
+
+On Wednesday I went to the Pop Mart theme park (POPLAND from here on) during the day. It was a very clear and very hot day. Third time at POPLAND, and this time I discovered I have a talent for two of the games:
+
+![A cat on a castle windowsill at POPLAND](/images/posts/indie-maker-w28-popland.jpg)
+
+- One is a ball-pit shooting game — I don't remember the official name. Roughly: groups of 8, you scoop up armfuls of ball-pit balls and throw them into a container in the distance that opens and closes. Whoever gets the most in within 40 seconds wins. (I came first once before, and first again this time on my first try.)
+- The other: you throw three small basketballs into a high opening one by one, they fall through a maze-like set of paths, and at least two of them have to land in the same designated slot to win first prize. To my surprise, three casual throws in a row put all three balls in the same slot.
+
+These little interactive games really do tap into the most primal, childlike kind of fun.
+
+Another fun experience was my first MOKOKO meet-and-greet — taking photos up close and interacting with her. She really is impossibly cute.
+
+![MOKOKO meet-and-greet](/images/posts/indie-maker-w28-mokoko.jpg)
+
+## Running
+
+Three runs this week: Friday morning, plus two night runs over the weekend. Friday morning was genuinely too hot; the weekend night runs were pretty comfortable.
+
+That's it for this week. Somehow a third of August is already gone — wild.]]></content:encoded>
+    </item>
+    <item>
+      <title>Indie Maker W27 | On Marketing, Goals, Social Density, Running, Noticing Yourself, and One Recommendation</title>
+      <link>https://bryantchen.cc/en/posts/indie-maker-w27</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/indie-maker-w27</guid>
+      <pubDate>Mon, 03 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Day 193 of my one-person company. Learning not to refresh the metrics, working backwards from a long-term goal, how an introvert manages social density, and a few things I noticed while running.</description>
+      <content:encoded><![CDATA[> Today is day 193 of my one-person company. This *Indie Maker* column is where I record my own growth and how the business is going. I hope you find something useful in it.
+
+## Marketing and publishing
+
+Half a year into building indie products, the point I keep repeating is that "the hardest part is always marketing and growth." This section is about how my own thinking around it has shifted.
+
+> With content, what matters most is whether you're actually executing — whether the volume and the cadence are there. The worst thing you can do is publish and then keep refreshing the numbers, or keep asking why it didn't take off.
+
+Day to day, whether a topic will land is a hard thing to judge. I seem to have developed some feel for it lately, but the most I can do is roughly say "this one probably won't take off." I can almost never say with certainty that something *will*.
+
+Getting into the habit of not checking the numbers after publishing is so hard — but the moment you look, you fall into anxiety about them. The reframe I keep coming back to: as long as you made the content with care, every post is a positive deposit, and every impression is another chance. Thinking about it that way makes the marketing work a lot more sustainable.
+
+From that, a principle: never delay publishing because you're afraid the post won't get traffic. Publishing doesn't guarantee reach, but not publishing guarantees no one hears about you.
+
+## On small goals
+
+I've been talking with a lot of friends lately, and one question keeps coming up: now that you build your own products, how do you manage yourself? Thinking about it, I still work backwards from a relatively long-term goal to figure out what to do in the short term. Here's what that looks like in practice.
+
+At the end of June, I set myself a small goal, and for the entire month of July every product, marketing, and growth decision was oriented around it. What was the goal? For an indie developer, I think the one that matters most is *product revenue* — and from there you work backwards to conversion rate, user count, and the rest of the core metrics.
+
+The revenue goal I set at the end of June wasn't especially ambitious, and by July 29th the month's target was met — on the last day it even came in slightly above.
+
+The day I hit July's goal, I set a harder one for August. "Harder" is only how it looks to me right now; the past few months have taught me that hitting goals in indie development often isn't linear. Lay the groundwork and the growth can arrive all at once. Making the wish here, then putting in the work.
+
+## Social density
+
+As an introvert, I'm constantly managing my social density and frequency, because every interaction with the outside world costs something (even though people never believe I'm an introvert).
+
+This Thursday was different. Normally Thursday means going out to some event. This time I woke up and just worked at home, fully absorbed, all day. It felt completely different — a kind of deep focus I hadn't had in a while.
+
+That's roughly my social pattern: when the frequency feels too high, I dial it back and recover through immersive creating and time alone.
+
+## Running rhythm
+
+Three runs this week, under 14km total. I'm planning to increase both mileage and overall training load. A few things I noticed while running:
+
+Running laps on a ~1km park track gets boring fast — I'm usually done after 3km. But running along a road or a river, I can generally go much further. Why? One reason is that an open route is more interesting and less predictable. The other is that when you run outside you end up far from home, and at some point you have no choice but to cover another 5km-plus just to get back.
+
+My legs have also felt noticeably heavier lately, which is exactly why I want to train more: I'm heavier than before and training less hard than before, and both of those show up in how the running feels.
+
+## Recommendation of the week
+
+Most of my free time goes to podcasts. My favorite this week was episode 596 of *无聊斋* (Don't Panic), on 欧阳夏丹's 27 years in news. What stuck with me most was her talking about her own period of burnout, and how she thinks about fate and chance. I won't spoil the details — worth a listen if that sounds interesting.
+
+![无聊斋 vol.596, on 欧阳夏丹's 27 years in news](/images/posts/indie-maker-w27-podcast.jpg)
+
+That's it. See you next week.]]></content:encoded>
+    </item>
+    <item>
+      <title>Indie Maker W26 | The Week After the World Cup, Back to a Normal Rhythm</title>
+      <link>https://bryantchen.cc/en/posts/indie-maker-w26</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/indie-maker-w26</guid>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 GMT</pubDate>
+      <description>Day 186 of my one-person company. Normal sleep returned after the World Cup, a post I threw out casually took off, and my overseas accounts finally showed some numbers.</description>
+      <content:encoded><![CDATA[> Today is day 186 of my one-person company. I've written weekly notes before, but only on and off. From here on I'll try to publish one every week, as a record of my own progress. I hope you find something useful in it.
+
+This past week felt like a clear dividing line — it went by fast, and yet it also feels like a very long time has passed.
+
+Early Monday morning: the World Cup final. I stayed up all night to watch it live, and when it ended I felt oddly empty — a complicated but calm feeling. That's what happens when you've been a fan long enough. If the team or the player you support does well, wonderful. If they lose, that's fine too. Your life goes on.
+
+Tuesday morning, the first morning after the World Cup, I woke up naturally before 7am, went for a run, ate breakfast. Turns out I *can* be a morning person. It didn't last more than a few days though — the body has its own memory of when to sleep.
+
+Wednesday and Thursday, business as usual: editing videos, publishing content. Then one post I put out without thinking much about it blew up on a social platform, and both product metrics and account metrics grew several times over. I'm starting to understand what it means for a willow to grow where you never planted one. For the things you're not particularly good at, just set a goal, do it on a regular cadence, and try to make each attempt a little better than your own average. Leave the rest to time and randomness, and wait.
+
+By coincidence — I'd been frustrated for a while that my overseas presence had no traction — late on Friday night I casually replied to a thread and got close to 10k views and a hundred-odd likes, which had never happened to me on an overseas platform before. It made me trust myself more, and trust the point above more. Be sincere, be useful to others, pass on something good, post often — and things happen on their own.
+
+Saturday evening: a night out at Pop Mart's theme park. The last time I went was autumn of last year, when I took first place in a ball-pit competition and won a pillow as the top prize.
+
+Most of the rest of the time was spent freely and quietly.
+
+Did I run this week? Three times, though none of them were long. Continuing next week.
+
+Am I one step further along than last week? A little further, yes.
+
+## A few lessons from this week, not necessarily true
+
+- Most of what other people tell you is wrong. You only really know once you've done it yourself.
+- Chase what's trending, but faster isn't always better. Moving at a reasonably fast pace while delivering the best quality you can is usually what maximizes conversion. Otherwise you often catch the trend and still can't hold on to it.]]></content:encoded>
+    </item>
+    <item>
+      <title>When you&apos;re building your own product, getting traffic really is one of the hard…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-07-18-overseas-traffic-is-hard</guid>
+      <pubDate>Sat, 18 Jul 2026 00:00:00 GMT</pubDate>
+      <description>When you&apos;re building your own product, getting traffic really is one of the hardest parts. The anxiety comes in waves, and you&apos;re constantly looking for the next source of traffic.
+
+Over the past few weeks, I had great reach on several Chinese social platforms. But I felt the con...</description>
+      <content:encoded><![CDATA[When you're building your own product, getting traffic really is one of the hardest parts. The anxiety comes in waves, and you're constantly looking for the next source of traffic.
+
+Over the past few weeks, I had great reach on several Chinese social platforms. But I felt the conversion rate was only average, and some of the foundations inside my app weren't where I wanted them to be, so I deliberately slowed things down.
+
+Over the last couple of days, I've started publishing content and looking for traffic again. Nothing I've posted in China has really taken off yet, but the results have been decent enough. What I want most right now is a breakthrough overseas—a viral post and a real surge of traffic. I've posted a few times on Threads and Instagram, but they've gotten virtually no traction. Anxiety is anxiety, but over the next few days I still need to keep experimenting, reading, and scrolling to learn what works.
+
+Making a wish: I wake up and the numbers have exploded! Of course, that may just be a dream. In the end, I still have to keep my head down and do the work.]]></content:encoded>
+    </item>
+    <item>
+      <title>Form is the medium — it decides what users and readers actually see. On WeChat, …</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-05-12-form-is-medium</guid>
+      <pubDate>Tue, 12 May 2026 00:00:00 GMT</pubDate>
+      <description>Form is the medium — it decides what users and readers actually see. On WeChat, people look at the image and read the post body; on Video Accounts, people watch the video and largely skip the text.
+
+Different platforms also mean different things behind the scenes: different moder...</description>
+      <content:encoded><![CDATA[Form is the medium — it decides what users and readers actually see. On WeChat, people look at the image and read the post body; on Video Accounts, people watch the video and largely skip the text.
+
+Different platforms also mean different things behind the scenes: different moderation rules, different traffic distribution, different audiences.
+
+It is only after I started making content for commercialization and product launches that these ideas became concrete. Before, I knew the big concepts — but did not really *know* them.
+
+知行合一 (the unity of knowing and doing) — it feels something like this.]]></content:encoded>
+    </item>
+    <item>
+      <title>![From 50 to 80](/images/thoughts/2026-05-01-50-to-80.png)
+
+These days, building…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-05-01-from-50-to-80</guid>
+      <pubDate>Fri, 01 May 2026 00:00:00 GMT</pubDate>
+      <description>![From 50 to 80](/images/thoughts/2026-05-01-50-to-80.png)
+
+These days, building a 50-point demo with AI may only take half a day, or even an hour or two. But from 50 to 80, there is often a huge chasm.
+
+Most of the time, shipping a 50-point demo does not prove much. **Shortening...</description>
+      <content:encoded><![CDATA[![From 50 to 80](/images/thoughts/2026-05-01-50-to-80.png)
+
+These days, building a 50-point demo with AI may only take half a day, or even an hour or two. But from 50 to 80, there is often a huge chasm.
+
+Most of the time, shipping a 50-point demo does not prove much. **Shortening the distance from 50 to 80 — delivering a product experience and service with the highest completeness you can — is what matters.**
+
+Of course, if you have already found your target users and a business model with a 50-point product, that is also fine. Knowing exactly what level of product you are aiming for matters a lot.
+
+> Image generated with GPT-image-2.]]></content:encoded>
+    </item>
+    <item>
+      <title>Vibe coding has a common detour: you ship the demo first, skip the thinking and …</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-05-01-look-before-vibing</guid>
+      <pubDate>Fri, 01 May 2026 00:00:00 GMT</pubDate>
+      <description>Vibe coding has a common detour: you ship the demo first, skip the thinking and research along the way, and just keep asking the AI to tweak it.
+
+But sometimes it pays to stop and look at how reference products solve the same thing — how others handle the same kind of problem. It...</description>
+      <content:encoded><![CDATA[Vibe coding has a common detour: you ship the demo first, skip the thinking and research along the way, and just keep asking the AI to tweak it.
+
+But sometimes it pays to stop and look at how reference products solve the same thing — how others handle the same kind of problem. It saves you a lot of dead ends.
+
+Written after hitting a few of these while building ColorWander.]]></content:encoded>
+    </item>
+    <item>
+      <title>Two recent thoughts:
+
+1. Ideas are easy to copy. Completeness and details are no…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-29-completeness-and-humanity</guid>
+      <pubDate>Wed, 29 Apr 2026 00:00:00 GMT</pubDate>
+      <description>Two recent thoughts:
+
+1. Ideas are easy to copy. Completeness and details are not. Marketing and distribution channels are not. The data and corpus you have accumulated cannot be caught up with overnight either. Spinning up a demo has never been easier — everyone can say &quot;I just ...</description>
+      <content:encoded><![CDATA[Two recent thoughts:
+
+1. Ideas are easy to copy. Completeness and details are not. Marketing and distribution channels are not. The data and corpus you have accumulated cannot be caught up with overnight either. Spinning up a demo has never been easier — everyone can say "I just vibe-coded a XYZ." But shipping a product with a complete experience is hard. Getting 100, 1,000, or more people to actually use what you offer is hard.
+
+2. A friend told me: "All the friends I know who used to build productivity tools — none of them want to build pure productivity anymore." I said: "I think it is a stage thing. The more optimistic you are about model and agent capabilities, the deeper you go, the more pessimistic you become about pure productivity, and the more you care about things that are playful, fun, and human." I genuinely believe that.
+
+**Building products that are fun and humane matters more and more.**]]></content:encoded>
+    </item>
+    <item>
+      <title>I have been moving some of my dev tasks onto Codex lately, and I keep feeling it…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-29-no-one-leads-forever</guid>
+      <pubDate>Wed, 29 Apr 2026 00:00:00 GMT</pubDate>
+      <description>I have been moving some of my dev tasks onto Codex lately, and I keep feeling it: a complete toolchain (calling image-gen APIs directly, reading markdown natively, clean integrations with all kinds of tools), a reliable user experience (highly visual), plus a GPT-5.5 brain that i...</description>
+      <content:encoded><![CDATA[I have been moving some of my dev tasks onto Codex lately, and I keep feeling it: a complete toolchain (calling image-gen APIs directly, reading markdown natively, clean integrations with all kinds of tools), a reliable user experience (highly visual), plus a GPT-5.5 brain that is back on its feet — it is genuinely good to use.
+
+Each player leads for a month or two. OpenAI is back. No one gets to say they will lead forever, and never underestimate a strong player's determination to take a market.
+
+As a tool user in this era, there is no good reason to lock yourself into one tool out of loyalty or habit. Whatever works best, whatever is more advanced — just use it.
+
+One more thing: **avoid free tiers and cheap substitutes — cheap things are always the most expensive.**]]></content:encoded>
+    </item>
+    <item>
+      <title>When I build products, I think about running.
+
+1. The core of long-termism is to…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-24-product-as-marathon</guid>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 GMT</pubDate>
+      <description>When I build products, I think about running.
+
+1. The core of long-termism is to stay on the track — to finish the marathon with a calm, positive, and self-paced mindset.
+2. Building a product often feels confusing at the first step. Dive in, and you start to collect unexpected l...</description>
+      <content:encoded><![CDATA[When I build products, I think about running.
+
+1. The core of long-termism is to stay on the track — to finish the marathon with a calm, positive, and self-paced mindset.
+2. Building a product often feels confusing at the first step. Dive in, and you start to collect unexpected little surprises. Get close to the finish line, and you realize the details multiply fast. From there on, it is all about polishing — the devil is in the details, and they decide whether your product earns real affection.
+3. The real source of calm is believing you can finish this marathon, and that you can hit your own PB (Personal Best) at a comfortable pace.]]></content:encoded>
+    </item>
+    <item>
+      <title>![ClawPuter star history](/images/thoughts/2026-04-22-clawputer-100-stars.svg)
+
+…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-22-clawputer-100-stars</guid>
+      <pubDate>Wed, 22 Apr 2026 12:00:00 GMT</pubDate>
+      <description>![ClawPuter star history](/images/thoughts/2026-04-22-clawputer-100-stars.svg)
+
+ClawPuter officially crossed 100 GitHub stars today. I just kept shipping casually, and the milestone quietly arrived on its own.
+
+It is the first project I built from zero to one that reached three d...</description>
+      <content:encoded><![CDATA[![ClawPuter star history](/images/thoughts/2026-04-22-clawputer-100-stars.svg)
+
+ClawPuter officially crossed 100 GitHub stars today. I just kept shipping casually, and the milestone quietly arrived on its own.
+
+It is the first project I built from zero to one that reached three digits on GitHub. Just a number, but worth marking down as a small personal milestone.]]></content:encoded>
+    </item>
+    <item>
+      <title>A recent reflection: I am not a fan of chasing best practices, which makes me mo…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-22-follow-best-practices</guid>
+      <pubDate>Wed, 22 Apr 2026 00:00:00 GMT</pubDate>
+      <description>A recent reflection: I am not a fan of chasing best practices, which makes me move too fast and step on avoidable landmines — especially on procedural stuff. Two examples, for future me to remember:
+
+1. **Google AdSense account**: I moved too fast and filled in Hong Kong details,...</description>
+      <content:encoded><![CDATA[A recent reflection: I am not a fan of chasing best practices, which makes me move too fast and step on avoidable landmines — especially on procedural stuff. Two examples, for future me to remember:
+
+1. **Google AdSense account**: I moved too fast and filled in Hong Kong details, but I don't actually have a Hong Kong mailing address. The consequence is that I may not be able to cash out ad revenue later. After asking around in a group chat, my only option was to close the account, and I am not sure whether a re-application will be blocked.
+2. **Domain registration**: too fast, and too cheap — I grabbed a `.cc` domain. Only later, when doing SEO, did I realize: WTF, the sitemap does not get auto-indexed, and a bunch of other quirks come with it.
+
+When validating an idea, moving fast matters. But when there is already a standard, an SOP, or an industry best practice, just follow it. It is the least painful path and saves you from countless detours.
+
+**When in doubt, ask friends, group chats, or folks who have been there. Opening your mouth is sometimes more valuable than opening your editor.**]]></content:encoded>
+    </item>
+    <item>
+      <title>![X analytics screenshot](/images/thoughts/2026-04-20-x-ship-before-perfect.png)…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-20-ship-before-perfect</guid>
+      <pubDate>Mon, 20 Apr 2026 02:15:00 GMT</pubDate>
+      <description>![X analytics screenshot](/images/thoughts/2026-04-20-x-ship-before-perfect.png)
+
+This X post got a small burst of attention this afternoon. The numbers are not huge, but it is already my best-performing post ever.
+
+Publishing really is more important than perfecting. Before post...</description>
+      <content:encoded><![CDATA[![X analytics screenshot](/images/thoughts/2026-04-20-x-ship-before-perfect.png)
+
+This X post got a small burst of attention this afternoon. The numbers are not huge, but it is already my best-performing post ever.
+
+Publishing really is more important than perfecting. Before posting, I was still thinking: maybe I should wait, record an English walkthrough video, and then publish it. But it was almost dinner time and I needed to cook, so I just posted an image thread with English captions and a Chinese demo voiceover.
+
+And that was enough to get this result.
+
+Next time I hesitate, I need to repeat this to myself: ship it first.]]></content:encoded>
+    </item>
+    <item>
+      <title>Payout Setup for Indie Devs: Lemon Squeezy + HSBC Hong Kong Pitfalls</title>
+      <link>https://bryantchen.cc/en/posts/lemon-squeezy-payout-setup</link>
+      <guid isPermaLink="true">https://bryantchen.cc/en/posts/lemon-squeezy-payout-setup</guid>
+      <pubDate>Fri, 17 Apr 2026 18:00:00 GMT</pubDate>
+      <description>From a locked Lemon Squeezy account country, to HSBC Hong Kong branch code confusion, account number format errors, and W-8BEN address consistency — a full record of every pitfall I hit in one evening.</description>
+      <content:encoded><![CDATA[> A real record of configuring my Lemon Squeezy payout channel. My situation: I live in Beijing, am a mainland China tax resident, but receive payments through an HSBC Hong Kong account — a common setup for indie developers in this region.
+
+## Background
+
+Getting your product revenue into a bank account sounds simple but is one of the easiest places for indie devs to get stuck. Especially with a "mainland resident + HSBC HK card" cross-border setup, every single field has hidden rules.
+
+My combo:
+
+- **Platform**: Lemon Squeezy (Merchant of Record — handles global tax and payments)
+- **Bank**: HSBC Hong Kong personal account (HKD)
+- **Tax residence**: Mainland China
+
+Four pitfalls in total, all documented below.
+
+## Pitfall 1: Wrong bank — ended up at HSBC USA
+
+When filling out the Payout Bank Account, searching "HSBC" in the dropdown returned:
+
+- `HSBC BANK USA, NATIONAL ASSOCIATION [106]`
+- `HSBC PRIVATE BANK (SUISSE) SA [235]`
+
+**Hong Kong HSBC wasn't there at all**. Picking the first option would misalign every downstream field (branch code, account format).
+
+### Cause
+
+The Country field in the previous step was wrong. Lemon Squeezy's bank list is filtered by country — if Country is left at US or empty, the dropdown only shows US banks.
+
+### Fix
+
+Set **Country = Hong Kong** first, then search "HSBC" or "Hongkong" to get the correct entry:
+
+> **The Hongkong and Shanghai Banking Corporation Limited [004]**
+
+`[004]` is the actual HK HSBC bank code.
+
+## Pitfall 2: Branch code vs card number vs branch name — all different
+
+Next came the Branch selection. I had three numbers on hand, all vaguely "bank-related":
+
+| Info | My value | What it actually is |
+|---|---|---|
+| Card first 4 digits | `5413` | Mastercard BIN — **nothing to do with branch** |
+| Account first 3 digits | `691` | **This is the real Branch Code** |
+| Statement branch name | `SHEUNG SHUI` | Branch where I opened the account |
+
+I initially assumed `5413` was a branch code (and Lemon Squeezy's list did show a `541` branch), wasted time picking wrong options.
+
+### Correct approach
+
+Hong Kong HSBC account format is `xxx-yyyyyy-zzz`, where **the first 3 digits (xxx) are the real Branch Code**.
+
+My account starts with `691` → Sheung Shui branch, which matches my statement. **The first 3 digits of your account + the branch name in the dropdown must match**. The card number has nothing to do with this.
+
+### How to find it quickly
+
+- Open HSBC HK app → account details → see the account number format
+- First 3 digits = Branch Code
+- Search the corresponding branch name in Lemon Squeezy's dropdown (`Sheung Shui` / `Mong Kok` / `Central`...) and select
+
+## Pitfall 3: Account number format error
+
+With the branch selected, I entered `691-123456-001` (full format) and got a red error:
+
+> **Invalid account number: must be between 6 and 16 digits long. If your account number starts with your bank's three digit branch code followed by a hyphen like "000-123456", please remove it and only provide the remaining part of the account number, like "123456".**
+
+### Correct approach
+
+Enter **only the middle and tail segments as raw digits**, removing:
+
+- The Branch Code prefix (already selected in the previous step)
+- All hyphens `-`
+
+Example:
+
+| Full account | ❌ Don't enter | ✅ Enter |
+|---|---|---|
+| `691-123456-001` | `691-123456-001` | `123456001` |
+| `004-123-456789` | `004-123-456789` | `123456789` |
+
+This rule isn't unique to Lemon Squeezy — Stripe Connect, Paddle, and Gumroad's HSBC HK fields all work the same way.
+
+### HSBC HK Payout Info Cheat Sheet
+
+| Field | Value |
+|---|---|
+| Bank Code | `004` |
+| Bank Name | The Hongkong and Shanghai Banking Corporation Limited |
+| SWIFT Code | `HSBCHKHHHKH` |
+| Branch | Matches the first 3 digits of your account |
+| Account Number | Strip the branch code and hyphens, keep the raw digits |
+
+## Pitfall 4: Tax country locked, address out of sync
+
+Bank done. Next: Tax Details (W-8/W-9 form).
+
+My first address attempt was intuitive but wrong:
+
+- Country: Hong Kong
+- City: Chaoyang (朝阳)
+- Street: Donghu Jiedao, Aozhou Kangdu 3-3C
+
+The problem: **Country says Hong Kong, but the street and city are mainland Beijing addresses**. This self-contradictory setup gets flagged as abnormal by the tax system — in the worst case your entire W-8BEN becomes invalid.
+
+### Discovery: country is locked
+
+Tried to change Country from Hong Kong to China, and got:
+
+> **You can't change the country of this account. Please create a new account if you need to update the country.**
+
+Lemon Squeezy accounts **lock the country permanently once set**. It ties into tax form type (W-8 vs W-9), settlement currency, and compliance review — no edits allowed.
+
+### Decision: align everything to Hong Kong
+
+Since the account country is locked to HK, I made **tax residence + address + bank** all consistent with Hong Kong:
+
+- **Country**: Hong Kong (locked)
+- **Address**: A real Hong Kong address (e.g., the one registered with HSBC)
+- **Tax Residence**: Hong Kong
+- **Bank**: HSBC Hong Kong
+
+**The worst setup is**: "Country = HK + address = mainland China" — fields contradict each other, and tax review or 1099 delivery will break later.
+
+### Identity vs bank account: two separate concepts
+
+| Concept | Meaning | My case |
+|---|---|---|
+| **Tax residence** | Where you actually pay personal income tax | Mainland China |
+| **Lemon Squeezy account country** | Platform's tax identity for you | Hong Kong (locked) |
+| **Bank location** | Where the money lands | HSBC Hong Kong |
+
+Strict compliance wants all three aligned. If the account country is already locked, second-best: **at least keep the country and address consistent**.
+
+**Bank location ≠ tax residence** in principle — they're independent. But Lemon Squeezy doesn't distinguish that finely; it uses the account-level Country field.
+
+## Universal Checklist: Before configuring a new platform
+
+Based on this exercise, a reusable checklist:
+
+- [ ] **Pick the registration country carefully** — most platforms lock it, think your tax strategy through first
+- [ ] **Name consistency**: platform account name = tax form name = bank account holder, all three English spellings must match
+- [ ] **Address consistency**: Country / State / City / Street align with Tax Residence
+- [ ] **Foreign TIN**: 18-digit mainland ID, or HKID
+- [ ] **HSBC HK account format**: strip the branch code prefix and all hyphens
+- [ ] **Branch Code**: the first 3 digits of your account
+- [ ] **SWIFT**: `HSBCHKHHHKH`
+- [ ] **W-8BEN tax treaty**: if the platform is US-based and you're a China/HK resident, check this to reduce withholding tax
+- [ ] **Screenshot everything when done** — copy-paste for the next platform
+
+## Payout Mechanics
+
+Configuration is just the start — there's a threshold to cross:
+
+- **Minimum payout**: $50. Below that, no payment is sent
+- **Settlement cycle**: monthly by default, Pending state shows the expected payout date
+- **FX**: USD is automatically converted to HKD when depositing into HSBC HK; the rate is slightly worse than bank buy rates but acceptable
+
+My current Pending payout is $11.34 ($37.92 sales − $19.98 refunds − $6.60 fees), still short of $50. I need to sell more before it actually hits the bank.
+
+## Closing
+
+Cross-border payouts are a constant battle against information asymmetry for indie devs — every platform, every bank, every tax form has hidden rules. Docs are vague, support staff may not know either.
+
+Writing down every pitfall at least cuts setup time by half on the next platform. If anything changes later (actually hitting $50, refund issues, switching platforms), I'll update this post.]]></content:encoded>
+    </item>
     <item>
       <title>iOS Proxy Client Pitfalls: Why Free Apps Failed and $2.99 Saved the Day</title>
       <link>https://bryantchen.cc/en/posts/ios-proxy-client-pitfalls</link>
@@ -171,20 +1039,24 @@ Full write-up: [iOS Proxy Client Pitfalls](/en/posts/ios-proxy-client-pitfalls)]
       <link>https://bryantchen.cc/en/posts/adsterra-integration-guide</link>
       <guid isPermaLink="true">https://bryantchen.cc/en/posts/adsterra-integration-guide</guid>
       <pubDate>Thu, 16 Apr 2026 00:30:00 GMT</pubDate>
-      <description>After getting stuck on AdSense phone verification, I switched to Adsterra and had ads running in one evening. Registration, ad format selection, code injection, and placement strategy — all from a real project.</description>
+      <description>After getting stuck on AdSense phone verification, I switched to Adsterra and had ads running in one evening; later I found the ads caused forced redirects on the user side, so I turned them off and started rethinking AdSense.</description>
       <content:encoded><![CDATA[> This article is organized from my actual project conversation with Claude (AI). All data, lessons learned, and code examples are from integrating ads into [AIBT](https://aibtapp.com).
+
+> **Update, afternoon of April 16, 2026**: After shipping this, I found that the ads added through this approach kept triggering forced redirects on the user side. I am still not sure whether I configured something incorrectly, or whether this is caused by the ad format / ad network itself. Either way, it clearly hurt the user experience, so I turned this ad setup off for now.  
+>  
+> My conclusion has changed after this: Adsterra is fast to integrate and useful for validating the ad monetization pipeline, but if user experience is the priority, the better long-term path is still to get Google AdSense working.
 
 ## How AdSense Blocked Me Before I Even Started
 
-My project is [AIBT](https://aibtapp.com) — an MBTI-style personality test for AI. 72 SEO pages, three languages (EN/ZH/JA), deployed on Cloudflare Pages. Content quality wasn't the issue. The issue was AdSense's registration flow.
+My project is [AIBT](https://aibtapp.com), an MBTI-style personality test for AI. 72 SEO pages, three languages (EN/ZH/JA), deployed on Cloudflare Pages. Content quality wasn't the issue. The issue was AdSense's registration flow.
 
 **Once you pick a payment country, you can't change it.**
 
-I chose Hong Kong (I have an HK bank card), and then the phone verification demanded a +852 number. I only had +86 and a US number. Verification failed. The account was stuck — can't change region, can't delete and restart (one AdSense account per Google account).
+I chose Hong Kong (I have an HK bank card), and then the phone verification demanded a +852 number. I only had +86 and a US number. Verification failed. The account was stuck: I couldn't change region, couldn't delete and restart (one AdSense account per Google account).
 
 If you don't have a phone number that matches your chosen payment country, AdSense might not work for you.
 
-## Why Adsterra
+## Why I Turned to Adsterra at the Time
 
 | | Google AdSense | Adsterra |
 |---|---|---|
@@ -193,9 +1065,11 @@ If you don't have a phone number that matches your chosen payment country, AdSen
 | Phone verification | Must match payment country | **Not required** |
 | Payment threshold | $100 | **$5** (Paxum/USDT) |
 | Payment methods | Bank wire only | PayPal, USDT, Wire, Paxum |
-| Ad quality | High | Medium |
+| Ad quality | High | Medium, and redirect-style UX issues need extra caution |
 
-In short: AdSense is enterprise-grade gatekeeping. Adsterra is self-service. For sites with under 100 daily visitors, Adsterra has better ROI — because at least you can get ads running.
+My original judgment was: AdSense is enterprise-grade gatekeeping. Adsterra is self-service. For a small site with under 100 daily visitors, Adsterra looked like the better short-term ROI because at least you could get ads running.
+
+But that was only true if the question was "Can I quickly make the ad pipeline work?" If user experience matters, especially for a product that needs users to stay, share, and return, forced redirects can cost far more than the tiny amount of ad revenue they bring in.
 
 ## Registration (5 Minutes)
 
@@ -206,8 +1080,8 @@ Go to [Adsterra](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX) → S
 What you need:
 - **Email**: your regular email
 - **Login**: a username
-- **Messenger**: pick any (Telegram/Twitter/Skype), fill in your handle — they won't actually contact you
-- **Country**: your actual country. **This doesn't lock your payment method** — unlike AdSense, Adsterra lets you choose PayPal/USDT/Wire at any time
+- **Messenger**: pick any (Telegram/Twitter/Skype), fill in your handle. They won't actually contact you
+- **Country**: your actual country. **This doesn't lock your payment method**. Unlike AdSense, Adsterra lets you choose PayPal/USDT/Wire at any time
 
 No phone number, no bank info, no identity verification. Just email verification.
 
@@ -215,7 +1089,7 @@ No phone number, no bank info, no identity verification. Just email verification
 
 Websites → ADD WEBSITE → enter your domain and category.
 
-Adsterra's categories are rough (Social / Movies / Downloads...) — there's no "Technology" or "Entertainment." Pick **Other** if nothing fits.
+Adsterra's categories are rough (Social / Movies / Downloads...). There is no "Technology" or "Entertainment." Pick **Other** if nothing fits.
 
 **Turn off Adult ads** unless you run an adult site.
 
@@ -223,19 +1097,21 @@ Adsterra's categories are rough (Social / Movies / Downloads...) — there's no 
 
 This step determines the balance between revenue and user experience.
 
-**Recommended:**
+**Relatively restrained:**
 
-- **Native Banner** — blends with content, looks like a recommendation widget. Best CTR, lowest visual disruption. Safe for every page
-- **Banner** — traditional display ads. Pick 728x90 (desktop leaderboard) + 300x250 (universal rectangle) + 320x50 (mobile strip)
+- **Native Banner**: blends with content and looks like a recommendation widget. CTR is relatively good, and visual disruption is lower
+- **Banner**: traditional display ads. Pick 728x90 (desktop leaderboard) + 300x250 (universal rectangle) + 320x50 (mobile strip)
 
-**Use with caution:**
+**Now I would be extremely cautious with:**
 
-- **Popunder** — opens a new window when the user closes/switches tabs. CPM is 3-5x higher than banners, but it hurts UX. **Only use on SEO landing pages** (visitors from Google who have no brand loyalty), never on your core experience pages
+- **Popunder**: opens a new window when the user closes/switches tabs. CPM is 3-5x higher than banners, but it hurts UX. I used to think it could be limited to SEO landing pages. Now I would be more conservative: if the product is early and user trust is still fragile, don't use it
 
 **Avoid:**
 
-- **Social Bar** — floating notification bar that blocks content
-- **Smartlink** — redirects users to ad pages, completely wrong for content sites
+- **Social Bar**: floating notification bar that blocks content
+- **Smartlink**: redirects users to ad pages, completely wrong for content sites
+
+The problem I ran into was this: even without intentionally adding a redirect page, users still saw forced redirects. That does not prove every Adsterra setup behaves this way, but it does prove one thing: after adding ads, test the site yourself on real devices. Especially test mobile, incognito windows, different network regions, and first-visit behavior.
 
 ### 4. Wait for Activation
 
@@ -251,18 +1127,22 @@ Each Ad Unit has a **GET CODE** button → copy the HTML/JS snippet.
 
 | Page Type | Native Banner | 300x250 | 728x90 / 320x50 | Popunder |
 |---|---|---|---|---|
-| Homepage | ✅ below footer | ❌ | ❌ | ❌ |
-| Core experience (test results) | ✅ below results | ❌ | ❌ | ❌ |
-| Content detail pages (SEO) | ✅ | ✅ mid-article | ✅ above footer | ✅ |
-| Utility pages (stats/FAQ) | ✅ | ❌ | ✅ above footer | ✅ |
+| Homepage | Use cautiously | ❌ | ❌ | ❌ |
+| Core experience (test results) | Use cautiously | ❌ | ❌ | ❌ |
+| Content detail pages (SEO) | Testable | Testable | Testable | Not recommended |
+| Utility pages (stats/FAQ) | Testable | ❌ | Testable | Not recommended |
 
-**Why only Native Banner on homepage and results?**
+**Why be cautious even on the homepage and results page?**
 
-Homepage popunder = user's first visit gets a popup, they leave immediately. Results page is where users screenshot and share — sharing generates free traffic that's worth more than ad revenue. Too many ads kills the sharing impulse.
+Homepage popunder = user's first visit gets a popup, they leave immediately. Results page is where users screenshot and share. Sharing generates free traffic that is worth more than ad revenue. Too many ads kill the sharing impulse.
 
-**Why can detail pages have more?**
+After running into forced redirects, I am more convinced of this: early products should not trade first impressions for a few cents of revenue. You can add ads later. Lost trust is much harder to recover.
 
-These pages get traffic from Google search. Users are "strangers" with high ad tolerance. Long content (1500+ words) has enough space. This is where ad revenue actually comes from.
+**Why can detail pages be tested?**
+
+These pages get traffic from Google search. Users are "strangers" with higher ad tolerance. Long content has enough space. This is where ad revenue usually comes from.
+
+But "testable" does not mean "acceptable at any UX cost." The smallest viable approach is to place one restrained display ad first, watch user paths, bounce rate, and whether any abnormal redirects appear, then decide whether to expand.
 
 ## Technical Implementation
 
@@ -316,11 +1196,25 @@ if (adContainer && !adContainer.dataset.loaded) {
 }
 ```
 
+### Do a UX Regression Pass After Launch
+
+Ad code is not a normal static component. It loads third-party scripts and may return different behavior depending on region, device, and ad inventory. After adding ads, check at least:
+
+- Whether first visits trigger automatic redirects
+- Whether mobile ads cover core buttons
+- Whether going back, closing tabs, or switching tabs causes popups
+- Whether incognito and logged-out states behave differently
+- Whether anything abnormal appears when ad blockers are disabled
+
+I did not do this thoroughly enough the first time. I only noticed the forced redirects on the user side on Thursday afternoon. Going forward, I will treat this as a required pre-release checklist for any ad integration.
+
 ## Update Your Privacy Policy
 
 After adding ads, you **must** disclose this in your privacy policy (GDPR/CCPA compliance). Add to your "Third-Party Services" section:
 
 > **Adsterra**: Display advertising on content pages. Subject to [Adsterra's privacy policy](https://adsterra.com/privacy-policy/).
+
+If, like me, you later turn ads off temporarily, also review the privacy policy and any ad disclosures on the site so the wording still matches actual behavior.
 
 ## Real Revenue Data
 
@@ -338,7 +1232,9 @@ This is normal. Adsterra's algorithm needs days to weeks to learn your traffic q
 | 500 | 15,000 | $15-50 |
 | 1,000 | 30,000 | $30-100 |
 
-Quiz/entertainment sites typically see $1-3 CPM. It won't make you rich, but it's **completely passive** — once the code is in, you don't do anything. Traffic comes in, money trickles out.
+Quiz/entertainment sites typically see $1-3 CPM. It won't make you rich. But if the ad experience is not controllable, "completely passive income" can turn into "completely passive damage to user experience."
+
+So my current judgment is more conservative: Adsterra can be useful for validating the ad pipeline early, but I would not treat it as the default long-term option. If user experience and brand trust matter, you eventually need to solve AdSense, or at least pick a more controllable ad network.
 
 ## FAQ
 
@@ -349,10 +1245,13 @@ Three possibilities: (1) ad blocker in your browser → disable it; (2) new site
 Yes, but put them on different pages. Same-page competition lowers CPM for both.
 
 **Q: Can I put ads in the blank space on both sides of a centered layout?**
-If you're using a single-column layout (e.g., `max-width: 760px`), the blank sides are just body background. Adding sidebar ads requires restructuring the entire page — not worth it. Consider a sticky bottom banner instead.
+If you're using a single-column layout (e.g., `max-width: 760px`), the blank sides are just body background. Adding sidebar ads requires restructuring the entire page, which usually is not worth it. Consider a sticky bottom banner instead.
 
 **Q: Will Popunder annoy users?**
-Yes. But its CPM is the highest. Compromise: only use it on SEO traffic pages (those users weren't going to become loyal visitors anyway). Never on core pages.
+Yes, and in my case the impact was larger than I expected. My current recommendation: don't use Popunder in an early product. Even on SEO pages, wait until traffic is more stable and analytics are more complete, then test in a small scope.
+
+**Q: Do I still recommend Adsterra after this?**
+If your goal is "quickly connect ads and see whether the revenue pipeline works," it can be worth trying. If your goal is "long-term monetization without obviously hurting user experience," I would prioritize AdSense now. Adsterra's low barrier is useful, but low barrier does not mean low risk.
 
 ---
 
@@ -360,7 +1259,7 @@ Yes. But its CPM is the highest. Compromise: only use it on SEO traffic pages (t
 
 ---
 
-If you'd like to try Adsterra, feel free to sign up through [my referral link](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX) — it helps support this blog at no extra cost to you.]]></content:encoded>
+If you'd like to try Adsterra, feel free to sign up through [my referral link](https://beta.publishers.adsterra.com/referral/DUEf5kCsSX). It helps support this blog at no extra cost to you. Based on my actual experience this time, I recommend testing it in a small scope first instead of enabling it across core pages immediately.]]></content:encoded>
     </item>
     <item>
       <title>Read a friend&apos;s essay from three years ago about their hackathon experience. I c…</title>
@@ -548,434 +1447,6 @@ A product spectacle isn&apos;t always something you can plan for, but if you don
       <content:encoded><![CDATA[Building products in the AI era has a sufficient but not necessary condition: from day one, you probably need to think about how to create a “product spectacle.”
 
 A product spectacle isn't always something you can plan for, but if you don't think about it from day one, it definitely won't exist. And if, after building a product, you feel it's hard to create that spectacle, it's very likely it won't succeed or go viral.]]></content:encoded>
-    </item>
-    <item>
-      <title>Seeing a friend’s project get reverse engineered and then open-sourced on GitHub…</title>
-      <link>https://bryantchen.cc/en/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-07-ship-before-open</guid>
-      <pubDate>Tue, 07 Apr 2026 13:27:00 GMT</pubDate>
-      <description>Seeing a friend’s project get reverse engineered and then open-sourced on GitHub made me realize build in public has changed. You now have to ship with a relatively high level of completeness, market it, and sell it. Otherwise you’re in a passive position. Also, stay close to you...</description>
-      <content:encoded><![CDATA[Seeing a friend’s project get reverse engineered and then open-sourced on GitHub made me realize build in public has changed. You now have to ship with a relatively high level of completeness, market it, and sell it. Otherwise you’re in a passive position. Also, stay close to your real users and stay away from developers.]]></content:encoded>
-    </item>
-    <item>
-      <title>The minimum viable loop of a commercial product is what &quot;development complete&quot; a…</title>
-      <link>https://bryantchen.cc/en/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-07-minimum-viable-loop</guid>
-      <pubDate>Tue, 07 Apr 2026 11:46:00 GMT</pubDate>
-      <description>The minimum viable loop of a commercial product is what &quot;development complete&quot; actually means. That loop is: a working demo, basic login, basic payment and subscription, and a website. Launch it, run a beta, get at least one paying user. That&apos;s the minimum viable loop.
-
-Anything ...</description>
-      <content:encoded><![CDATA[The minimum viable loop of a commercial product is what "development complete" actually means. That loop is: a working demo, basic login, basic payment and subscription, and a website. Launch it, run a beta, get at least one paying user. That's the minimum viable loop.
-
-Anything less doesn't count.]]></content:encoded>
-    </item>
-    <item>
-      <title>What is a one-person company really pursuing?
-
-People have been asking me this a…</title>
-      <link>https://bryantchen.cc/en/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-04-one-person-company-pmf</guid>
-      <pubDate>Sat, 04 Apr 2026 00:27:00 GMT</pubDate>
-      <description>What is a one-person company really pursuing?
-
-People have been asking me this a lot lately. My answer right now is simple: first, freedom; second, the ability to generate your own cash flow and truly take responsibility for outcomes. Don’t just entertain yourself. Build products...</description>
-      <content:encoded><![CDATA[What is a one-person company really pursuing?
-
-People have been asking me this a lot lately. My answer right now is simple: first, freedom; second, the ability to generate your own cash flow and truly take responsibility for outcomes. Don’t just entertain yourself. Build products people are actually willing to pay for, and form a complete business loop.
-
-Another question I’ve been sitting with recently is this: what kinds of entry points are actually suitable for a small team or a one-person company? And which directions are really just good stories, but not a fit for a company at my stage? Once you think that through, a lot of things become naturally clearer.
-
-Run through PMF as early as possible. Keep going.]]></content:encoded>
-    </item>
-    <item>
-      <title>When you realize a product&apos;s form factor feels wrong, should you cut your losses…</title>
-      <link>https://bryantchen.cc/en/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-31-vibe-coding-trap</guid>
-      <pubDate>Tue, 31 Mar 2026 17:23:00 GMT</pubDate>
-      <description>When you realize a product&apos;s form factor feels wrong, should you cut your losses immediately or struggle with it a bit longer? I&apos;ve been thinking about this recently.
-
-Since becoming an indie developer, the most frustrating part is that &quot;Vibe Coding&quot; easily dilutes your focus as ...</description>
-      <content:encoded><![CDATA[When you realize a product's form factor feels wrong, should you cut your losses immediately or struggle with it a bit longer? I've been thinking about this recently.
-
-Since becoming an indie developer, the most frustrating part is that "Vibe Coding" easily dilutes your focus as a product manager. You end up spending too much time just building and rushing to ship. I need to stay vigilant about this: building a product must start with capturing real user needs and defining a differentiated experience. Always remember the "424 rule" for time allocation: 40% finding needs + 20% development + 40% marketing. Don't get the priorities backward.]]></content:encoded>
-    </item>
-    <item>
-      <title>Rewatching Jia Zhangke&apos;s &quot;Mountains May Depart&quot; on Sunday night. His imagination…</title>
-      <link>https://bryantchen.cc/en/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-31-mountains-may-depart-software</guid>
-      <pubDate>Tue, 31 Mar 2026 17:01:00 GMT</pubDate>
-      <description>Rewatching Jia Zhangke&apos;s &quot;Mountains May Depart&quot; on Sunday night. His imagination for electronic devices in 2025 was transparent liquid glass, though the GUI still felt stuck in 2014. It has to be said: the hardware of 2025 we imagined hasn&apos;t quite arrived, but software has vastly...</description>
-      <content:encoded><![CDATA[Rewatching Jia Zhangke's "Mountains May Depart" on Sunday night. His imagination for electronic devices in 2025 was transparent liquid glass, though the GUI still felt stuck in 2014. It has to be said: the hardware of 2025 we imagined hasn't quite arrived, but software has vastly exceeded human imagination. Ordinary people often underestimate the development of software while overestimating the advancement of hardware.]]></content:encoded>
-    </item>
-    <item>
-      <title>Several Observations About Myself and the World Around Me</title>
-      <link>https://bryantchen.cc/en/posts/several-observations-about-myself-and-the-world</link>
-      <guid isPermaLink="true">https://bryantchen.cc/en/posts/several-observations-about-myself-and-the-world</guid>
-      <pubDate>Sat, 28 Mar 2026 01:26:00 GMT</pubDate>
-      <description>A set of notes on staying up late, AI, shipping, spring, natural rhythms, and the observer&apos;s point of view.</description>
-      <content:encoded><![CDATA[Several observations about myself and the world around me:
-
-## 1. Staying Up Late and Rhythm
-
-Staying up late is a bad thing. Over the past few workdays, my schedule seems to have flipped around a bit. Of course, as a one-person company, I don't really have a strict distinction between workdays and non-workdays, but staying up late throws off any regular rhythm in sleep and work, and that's never good.
-
-## 2. Talk More With People Who Haven't Really Used AI
-
-After talking to too many people who work in AI lately, I feel like the next step is to talk more with people who haven't really been exposed to AI. Their needs and pain points may be the most important ones.
-
-People who work in AI tend to go to two extremes: first, they're a bit too crazy and think they can do anything; second, they think anyone who doesn't embrace AI is an idiot. Yes, I'm also criticizing myself here. But ever since the first day I studied Cybernetics, I've remembered something one of the founding figures said: "Humans have their own use."
-
-## 3. Public Activity Before a Change
-
-If someone starts making bold takes or becomes very active in public, it usually proves a few things: first, something is about to change in their work; second, they're peacocking before fundraising or getting ready to start a company.
-
-## 4. On Shipping and Craftsmanship
-
-I always see people saying that "a product is ready to ship when it's 30% done," but around me there are also people who try to make a product as good as they can before releasing it. Especially after listening today to the latest episode of 诗梳风 and the conversation with 谜底61, I felt a kind of steadiness. I hope people with a real craftsman's spirit can be rewarded by users.
-
-## 5. Beijing's Spring
-
-The moment that moved me most today was this — I went out for a bike ride in the afternoon and saw flowers blooming by the roadside. So this is what spring in Beijing really is. What exactly did I see during the springs when I was 25 to 30? A whole life's plan begins in spring.
-
-## 6. A Day Begins in the Morning
-
-Coming back to it: a day begins in the morning, so stop staying up late. I suddenly understand Birdwatching a little more. Beyond being close to nature, there is something beautiful about waking up with nature's rhythm and participating in it as an observer.
-
-## 7. The Owl's Point of View
-
-That reminds me of a scene from The Ballad of Buster Scruggs that I watched last weekend, where the story in the gold-mining valley is recorded from something like an owl's point of view. It's such a good perspective. Now that I'm well into my thirties, I finally understand this film, and I finally understand what "Heaven and earth are not benevolent; they treat all things as straw dogs" is really getting at.]]></content:encoded>
-    </item>
-    <item>
-      <title>I&apos;m slowly accepting something:
-
-You don&apos;t have to put a whole big product in fr…</title>
-      <link>https://bryantchen.cc/en/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-28-memoryx-plugin-first</guid>
-      <pubDate>Sat, 28 Mar 2026 01:16:00 GMT</pubDate>
-      <description>I&apos;m slowly accepting something:
-
-You don&apos;t have to put a whole big product in front of the world for it to count as shipping.
-
-For me, MemoryX may have already missed its best moment to be launched as a complete product.
-But that doesn&apos;t mean what&apos;s inside it has no value.
-
-A mor...</description>
-      <content:encoded><![CDATA[I'm slowly accepting something:
-
-You don't have to put a whole big product in front of the world for it to count as shipping.
-
-For me, MemoryX may have already missed its best moment to be launched as a complete product.
-But that doesn't mean what's inside it has no value.
-
-A more realistic path might be to ship the extension first.
-Let a smaller, more specific slice meet the world and collect real signals.
-
-Sometimes shipping isn't about telling the whole story at once.
-It's about giving the world the part that feels the most alive first.]]></content:encoded>
-    </item>
-    <item>
-      <title>Three Guiding Axes for Entrepreneurship and Product</title>
-      <link>https://bryantchen.cc/en/posts/entrepreneurship-three-axes</link>
-      <guid isPermaLink="true">https://bryantchen.cc/en/posts/entrepreneurship-three-axes</guid>
-      <pubDate>Thu, 26 Mar 2026 01:11:00 GMT</pubDate>
-      <description>A late-night reflection on balancing personal passion with market demand and business viability.</description>
-      <content:encoded><![CDATA[Here are a few principles for getting things done in entrepreneurship.
-
-Think of them as three coordinate axes:
-
-1. **What you love**: This measures whether you actually like what you're doing, whether you're willing to pour your energy and willpower into it, and whether it aligns with your personal aesthetics. However, this axis alone can't decide too many things. It only determines how far you can go and whether the product reflects your character and taste.
-2. **What users need**: This is actually the most important one. Often, what you like isn't necessarily what users need, or perhaps there simply aren't that many users who need it. When evaluating a new project, you must build something that users actually need, not just something you happen to like.
-3. **What the market will pay for (financial return)**: Without this, nothing else holds up. Entrepreneurship is a marathon. If you want to reach the finish line, you must do things the market is willing to pay for and that can generate a positive commercial return.
-
-Evaluating what I've been doing over the past two months, most of it has landed on axis 1, with too little focus on axes 2 and 3. I need to reflect on this.
-
-Additionally, considering competition is an absolute must. There are some things you simply can't win just by trying to out-work or "out-involution" others. Self-reflection is needed, but we still have to try our best to get there! That is the only way to improve our win rate.]]></content:encoded>
-    </item>
-    <item>
-      <title>A few recent moments have helped me understand why, if you create content, you n…</title>
-      <link>https://bryantchen.cc/en/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-24-multi-platform-publishing</guid>
-      <pubDate>Tue, 24 Mar 2026 15:42:00 GMT</pubDate>
-      <description>A few recent moments have helped me understand why, if you create content, you need to publish across multiple platforms. It seems like common sense, but human nature — mainly laziness and indifference toward certain platforms — makes us overlook this:
-
-1. Traffic rules on any si...</description>
-      <content:encoded><![CDATA[A few recent moments have helped me understand why, if you create content, you need to publish across multiple platforms. It seems like common sense, but human nature — mainly laziness and indifference toward certain platforms — makes us overlook this:
-
-1. Traffic rules on any single platform are essentially random events. Take Xiaohongshu (RED) for example — as a beginner, it's really hard to figure out what gets traction and what doesn't. But as a creator, ignore the randomness of metrics. Just share sincerely, be genuinely helpful, and stick to those principles. Content produced this way might flop on Platform A but take off on Platform B.
-
-A concrete example: I recently shared ClawPuter's Build in Public content. The first four episodes did great on Xiaohongshu, but episode five — where I put extra effort into the cover design and edited with CapCut — got zero traction. What I didn't expect was that WeChat Stickers' recommendation algorithm gave this episode a ton of traffic over the past two days. This is what they call "when the east doesn't shine, the west will."
-
-2. Behind multi-platform publishing, there's another reason: if you're making good content, when you don't publish it somewhere, someone else might repost or remix it. If you don't publish, someone else will. Rather than watching your metrics get claimed by others, it's worth casually posting on other platforms too. Sure, your original content might perform worse than someone else's remix. But you won't know unless you try.
-
-The above is purely a beginner's practical sharing — take it with a grain of salt.]]></content:encoded>
-    </item>
-    <item>
-      <title>The most resonant article I&apos;ve read recently is Eric Xu&apos;s &quot;In 2016, I did an AI …</title>
-      <link>https://bryantchen.cc/en/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-24-action-beats-anxiety</guid>
-      <pubDate>Tue, 24 Mar 2026 00:14:00 GMT</pubDate>
-      <description>The most resonant article I&apos;ve read recently is Eric Xu&apos;s &quot;In 2016, I did an AI coding startup&quot; https://x.com/xleaps/status/2033027083476054377. I actually read it a few weeks ago, but today I read it carefully again, and it&apos;s the kind of piece where I kept highlighting text. As ...</description>
-      <content:encoded><![CDATA[The most resonant article I've read recently is Eric Xu's "In 2016, I did an AI coding startup" https://x.com/xleaps/status/2033027083476054377. I actually read it a few weeks ago, but today I read it carefully again, and it's the kind of piece where I kept highlighting text. As a Silicon Valley founder, Eric shared this observation:
-
-"Seeing the future ≠ Arriving at the future." In life and work, there are always three kinds of mismatches: "Having vision without resources, having resources without direction, having contributions without self-awareness."
-
-Most of the time, we don't even know which position we are in. Anxiety is the underlying tone for founders, but it never generates signals; only action generates signals. After seeing this sentence, I changed it to my pinned WeChat signature.
-
-Replace deduction and anxiety with proactive action. Within the boundaries you can currently see, try your best to make choices that do justice to yourself. Thus have I heard.]]></content:encoded>
-    </item>
-    <item>
-      <title>Day 60 of My One-Person Company</title>
-      <link>https://bryantchen.cc/en/posts/day-60-of-solo-company</link>
-      <guid isPermaLink="true">https://bryantchen.cc/en/posts/day-60-of-solo-company</guid>
-      <pubDate>Mon, 23 Mar 2026 01:42:00 GMT</pubDate>
-      <description>Reflections on 60 days since going solo — small wishes fulfilled, hopes discovered, and the reality of not yet making money.</description>
-      <content:encoded><![CDATA[## The bar for fulfilling wishes just got lower
-
-I keep marveling at how this is the best era for curious, hands-on product people. Over the past week, despite a packed TODO list, a few small personal wishes quietly came true.
-
-1. Back in mid-2022, I wanted to build a literary clock extension — one that shows the current time through passages from literature I love, with the hex value of the time as the background color. This was purely to satisfy my own curiosity: what were writers thinking when they wrote about time?
-
-That idea sat buried in my Feishu docs for years. Then last week I stumbled upon it, opened a new terminal window, tossed the requirement to Claude Code, and — working on and off — went from development to publishing in a single day.
-
-The extension is called "Shike — Chinese Literary Clock." I hope everyone who uses it can feel and collect those fleeting moments about time in literature. Here's the link: https://chromewebstore.google.com/detail/agoanicnncfnnilkkihplfkpkpkhdbac?utm_source=item-share-cb
-
-The hardest part was actually the corpus. Without clear constraints and scope, AI hallucinates and fabricates. I'm not fully satisfied with the sentences yet, so it's only been beta-tested in a few small groups.
-
-2. On Saturday I didn't want to do anything too mentally taxing, but when I walked into my study that evening, the computer pulled me in like a black hole. I opened the terminal again — let me build a personal blog, the domain was bought ages ago during Chinese New Year.
-
-It came together quickly. This, too, was a gift I'd been meaning to give myself for a long time.
-
-## Back to Day 60
-
-Today marks 60 days since I left my job to go solo. Though if you count from when I actually got my business license, it's only been about a month.
-
-One sentence to sum up these two months: I haven't made much cash, largely because my actual efforts, projects, and energy allocation haven't been evaluated through a commercial lens. That's a capability issue but even more an attitude issue. In the short term, I don't think that's necessarily bad. Overall, I'm fairly satisfied with myself — I've seen a lot of hope. Of all things, hope is the most beautiful.
-
-Also, I'm being "seen" more. Including seeing my own boundless energy and potential.
-
-I'll stop here for now. Maybe I'll write a more complete version another time. Good night!]]></content:encoded>
-    </item>
-    <item>
-      <title>Building a personal website has been on my mind for years. I kept putting it off…</title>
-      <link>https://bryantchen.cc/en/thoughts</link>
-      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-03-21-hello</guid>
-      <pubDate>Sat, 21 Mar 2026 16:16:00 GMT</pubDate>
-      <description>Building a personal website has been on my mind for years. I kept putting it off — never enough time, not enough skills, and even after buying my domain back in 2022, it still never went live. But this time was different. One evening, I opened a terminal, had a quick chat with AI...</description>
-      <content:encoded><![CDATA[Building a personal website has been on my mind for years. I kept putting it off — never enough time, not enough skills, and even after buying my domain back in 2022, it still never went live. But this time was different. One evening, I opened a terminal, had a quick chat with AI, and my site was up. Thanks to good context management habits, the content architecture came together fast too. Hello, whoever you are visiting my little corner of the internet — here I'll be sharing my thoughts, projects, and growth. Thanks for stopping by!]]></content:encoded>
-    </item>
-    <item>
-      <title>Building This Site</title>
-      <link>https://bryantchen.cc/en/posts/building-this-site</link>
-      <guid isPermaLink="true">https://bryantchen.cc/en/posts/building-this-site</guid>
-      <pubDate>Sat, 21 Mar 2026 04:30:00 GMT</pubDate>
-      <description>One evening, one terminal window, a few words with AI, and my personal site was live. A full walkthrough from planning to deployment.</description>
-      <content:encoded><![CDATA[The idea of building a personal website had been on my mind for years. I bought the domain back in 2022 but never actually shipped it. This time was different — one evening, one terminal window, a few words with AI, and the site was live.
-
-This post documents the full process from tech decisions to deployment.
-
-## What I wanted
-
-The requirements were simple:
-
-- Write Markdown, push to git, auto-publish
-- No CMS, no database
-- Minimal black-and-white design
-- Bilingual support (Chinese and English)
-- Near-zero maintenance cost
-
-## Tech stack
-
-| Decision | Choice | Why |
-|----------|--------|-----|
-| Framework | Next.js (App Router) | MDX support, static generation, extensible |
-| Hosting | Vercel | Push to deploy, free SSL |
-| Content | .md/.mdx in `content/` | No database, git-driven |
-| MDX rendering | next-mdx-remote + gray-matter | Frontmatter parsing |
-| Styling | Tailwind CSS v4 | A minimal site doesn't need a component library |
-| Code highlighting | sugar-high | 1KB, zero config |
-| Package manager | pnpm | Fast |
-
-I didn't go with Hexo, Hugo, or other static site generators because Next.js gives more flexibility — adding comments, subscriptions, or OG image generation later is straightforward.
-
-## Project structure
-
-```
-bryantchen.cc/
-├── app/
-│   ├── layout.tsx              # Root layout
-│   ├── [lang]/                 # i18n routing
-│   │   ├── layout.tsx          # Lang layout (nav, footer)
-│   │   ├── page.tsx            # Home
-│   │   ├── thoughts/page.tsx   # Thoughts list
-│   │   ├── posts/
-│   │   │   ├── page.tsx        # Posts list
-│   │   │   └── [slug]/page.tsx # Single post
-│   │   ├── projects/page.tsx   # Projects
-│   │   └── about/page.tsx      # About
-├── content/
-│   ├── zh/                     # Chinese content
-│   │   ├── thoughts/
-│   │   └── posts/
-│   └── en/                     # English content
-│       ├── thoughts/
-│       └── posts/
-├── lib/
-│   ├── content.ts              # Content reader
-│   ├── i18n.ts                 # i18n dictionaries
-│   └── projects.ts             # Project data
-├── components/                 # UI components
-├── middleware.ts               # Locale redirect
-└── next.config.ts
-```
-
-## Content model
-
-### Thoughts
-
-Short-form, no title. The filename is the slug:
-
-```markdown
-// content/en/thoughts/2026-03-21-hello.md
----
-date: "2026-03-21"
-tags: ["life"]
----
-A few sentences about whatever's on my mind.
-```
-
-### Posts
-
-Long-form with title and description:
-
-```markdown
-// content/en/posts/some-post.mdx
----
-title: "Post Title"
-date: "2026-03-21"
-description: "One-line summary"
-tags: ["tag"]
-draft: false
----
-Full post content with Markdown and MDX support...
-```
-
-`lib/content.ts` reads these files at build time, parses frontmatter with `gray-matter`, and sorts by date descending. Posts with `draft: true` are excluded from production.
-
-## Internationalization
-
-This is the most interesting architectural piece.
-
-The core idea is using Next.js App Router's `[lang]` dynamic segment:
-
-- `/zh/posts/xxx` shows Chinese
-- `/en/posts/xxx` shows English
-- `/` auto-redirects to `/zh`
-
-```typescript
-// middleware.ts — auto-redirect to default locale
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const hasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-  );
-  if (hasLocale) return;
-  const url = request.nextUrl.clone();
-  url.pathname = `/${defaultLocale}${pathname}`;
-  return NextResponse.redirect(url);
-}
-```
-
-UI strings (nav labels, headings, empty states) are managed with a plain dictionary object — no third-party i18n library:
-
-```typescript
-// lib/i18n.ts
-const dictionaries = {
-  zh: {
-    nav: { thoughts: "碎碎念", posts: "文章", ... },
-    ...
-  },
-  en: {
-    nav: { thoughts: "thoughts", posts: "posts", ... },
-    ...
-  },
-};
-```
-
-Content is split by locale directory. Each language is independent — if a post exists in Chinese but not English, the English site simply doesn't show it. No errors.
-
-A language toggle link in the top-right corner of the nav switches between Chinese and English.
-
-## Deployment
-
-Three steps, under 10 minutes total:
-
-**1. Push to GitHub**
-
-```bash
-git init && git add -A && git commit -m "Initial commit"
-gh repo create bryant24hao/bryantchen.cc --public --source . --push
-```
-
-**2. Import to Vercel**
-
-Open Vercel, pick the GitHub repo, click Deploy. Next.js is auto-detected — zero configuration needed.
-
-**3. Domain setup**
-
-Add `bryantchen.cc` in Vercel Settings → Domains, then add two DNS records in Cloudflare:
-
-| Type | Name | Value |
-|------|------|-------|
-| A | @ | IP from Vercel |
-| CNAME | www | Vercel's project-specific address |
-
-Important: set Proxy status to **DNS only** (gray cloud) so Vercel handles SSL.
-
-SSL is auto-provisioned in a few minutes. The site is live on the custom domain.
-
-## Security hardening
-
-A static site has a small attack surface, but a few defensive measures are still worth doing:
-
-- **Locale parameter validation** — invalid paths return 404, preventing path traversal
-- **Security response headers** — `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`
-- **.env leak prevention** — gitignore covers bare `.env` files
-- **Privacy checks** — scan for real IPs, passwords, and API keys before every commit
-
-## Writing workflow
-
-Publishing content is now:
-
-```bash
-# 1. Create a file
-vim content/en/thoughts/2026-03-22-some-thought.md
-
-# 2. Write content (frontmatter + body)
-
-# 3. Publish
-git add content/ && git commit -m "New thought" && git push
-```
-
-Vercel picks up the push and deploys in ~30 seconds. No admin dashboard needed.
-
-## What's next
-
-The MVP is live. Things I want to add later:
-
-- RSS feed
-- Auto-generated OG images
-- Giscus comments (GitHub Discussions-based)
-- Email subscriptions
-- Full-text search
-- Tag filtering
-
-But no rush. Content first, features later.
-
-## Final thought
-
-From idea to live site, it took one evening. I used to think building a personal site was a big project. Looking back, the real barrier was never the tech — it was just starting. The tools are good enough now — describe what you want, AI builds the skeleton, you fill in the content.
-
-If you've been meaning to build your own site, now is the best time.]]></content:encoded>
     </item>
   </channel>
 </rss>

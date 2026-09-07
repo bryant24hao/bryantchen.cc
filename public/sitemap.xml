@@ -1,31 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://bryantchen.cc/zh</loc><lastmod>2026-04-16</lastmod></url>
-  <url><loc>https://bryantchen.cc/zh/thoughts</loc><lastmod>2026-04-16</lastmod></url>
-  <url><loc>https://bryantchen.cc/zh/posts</loc><lastmod>2026-04-16</lastmod></url>
-  <url><loc>https://bryantchen.cc/zh/projects</loc><lastmod>2026-04-16</lastmod></url>
-  <url><loc>https://bryantchen.cc/zh/about</loc><lastmod>2026-04-16</lastmod></url>
-  <url><loc>https://bryantchen.cc/zh/evolution</loc><lastmod>2026-04-16</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh</loc><lastmod>2026-09-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/thoughts</loc><lastmod>2026-09-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts</loc><lastmod>2026-09-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/projects</loc><lastmod>2026-09-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/about</loc><lastmod>2026-09-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/evolution</loc><lastmod>2026-09-07</lastmod></url>
   <url><loc>https://bryantchen.cc/zh/posts/adsterra-integration-guide</loc><lastmod>2026-04-16</lastmod></url>
   <url><loc>https://bryantchen.cc/zh/posts/building-this-site</loc><lastmod>2026-03-21</lastmod></url>
   <url><loc>https://bryantchen.cc/zh/posts/day-60-of-solo-company</loc><lastmod>2026-03-23</lastmod></url>
   <url><loc>https://bryantchen.cc/zh/posts/entrepreneurship-three-axes</loc><lastmod>2026-03-26</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/indie-maker-w26</loc><lastmod>2026-07-27</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/indie-maker-w27</loc><lastmod>2026-08-03</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/indie-maker-w28</loc><lastmod>2026-08-10</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/indie-maker-w29</loc><lastmod>2026-08-17</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/indie-maker-w30</loc><lastmod>2026-08-24</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/indie-maker-w31</loc><lastmod>2026-08-31</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/indie-maker-w32</loc><lastmod>2026-09-07</lastmod></url>
   <url><loc>https://bryantchen.cc/zh/posts/ios-proxy-client-pitfalls</loc><lastmod>2026-04-16</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/lemon-squeezy-payout-setup</loc><lastmod>2026-04-17</lastmod></url>
   <url><loc>https://bryantchen.cc/zh/posts/milestone-first-paid-revenue</loc><lastmod>2026-04-11</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/organizing-agent-sessions</loc><lastmod>2026-08-21</lastmod></url>
   <url><loc>https://bryantchen.cc/zh/posts/reflections-on-a-good-life</loc><lastmod>2026-04-08</lastmod></url>
   <url><loc>https://bryantchen.cc/zh/posts/several-observations-about-myself-and-the-world</loc><lastmod>2026-03-28</lastmod></url>
-  <url><loc>https://bryantchen.cc/en</loc><lastmod>2026-04-16</lastmod></url>
-  <url><loc>https://bryantchen.cc/en/thoughts</loc><lastmod>2026-04-16</lastmod></url>
-  <url><loc>https://bryantchen.cc/en/posts</loc><lastmod>2026-04-16</lastmod></url>
-  <url><loc>https://bryantchen.cc/en/projects</loc><lastmod>2026-04-16</lastmod></url>
-  <url><loc>https://bryantchen.cc/en/about</loc><lastmod>2026-04-16</lastmod></url>
-  <url><loc>https://bryantchen.cc/en/evolution</loc><lastmod>2026-04-16</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/vibehacks-judge-notes</loc><lastmod>2026-08-31</lastmod></url>
+  <url><loc>https://bryantchen.cc/zh/posts/video-editing-and-content-publishing</loc><lastmod>2026-06-24</lastmod></url>
+  <url><loc>https://bryantchen.cc/en</loc><lastmod>2026-09-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/thoughts</loc><lastmod>2026-09-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/posts</loc><lastmod>2026-09-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/projects</loc><lastmod>2026-09-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/about</loc><lastmod>2026-09-07</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/evolution</loc><lastmod>2026-09-07</lastmod></url>
   <url><loc>https://bryantchen.cc/en/posts/adsterra-integration-guide</loc><lastmod>2026-04-16</lastmod></url>
   <url><loc>https://bryantchen.cc/en/posts/building-this-site</loc><lastmod>2026-03-21</lastmod></url>
   <url><loc>https://bryantchen.cc/en/posts/day-60-of-solo-company</loc><lastmod>2026-03-23</lastmod></url>
   <url><loc>https://bryantchen.cc/en/posts/entrepreneurship-three-axes</loc><lastmod>2026-03-26</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/posts/indie-maker-w26</loc><lastmod>2026-07-27</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/posts/indie-maker-w27</loc><lastmod>2026-08-03</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/posts/indie-maker-w28</loc><lastmod>2026-08-10</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/posts/indie-maker-w29</loc><lastmod>2026-08-17</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/posts/indie-maker-w30</loc><lastmod>2026-08-24</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/posts/indie-maker-w32</loc><lastmod>2026-09-07</lastmod></url>
   <url><loc>https://bryantchen.cc/en/posts/ios-proxy-client-pitfalls</loc><lastmod>2026-04-16</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/posts/lemon-squeezy-payout-setup</loc><lastmod>2026-04-17</lastmod></url>
   <url><loc>https://bryantchen.cc/en/posts/milestone-first-paid-revenue</loc><lastmod>2026-04-11</lastmod></url>
+  <url><loc>https://bryantchen.cc/en/posts/organizing-agent-sessions</loc><lastmod>2026-08-21</lastmod></url>
   <url><loc>https://bryantchen.cc/en/posts/reflections-on-a-good-life</loc><lastmod>2026-04-08</lastmod></url>
   <url><loc>https://bryantchen.cc/en/posts/several-observations-about-myself-and-the-world</loc><lastmod>2026-03-28</lastmod></url>
 </urlset>
