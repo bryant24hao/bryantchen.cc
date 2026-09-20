@@ -7,8 +7,62 @@
     <link>https://bryantchen.cc/zh</link>
     <description>Bryant 的个人网站 — 独立开发、AI、产品思考</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 07 Sep 2026 13:17:19 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 20 Sep 2026 16:59:47 GMT</lastBuildDate>
     <atom:link href="https://bryantchen.cc/zh/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Indie Maker W33｜聊聊极简创业、越过山丘，和向宇宙下单</title>
+      <link>https://bryantchen.cc/zh/posts/indie-maker-w33</link>
+      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/indie-maker-w33</guid>
+      <pubDate>Mon, 21 Sep 2026 00:00:00 GMT</pubDate>
+      <description>一人公司第 242 天。极简创业、越过山丘前憋住那口气、大胆向宇宙下单，以及经常庆功才会成功。</description>
+      <content:encoded><![CDATA[> 今天是我一人公司的第 242 天。这个《Indie Maker》专栏用来记录自己的成长和业务进展，也希望对大家有启发。
+>
+> 本周主要分享：
+> 1、极简创业
+> 2、在越过山丘前憋住那口气
+> 3、大胆向宇宙下单
+> 4、经常庆功，才会成功
+
+上周和这周的周刊都没写，太忙以及感觉没有特别想写的，今天睡前恰好有创作欲，随便写点。
+
+## 极简创业
+
+我之前一直不知道以什么的词来定义自己的状态，因为不管是“一人公司”也好或是“独立开发”都在被滥用甚至被污名化，最近重读《小而美》，对“极简创业”这个词印象深刻，我想这似乎也很符合最近我的心境和我理想的做事方式 —— 做一个自己喜欢且愿意持续投入、拥有不错的持续盈利能力。当然你要问我想没想清楚，我会说这是想不清楚的，大概还是边走边看、在做的过程中有更深的体悟吧。
+
+## 在越过山丘前憋住那口气
+
+最近好多次经历、特别是这两天的经历，当我回过头看的时候，感觉像是憋着一口气、在那口气之前，整个人会觉得压力越来越大、甚至总是陷入到一边干、一边怀疑的状态。但当挺过那口气、“凭着运气”获得一些正反馈的时候，才会发现原来越过山丘之后的风景是这样的，要是我当时没憋住这口气可太可惜了。
+
+## 大胆向宇宙下单
+
+昨天睡觉前内心默默许了个愿，说希望一觉醒来产品的排名暴涨、进入 Top10，结果醒来打开手机、果真收到了在某市场排到第 7 名的成绩，排在我后面的是 Youtube。朋友们，一定要有梦想和野心啊，向宇宙大胆许愿！
+
+是啊，当你一直在按照正确的节奏、科学的方法做事，一定要相信自己、大胆的向宇宙下单，宇宙会接收到你的订单的。
+
+## 经常庆功，才会成功
+
+上一篇周记里面就说过类似的话，今天再分享一次。
+
+以前觉得“经常庆功，才会成功”这句话太过于“成功学”和中二，但最近发现真的是这样，如果你不喜欢庆功、代表你不热爱和渴望，经常庆功且务实科学干活的人运气都不会差。
+
+最后，晚安。]]></content:encoded>
+    </item>
+    <item>
+      <title>给 ColorWander 开 Instagram 官号，注册这步踩了个坑</title>
+      <link>https://bryantchen.cc/zh/posts/colorwander-instagram-signup-tip</link>
+      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/colorwander-instagram-signup-tip</guid>
+      <pubDate>Fri, 11 Sep 2026 00:00:00 GMT</pubDate>
+      <description>国内网络环境下给海外平台开账号，手机号注册可能一直卡住——换成先用邮箱注册、再绑定手机号，一次就过。</description>
+      <content:encoded><![CDATA[最近在给 ColorWander 开一个独立的 Instagram 官号，方便之后把海外的内容和用户反馈都收在一处，不再只挂在我自己的私人账号下面。
+
+注册这一步踩了个坑，记一下。
+
+一开始直接用手机号注册，区号选的 +1（一个美区号码），结果验证码死活发不出去，反复提示要发到一个 +86 开头、数字却对不上的号码。折腾了几轮才想明白：Instagram 是按当前网络所在地识别的，只要还在国内网络环境下操作，不管注册页面上选的区号是什么，系统都会按 IP 定位把它纠正成 +86，验证码自然发不出去。
+
+后来换了个顺序：先用邮箱把账号注册出来，进去之后再到设置里单独绑定手机号，一次成功。
+
+如果你也是在国内网络环境下给海外平台注册账号，遇到手机号验证卡住，别在这一步死磕——先用邮箱开账号，手机号留到账号建好之后再补绑，能省不少来回折腾的时间。]]></content:encoded>
+    </item>
     <item>
       <title>Indie Maker W32｜聊聊分享、应回尽回，和重读《小而美》</title>
       <link>https://bryantchen.cc/zh/posts/indie-maker-w32</link>
@@ -739,60 +793,6 @@ Grok 的会话 ID 对得上，标题也还在。Claude 有时会先停在许可�
 许个愿望，一觉醒来数据爆了！当然可能都是梦，还是得踏踏实实干啊！]]></content:encoded>
     </item>
     <item>
-      <title>聊聊视频剪辑与内容发布</title>
-      <link>https://bryantchen.cc/zh/posts/video-editing-and-content-publishing</link>
-      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/video-editing-and-content-publishing</guid>
-      <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
-      <description>独立开发者如何快速、高质量、批量地产出优质内容？从影视飓风 Tim 的剪辑课聊起。</description>
-      <content:encoded><![CDATA[![聊聊视频剪辑与内容发布](https://cdn.jsdelivr.net/gh/bryant24hao/image-hosting@main/video-editing-2026/cover.png?v=2)
-
-AI 大幅降低了产品的开发门槛，但「如何让更多人知道你的产品」这件事的难度从来没有降低，且比以往都要重要得多。我自己最近在专心做 ColorWander App，前面的分享中也提到了不少。包括我自己在上周的个人周复盘中也提到，最近的一个核心命题是「如何快速、高质量、批量地产出优质内容」，也是因为这个问题，有了今天的这篇文章。
-
-## 缘起
-
-### 为什么要学习剪辑？
-
-> 我为什么开始关注剪辑技巧和内容质量？
-
-从今年年初开始，我一边做自媒体、一边做自己的产品。日常在各种社交媒体上，不免要发各种视频、图文。小到行业前沿资讯、技术博客、学习笔记的口播和讲解，还有自己产品的一些功能更新、宣传视频、教程、产品示例的混剪视频等等。
-
-我日常在剪辑视频的时候，是个野路子，基本不写脚本、经常就是搞点素材就哐哐一顿剪辑。实际产出的视频素材，从自己的角度来说，很难说满意。
-
-但对于独立开发者来说，产品推广永远是第一重要的事情。我上周也给自己留了一个命题是「如何快速、高质量、批量地产出优质内容」。
-
-抱着这个目标，我内心埋下了精进剪辑技能的种子。
-
-### 为什么是 Tim 的剪辑课？
-
-> 一个很巧合的原因开始看 Tim 的剪辑课。
-
-很巧合的是，最近朋友 yihui 在做自己的新产品 mkboard，一个 AI 剪辑产品。上周他在 VibeFriends 疯狂星期四 Vibe Launch 的时候反复提及了「影视飓风 Tim 的剪辑入门课」。
-
-恰逢端午节将至，于是我果断下单了这个课程，晚上和他聊起来，要不要拉个端午剪辑共学群。一起在端午把这个剪辑课学完。除了学习剪辑课之外，也会在群里交流下自媒体和增长的经验。
-
-## 学了一部分之后，我学到了啥？
-
-看了前几集，有几个技巧还挺有启发的，之前我剪辑的时候常犯的错误或者搞的不细致的地方，Tim 都给了一些解法。这 49 块钱是我最近花的最值的一笔投入了。具体说有哪些点呢？
-
-一个具体的例子：视频结尾 BGM 的处理，我之前不知道怎么剪。经常就是硬切或者粗暴地拉长素材到结束点，在 Tim 的课上就教了一个技巧 —— 给音效加一个淡出（Fade Out）效果，避免突兀收尾。
-
-除此之外，还有如何有组织地管理素材、如何把控视频的剪辑节奏...
-
-这些我之前有机会再展开分享。
-
-## 完成比完美更重要
-
-不过，课上还讲到一点，素材本身和想要表达的东西更重要；以及我自己觉得发布完成比完美更重要。
-
-以我前几天发布的一个视频为例：这是我之前随手剪的，有些卡点就不满意（卡点可以直接用添加标记来处理）、包括结尾的 BGM 处理，后面的话可以用课上教的一个 Fade Out 拉一下 BGM 的结尾，过渡会更自然些。
-
-像这个视频虽然我自己的剪辑技巧都不是很熟练，但是在抖音发出来也还是有不错的数据（目前有 17w+ 的播放）。如果我先把课程学完再去剪辑的话，就错过了产品宣发的最佳时间点。
-
-![抖音 17w+ 播放截图](https://cdn.jsdelivr.net/gh/bryant24hao/image-hosting@main/video-editing-2026/douyin-17w-screenshot.png)
-
-中午刚好有人在群里问我上面的这些问题，把自己的一些实操经历和心得整理出来分享给大家，希望对大家有启发。]]></content:encoded>
-    </item>
-    <item>
       <title>形式即媒介，决定了用户/读者会看到什么——微信贴图，大家看图看帖子内容；视频号，大家看视频，文一般不太读。
 
 而平台不同，代表的是背后审核机制、流量分发、用户画…</title>
@@ -1002,176 +1002,6 @@ AI 大幅降低了产品的开发门槛，但「如何让更多人知道你的�
 结果反而有了这样的数据。
 
 下次再犹豫前，一定在心里默念：先发了再说。]]></content:encoded>
-    </item>
-    <item>
-      <title>独立开发者收款配置：Lemon Squeezy + HSBC 香港账户踩坑实录</title>
-      <link>https://bryantchen.cc/zh/posts/lemon-squeezy-payout-setup</link>
-      <guid isPermaLink="true">https://bryantchen.cc/zh/posts/lemon-squeezy-payout-setup</guid>
-      <pubDate>Fri, 17 Apr 2026 18:00:00 GMT</pubDate>
-      <description>从 Lemon Squeezy 账户国家锁死，到 HSBC 香港 Branch Code 混淆、账号格式报错、W-8BEN 税表地址自洽——把一个晚上踩的坑全记下来，下次配新平台直接抄。</description>
-      <content:encoded><![CDATA[> 本文是我配置 Lemon Squeezy 收款通道的真实踩坑记录。身份情况：居住北京、大陆税务居民，但用 HSBC 香港账户收款——这是很多独立开发者的常见组合。
-
-## 背景
-
-产品卖出去的钱要能落到银行卡上，这一步看起来简单，实际上是独立开发者最容易卡住的一环。尤其你是"大陆人 + HSBC 香港卡"这种跨境配置，每个字段都有隐藏规则。
-
-我的组合：
-
-- **平台**：Lemon Squeezy（Merchant of Record，帮你处理全球税务和支付）
-- **收款账户**：HSBC 香港个人账户（HKD）
-- **税务居民**：中国大陆
-
-配置总共踩了 4 个坑，全部记录如下。
-
-## 坑 1：银行选错到美国汇丰
-
-填 Payout Bank Account 时，搜 "HSBC" 下拉出来的前几条全是：
-
-- `HSBC BANK USA, NATIONAL ASSOCIATION [106]`
-- `HSBC PRIVATE BANK (SUISSE) SA [235]`
-
-**根本没有香港汇丰**。如果直接选第一个，后面的 Branch Code、账号格式全部对不上。
-
-### 原因
-
-上一步 Country 字段没选对。Lemon Squeezy 的银行列表是按国家筛选的——如果 Country 默认 US 或没选，下拉里只会出现美国银行。
-
-### 解决
-
-Country 必须先选 **Hong Kong**，再搜 "HSBC" 或 "Hongkong"，才会出现正确条目：
-
-> **The Hongkong and Shanghai Banking Corporation Limited [004]**
-
-`[004]` 才是香港汇丰的 Bank Code。
-
-## 坑 2：Branch Code、卡号、分行名三个信息傻傻分不清
-
-选 Branch（支行）时又卡住了。我手里有三个数字，都和"银行编号"沾边：
-
-| 信息 | 我看到的值 | 其实是什么 |
-|---|---|---|
-| 卡号前 4 位 | `5413` | Mastercard BIN，和分行**无关** |
-| 账号前 3 位 | `691` | **这个才是 Branch Code** |
-| 结算单分行名 | `SHEUNG SHUI` | 开户分行名字 |
-
-我一开始以为 `5413` 是分行代码（因为 Lemon Squeezy 列表里还真有 `541` 的分行），选了半天不对。
-
-### 正确做法
-
-香港汇丰账号格式是 `xxx-yyyyyy-zzz`，**前 3 位 (xxx) 就是真正的 Branch Code**。
-
-我的账号前 3 位是 `691`，对应 Sheung Shui 分行——这也跟电子结算单上的分行名一致。**账号前 3 位 + Branch 下拉里的分行名**，这两个必须对得上，卡号跟这事完全无关。
-
-### 快速定位
-
-- 打开 HSBC HK App → 账户详情，看账号格式
-- 前 3 位就是 Branch Code
-- 在 Lemon Squeezy 下拉里搜对应分行名字（`Sheung Shui` / `Mong Kok` / `Central`...），选中即可
-
-## 坑 3：账号格式报错
-
-Branch 选完，账号填了 `691-123456-001`（完整格式），平台直接红字：
-
-> **Invalid account number: must be between 6 and 16 digits long. If your account number starts with your bank's three digit branch code followed by a hyphen like "000-123456", please remove it and only provide the remaining part of the account number, like "123456".**
-
-### 正确做法
-
-账号只填**中间段 + 尾段的纯数字**，去掉：
-
-- 最前面的 Branch Code（已经在上一步选过了）
-- 所有连字符 `-`
-
-举例：
-
-| 完整账号 | ❌ 不要填 | ✅ 要填 |
-|---|---|---|
-| `691-123456-001` | `691-123456-001` | `123456001` |
-| `004-123-456789` | `004-123-456789` | `123456789` |
-
-这个规则不只 Lemon Squeezy，Stripe Connect、Paddle、Gumroad 的 HSBC HK 收款字段全都一样。
-
-### HSBC HK 收款信息速查
-
-| 字段 | 值 |
-|---|---|
-| Bank Code | `004` |
-| Bank Name | The Hongkong and Shanghai Banking Corporation Limited |
-| SWIFT Code | `HSBCHKHHHKH` |
-| Branch | 按你账号前 3 位对应的分行 |
-| Account Number | 去掉 Branch Code 和连字符后的纯数字 |
-
-## 坑 4：税表国家锁死，和地址不自洽
-
-银行配完，下一步是 Tax Details（W-8/W-9 税表）。
-
-我第一次填地址时想当然地写：
-
-- Country: Hong Kong
-- City: Chaoyang（朝阳）
-- Street: Donghu Jiedao, Aozhou Kangdu 3-3C（东湖街道 澳洲康都）
-
-问题来了：**Country 是香港，但街道和城市是北京大陆地址**。这种自相矛盾的填法会被税务系统视为数据异常——严重的话整个 W-8BEN 会失效。
-
-### 发现国家改不了
-
-想把 Country 从 Hong Kong 改成 China，系统弹窗：
-
-> **You can't change the country of this account. Please create a new account if you need to update the country.**
-
-Lemon Squeezy 账户的国家**一旦确定就锁死**。原因涉及税表类型（W-8 vs W-9）、结算币种、合规审查等底层逻辑，不支持修改。
-
-### 决策：整套对齐香港
-
-既然账户国家已经锁死为 HK，那干脆让**税务居民地 + 地址 + 收款银行**三者全部统一到香港：
-
-- **Country**: Hong Kong（已锁死）
-- **Address**: 填一个香港真实地址（可以用 HSBC 开户登记的香港地址）
-- **Tax Residence**: Hong Kong
-- **银行**: HSBC 香港
-
-**最忌讳的是**："Country 选 HK + 地址写大陆"这种半吊子配置——字段之间矛盾，以后税表审核、1099 表单寄送全会出问题。
-
-### 身份 vs 银行账户：两个不同的概念
-
-| 概念 | 含义 | 我的情况 |
-|---|---|---|
-| **税务居民地** | 你实际在哪交个税 | 中国大陆 |
-| **Lemon Squeezy 账户国家** | 平台识别你的税务身份 | Hong Kong（锁死） |
-| **收款银行所在地** | 钱打到哪里 | HSBC 香港 |
-
-严格合规需要三者对齐。但如果账户国家已经锁死，退而求其次——**至少账户国家和地址要自洽**。
-
-**银行账户所在地 ≠ 税务居民地**，这两个原则上是独立的。但 Lemon Squeezy 不区分得那么细，它认的是账户层面的 Country 字段。
-
-## 通用 Checklist：下次配新平台前
-
-基于这次踩坑，总结一份通用 checklist：
-
-- [ ] **注册国家选对**：大多数平台国家锁死，先想清楚税务策略再开账户
-- [ ] **姓名统一**：平台账户名 = 税表姓名 = 银行户名，三个英文拼写必须一致
-- [ ] **地址自洽**：Country / State / City / Street 和 Tax Residence 对齐
-- [ ] **Foreign TIN**：大陆身份证 18 位，或 HKID
-- [ ] **HSBC HK 账号格式**：去掉 Branch Code 前缀和所有连字符
-- [ ] **Branch Code**：账号前 3 位对应的分行
-- [ ] **SWIFT**：`HSBCHKHHHKH`
-- [ ] **W-8BEN 税收协定**：如果平台在美国，且你是 China/HK 居民，勾上能减少预扣税
-- [ ] 填完**截图存档**，下次新平台直接抄
-
-## Payout 机制
-
-配置完只是开始，还有个门槛要跨：
-
-- **最低提现门槛**：$50。累计不到不打款
-- **结算周期**：一般月结，会在 Pending 状态显示预计打款日
-- **换汇**：USD 自动换成 HKD 打到 HSBC HK，汇率比银行买入价略差，可接受
-
-我当前一笔 Pending payout 是 $11.34（$37.92 销售 − $19.98 退款 − $6.60 手续费），离 $50 还差一截，要再卖点东西才会真正到账。
-
-## 结语
-
-跨境收款这件事上，独立开发者永远在和"信息不对称"斗争——每个平台、每家银行、每份税表都有隐藏规则，文档写得含糊，客服也未必懂。
-
-把坑全部踩完记下来，至少下次配新平台时能少掉一大半时间。后面如果有新变化（比如真的到 $50 打款了、遇到退税问题、换了别的平台），我会更新这篇。]]></content:encoded>
     </item>
     <item>
       <title>iOS 翻墙客户端避坑：为什么免费 App 全军覆没，$2.99 就解决了</title>

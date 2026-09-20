@@ -7,7 +7,7 @@
     <link>https://bryantchen.cc/en</link>
     <description>Bryant&apos;s personal website — indie dev, AI, product thinking</description>
     <language>en</language>
-    <lastBuildDate>Mon, 07 Sep 2026 13:17:19 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 20 Sep 2026 16:59:47 GMT</lastBuildDate>
     <atom:link href="https://bryantchen.cc/en/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>Indie Maker W32 | A Talk, Reply to Everything, and Rereading Small Giants</title>
@@ -708,176 +708,6 @@ And that was enough to get this result.
 Next time I hesitate, I need to repeat this to myself: ship it first.]]></content:encoded>
     </item>
     <item>
-      <title>Payout Setup for Indie Devs: Lemon Squeezy + HSBC Hong Kong Pitfalls</title>
-      <link>https://bryantchen.cc/en/posts/lemon-squeezy-payout-setup</link>
-      <guid isPermaLink="true">https://bryantchen.cc/en/posts/lemon-squeezy-payout-setup</guid>
-      <pubDate>Fri, 17 Apr 2026 18:00:00 GMT</pubDate>
-      <description>From a locked Lemon Squeezy account country, to HSBC Hong Kong branch code confusion, account number format errors, and W-8BEN address consistency — a full record of every pitfall I hit in one evening.</description>
-      <content:encoded><![CDATA[> A real record of configuring my Lemon Squeezy payout channel. My situation: I live in Beijing, am a mainland China tax resident, but receive payments through an HSBC Hong Kong account — a common setup for indie developers in this region.
-
-## Background
-
-Getting your product revenue into a bank account sounds simple but is one of the easiest places for indie devs to get stuck. Especially with a "mainland resident + HSBC HK card" cross-border setup, every single field has hidden rules.
-
-My combo:
-
-- **Platform**: Lemon Squeezy (Merchant of Record — handles global tax and payments)
-- **Bank**: HSBC Hong Kong personal account (HKD)
-- **Tax residence**: Mainland China
-
-Four pitfalls in total, all documented below.
-
-## Pitfall 1: Wrong bank — ended up at HSBC USA
-
-When filling out the Payout Bank Account, searching "HSBC" in the dropdown returned:
-
-- `HSBC BANK USA, NATIONAL ASSOCIATION [106]`
-- `HSBC PRIVATE BANK (SUISSE) SA [235]`
-
-**Hong Kong HSBC wasn't there at all**. Picking the first option would misalign every downstream field (branch code, account format).
-
-### Cause
-
-The Country field in the previous step was wrong. Lemon Squeezy's bank list is filtered by country — if Country is left at US or empty, the dropdown only shows US banks.
-
-### Fix
-
-Set **Country = Hong Kong** first, then search "HSBC" or "Hongkong" to get the correct entry:
-
-> **The Hongkong and Shanghai Banking Corporation Limited [004]**
-
-`[004]` is the actual HK HSBC bank code.
-
-## Pitfall 2: Branch code vs card number vs branch name — all different
-
-Next came the Branch selection. I had three numbers on hand, all vaguely "bank-related":
-
-| Info | My value | What it actually is |
-|---|---|---|
-| Card first 4 digits | `5413` | Mastercard BIN — **nothing to do with branch** |
-| Account first 3 digits | `691` | **This is the real Branch Code** |
-| Statement branch name | `SHEUNG SHUI` | Branch where I opened the account |
-
-I initially assumed `5413` was a branch code (and Lemon Squeezy's list did show a `541` branch), wasted time picking wrong options.
-
-### Correct approach
-
-Hong Kong HSBC account format is `xxx-yyyyyy-zzz`, where **the first 3 digits (xxx) are the real Branch Code**.
-
-My account starts with `691` → Sheung Shui branch, which matches my statement. **The first 3 digits of your account + the branch name in the dropdown must match**. The card number has nothing to do with this.
-
-### How to find it quickly
-
-- Open HSBC HK app → account details → see the account number format
-- First 3 digits = Branch Code
-- Search the corresponding branch name in Lemon Squeezy's dropdown (`Sheung Shui` / `Mong Kok` / `Central`...) and select
-
-## Pitfall 3: Account number format error
-
-With the branch selected, I entered `691-123456-001` (full format) and got a red error:
-
-> **Invalid account number: must be between 6 and 16 digits long. If your account number starts with your bank's three digit branch code followed by a hyphen like "000-123456", please remove it and only provide the remaining part of the account number, like "123456".**
-
-### Correct approach
-
-Enter **only the middle and tail segments as raw digits**, removing:
-
-- The Branch Code prefix (already selected in the previous step)
-- All hyphens `-`
-
-Example:
-
-| Full account | ❌ Don't enter | ✅ Enter |
-|---|---|---|
-| `691-123456-001` | `691-123456-001` | `123456001` |
-| `004-123-456789` | `004-123-456789` | `123456789` |
-
-This rule isn't unique to Lemon Squeezy — Stripe Connect, Paddle, and Gumroad's HSBC HK fields all work the same way.
-
-### HSBC HK Payout Info Cheat Sheet
-
-| Field | Value |
-|---|---|
-| Bank Code | `004` |
-| Bank Name | The Hongkong and Shanghai Banking Corporation Limited |
-| SWIFT Code | `HSBCHKHHHKH` |
-| Branch | Matches the first 3 digits of your account |
-| Account Number | Strip the branch code and hyphens, keep the raw digits |
-
-## Pitfall 4: Tax country locked, address out of sync
-
-Bank done. Next: Tax Details (W-8/W-9 form).
-
-My first address attempt was intuitive but wrong:
-
-- Country: Hong Kong
-- City: Chaoyang (朝阳)
-- Street: Donghu Jiedao, Aozhou Kangdu 3-3C
-
-The problem: **Country says Hong Kong, but the street and city are mainland Beijing addresses**. This self-contradictory setup gets flagged as abnormal by the tax system — in the worst case your entire W-8BEN becomes invalid.
-
-### Discovery: country is locked
-
-Tried to change Country from Hong Kong to China, and got:
-
-> **You can't change the country of this account. Please create a new account if you need to update the country.**
-
-Lemon Squeezy accounts **lock the country permanently once set**. It ties into tax form type (W-8 vs W-9), settlement currency, and compliance review — no edits allowed.
-
-### Decision: align everything to Hong Kong
-
-Since the account country is locked to HK, I made **tax residence + address + bank** all consistent with Hong Kong:
-
-- **Country**: Hong Kong (locked)
-- **Address**: A real Hong Kong address (e.g., the one registered with HSBC)
-- **Tax Residence**: Hong Kong
-- **Bank**: HSBC Hong Kong
-
-**The worst setup is**: "Country = HK + address = mainland China" — fields contradict each other, and tax review or 1099 delivery will break later.
-
-### Identity vs bank account: two separate concepts
-
-| Concept | Meaning | My case |
-|---|---|---|
-| **Tax residence** | Where you actually pay personal income tax | Mainland China |
-| **Lemon Squeezy account country** | Platform's tax identity for you | Hong Kong (locked) |
-| **Bank location** | Where the money lands | HSBC Hong Kong |
-
-Strict compliance wants all three aligned. If the account country is already locked, second-best: **at least keep the country and address consistent**.
-
-**Bank location ≠ tax residence** in principle — they're independent. But Lemon Squeezy doesn't distinguish that finely; it uses the account-level Country field.
-
-## Universal Checklist: Before configuring a new platform
-
-Based on this exercise, a reusable checklist:
-
-- [ ] **Pick the registration country carefully** — most platforms lock it, think your tax strategy through first
-- [ ] **Name consistency**: platform account name = tax form name = bank account holder, all three English spellings must match
-- [ ] **Address consistency**: Country / State / City / Street align with Tax Residence
-- [ ] **Foreign TIN**: 18-digit mainland ID, or HKID
-- [ ] **HSBC HK account format**: strip the branch code prefix and all hyphens
-- [ ] **Branch Code**: the first 3 digits of your account
-- [ ] **SWIFT**: `HSBCHKHHHKH`
-- [ ] **W-8BEN tax treaty**: if the platform is US-based and you're a China/HK resident, check this to reduce withholding tax
-- [ ] **Screenshot everything when done** — copy-paste for the next platform
-
-## Payout Mechanics
-
-Configuration is just the start — there's a threshold to cross:
-
-- **Minimum payout**: $50. Below that, no payment is sent
-- **Settlement cycle**: monthly by default, Pending state shows the expected payout date
-- **FX**: USD is automatically converted to HKD when depositing into HSBC HK; the rate is slightly worse than bank buy rates but acceptable
-
-My current Pending payout is $11.34 ($37.92 sales − $19.98 refunds − $6.60 fees), still short of $50. I need to sell more before it actually hits the bank.
-
-## Closing
-
-Cross-border payouts are a constant battle against information asymmetry for indie devs — every platform, every bank, every tax form has hidden rules. Docs are vague, support staff may not know either.
-
-Writing down every pitfall at least cuts setup time by half on the next platform. If anything changes later (actually hitting $50, refund issues, switching platforms), I'll update this post.]]></content:encoded>
-    </item>
-    <item>
       <title>iOS Proxy Client Pitfalls: Why Free Apps Failed and $2.99 Saved the Day</title>
       <link>https://bryantchen.cc/en/posts/ios-proxy-client-pitfalls</link>
       <guid isPermaLink="true">https://bryantchen.cc/en/posts/ios-proxy-client-pitfalls</guid>
@@ -1447,6 +1277,14 @@ A product spectacle isn&apos;t always something you can plan for, but if you don
       <content:encoded><![CDATA[Building products in the AI era has a sufficient but not necessary condition: from day one, you probably need to think about how to create a “product spectacle.”
 
 A product spectacle isn't always something you can plan for, but if you don't think about it from day one, it definitely won't exist. And if, after building a product, you feel it's hard to create that spectacle, it's very likely it won't succeed or go viral.]]></content:encoded>
+    </item>
+    <item>
+      <title>Seeing a friend’s project get reverse engineered and then open-sourced on GitHub…</title>
+      <link>https://bryantchen.cc/en/thoughts</link>
+      <guid isPermaLink="false">https://bryantchen.cc/en/thoughts/2026-04-07-ship-before-open</guid>
+      <pubDate>Tue, 07 Apr 2026 13:27:00 GMT</pubDate>
+      <description>Seeing a friend’s project get reverse engineered and then open-sourced on GitHub made me realize build in public has changed. You now have to ship with a relatively high level of completeness, market it, and sell it. Otherwise you’re in a passive position. Also, stay close to you...</description>
+      <content:encoded><![CDATA[Seeing a friend’s project get reverse engineered and then open-sourced on GitHub made me realize build in public has changed. You now have to ship with a relatively high level of completeness, market it, and sell it. Otherwise you’re in a passive position. Also, stay close to your real users and stay away from developers.]]></content:encoded>
     </item>
   </channel>
 </rss>
