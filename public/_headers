@@ -3,3 +3,16 @@
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-Robots-Tag: noai, noimageai
+
+/resume
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex, noai, noimageai
+  Cache-Control: private, no-store
+
+/resume/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex, noai, noimageai
+  Cache-Control: private, no-store
+
+/.well-known/resume.vault
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+  Cache-Control: public, max-age=300

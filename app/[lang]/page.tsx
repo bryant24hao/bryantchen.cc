@@ -34,7 +34,7 @@ export default async function Home({ params }: PageProps) {
       <div className="mb-10 overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-800">
         <Image
           src="/images/brand/blog-cover-hero-v1.png"
-          alt={lang === "zh" ? "陈正豪博客品牌封面" : "Bryant Chen blog brand cover"}
+          alt={lang === "zh" ? "Bryant Chen 博客品牌封面" : "Bryant Chen blog brand cover"}
           width={1500}
           height={900}
           sizes="(max-width: 767px) calc(100vw - 3rem), 672px"

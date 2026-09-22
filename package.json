@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "node scripts/generate-sitemap.mjs && node scripts/generate-rss.mjs && next build",
+    "encrypt-resume": "node scripts/encrypt-resume.mjs",
     "start": "next start",
     "lint": "next lint"
   },

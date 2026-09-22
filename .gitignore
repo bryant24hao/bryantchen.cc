@@ -31,6 +31,13 @@ yarn-error.log*
 # env files
 .env
 .env*.local
+.dev.vars
+
+# unpublished resume source (encrypted vault is committed)
+/private/
+
+# wrangler
+.wrangler/
 
 # vercel
 .vercel

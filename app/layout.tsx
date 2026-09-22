@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   },
   description: "Bryant Chen's personal website.",
   metadataBase: new URL("https://bryantchen.cc"),
+  // noai / noimageai are unofficial but honored by some image/AI scrapers.
+  // Googlebot ignores unknown tokens; search indexing is unchanged.
+  robots: "index, follow, noai, noimageai",
 };
 
 export default function RootLayout({
