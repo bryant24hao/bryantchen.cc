@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getDictionary, type Locale } from "@/lib/i18n";
-import { ThemePreview } from "@/components/theme-preview";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navKeys = ["thoughts", "posts", "talks", "projects", "about"] as const;
 
@@ -8,7 +8,7 @@ export function Nav({ lang }: { lang: Locale }) {
   const t = getDictionary(lang).nav;
 
   return (
-    <ThemePreview lang={lang}>
+    <nav className="site-nav" aria-label={lang === "zh" ? "主导航" : "Main navigation"}>
       <Link href={`/${lang}`} className="font-semibold tracking-tight">
         Bryant Chen
       </Link>
@@ -23,6 +23,7 @@ export function Nav({ lang }: { lang: Locale }) {
           </Link>
         ))}
       </div>
-    </ThemePreview>
+      <ThemeToggle lang={lang} />
+    </nav>
   );
 }

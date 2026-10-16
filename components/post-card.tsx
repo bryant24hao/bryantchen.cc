@@ -42,13 +42,7 @@ export function PostCard({
       )}
 
       <div className={showCover ? "min-w-0" : undefined}>
-        <div
-          className={
-            showCover
-              ? "flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4"
-              : "flex items-baseline justify-between gap-4"
-          }
-        >
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
           <h3 className="font-medium group-hover:underline underline-offset-2">
             {title}
           </h3>

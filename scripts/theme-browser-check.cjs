@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const base = process.env.THEME_PREVIEW_URL || 'http://127.0.0.1:3000';
-const output = path.resolve(process.env.THEME_EVIDENCE_DIR || '../theme-evidence');
+const output = path.resolve(process.env.THEME_EVIDENCE_DIR || '../final-theme-evidence');
 const KEY = 'bryant-reading-light';
 const report = { checks: [], screenshots: [], errors: [] };
 fs.mkdirSync(output, { recursive: true });
@@ -26,9 +26,6 @@ async function ready(page, url = '/zh') {
   await page.goto(base + url);
   await page.getByRole('switch').waitFor();
   await page.waitForFunction(() => !document.querySelector('[role="switch"]').disabled);
-}
-async function choose(page, concept) {
-  await page.locator(`input[value="${concept}"]`).check();
 }
 async function drag(page, dx, dy, pointerType = 'mouse') {
   const button = page.getByRole('switch');
@@ -66,18 +63,15 @@ async function drag(page, dx, dy, pointerType = 'mouse') {
     await page.reload(); await assertTheme(page, 'light');
     await page.emulateMedia({ colorScheme: 'light' }); await page.emulateMedia({ colorScheme: 'dark' });
     await assertTheme(page, 'light'); pass('Explicit choice persists through reload and overrides OS');
-    for (const concept of ['cord', 'bookmark', 'sunset']) {
-      await choose(page, concept); await assertTheme(page, 'light');
-      const button = page.getByRole('switch');
-      assert.equal(await button.getAttribute('aria-checked'), 'true');
-      assert.ok((await button.getAttribute('aria-label')).length);
-      await button.focus(); await page.keyboard.press('Space'); await assertTheme(page, 'dark');
-      await page.keyboard.press('Enter'); await assertTheme(page, 'light');
-      await button.click(); await assertTheme(page, 'dark');
-      await button.click(); await assertTheme(page, 'light');
-      pass(`${concept}: click, Space, Enter, shared state, switch semantics`);
-    }
-    await choose(page, 'cord');
+    assert.equal(await page.getByRole('switch').count(), 1);
+    assert.equal(await page.getByRole('radio').count(), 0);
+    assert.equal(await page.getByRole('switch').getAttribute('aria-checked'), 'true');
+    assert.equal(await page.getByRole('switch').getAttribute('aria-label'), '阅读灯');
+    await page.getByRole('switch').focus(); await page.keyboard.press('Space'); await assertTheme(page, 'dark');
+    await page.keyboard.press('Enter'); await assertTheme(page, 'light');
+    await page.getByRole('switch').click(); await assertTheme(page, 'dark');
+    await page.getByRole('switch').click(); await assertTheme(page, 'light');
+    pass('Only the cord remains; click, Space, Enter and localized switch semantics');
     await drag(page, 0, 34); await assertTheme(page, 'dark');
     await drag(page, 0, 12); await assertTheme(page, 'dark');
     await drag(page, 0, 34); await assertTheme(page, 'light');
@@ -87,12 +81,24 @@ async function drag(page, dx, dy, pointerType = 'mouse') {
     await page.keyboard.press('Escape'); await page.mouse.up(); await assertTheme(page, 'light');
     await button.click(); await assertTheme(page, 'dark'); await button.click();
     pass('Escape cancels cord gesture; next click still works');
-    await choose(page, 'sunset');
-    await drag(page, 30, 0); await assertTheme(page, 'dark');
-    await drag(page, -30, 0); await assertTheme(page, 'light');
-    await page.getByRole('switch').focus(); await page.keyboard.press('ArrowRight'); await assertTheme(page, 'dark');
-    await page.keyboard.press('ArrowLeft'); await assertTheme(page, 'light');
-    pass('Sunset drag and arrow-key alternatives work in both directions');
+    for (const width of [320, 390, 1280]) {
+      await page.setViewportSize({ width, height: 844 });
+      const box = await button.boundingBox();
+      await page.mouse.move(box.x + 24, box.y + 50); await page.mouse.down();
+      await page.mouse.move(box.x + 24, box.y + 150, { steps: 5 });
+      await page.waitForTimeout(80);
+      const overlap = await page.evaluate(() => {
+        const handle = document.querySelector('.reading-light-handle').getBoundingClientRect();
+        const hint = document.querySelector('.reading-light-hint').getBoundingClientRect();
+        return [...document.querySelectorAll('.site-nav a')].some(a => {
+          const r = a.getBoundingClientRect();
+          return [handle, hint].some(s => r.left < s.right && r.right > s.left && r.top < s.bottom && r.bottom > s.top);
+        });
+      });
+      assert.equal(overlap, false, `Pulled handle or hint covers navigation at ${width}px`);
+      await page.keyboard.press('Escape'); await page.mouse.up();
+    }
+    pass('Fully pulled handle and visible hint do not cover navigation on mobile or desktop');
     // One preference across tabs, including resetting to the system.
     const tab = await ctx.newPage(); await ready(tab, '/en');
     await tab.getByRole('switch').click(); await assertTheme(page, 'dark');
@@ -120,6 +126,21 @@ async function drag(page, dx, dy, pointerType = 'mouse') {
       }
       pass(`Both languages / all page templates at ${width}px: no overflow, 44px targets, no nav overlap`);
     }
+    await page.setViewportSize({ width: 390, height: 844 });
+    for (const lang of ['zh', 'en']) {
+      const posts = fs.readdirSync(path.join(__dirname, '..', 'content', lang, 'posts')).filter(file => /\.mdx?$/.test(file));
+      for (const file of posts) {
+        await ready(page, `/${lang}/posts/${file.replace(/\.mdx?$/, '')}`);
+        const width = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, viewport: innerWidth }));
+        assert.ok(width.scroll <= width.viewport, `Article overflow: ${lang}/${file}`);
+      }
+    }
+    pass('Every current article in both languages fits a 390px mobile viewport');
+    await ready(page, '/en?themePreview=bookmark');
+    assert.equal(await page.getByRole('switch').getAttribute('aria-label'), 'Reading light');
+    assert.equal(await page.locator('.reading-light-handle').count(), 1);
+    assert.equal(await page.getByRole('radio').count(), 0);
+    pass('Old preview query links resolve to the final cord with English label');
     await ready(page, '/en/projects');
     assert.equal(await page.locator('a a').count(), 0);
     assert.ok(await page.locator('main p a').count() > 0);
@@ -135,28 +156,22 @@ async function drag(page, dx, dy, pointerType = 'mouse') {
     for (const size of ['mobile', 'desktop']) {
       await page.setViewportSize(size === 'mobile' ? { width: 390, height: 844 } : { width: 1280, height: 900 });
       await ready(page, '/zh');
-      for (const concept of ['cord', 'bookmark', 'sunset']) {
-        await choose(page, concept);
-        for (const mode of ['light', 'dark']) {
-          if (await page.evaluate(() => document.documentElement.dataset.theme) !== mode) await page.getByRole('switch').click();
-          await assertTheme(page, mode); await page.mouse.move(0, 300); await page.getByRole('switch').blur();
-          const file = `${concept}-${mode}-${size}.png`;
-          await page.screenshot({ path: path.join(output, file) }); report.screenshots.push(file);
-        }
+      for (const mode of ['light', 'dark']) {
+        if (await page.evaluate(() => document.documentElement.dataset.theme) !== mode) await page.getByRole('switch').click();
+        await assertTheme(page, mode); await page.mouse.move(0, 300); await page.getByRole('switch').blur();
+        const file = `cord-${mode}-${size}.png`;
+        await page.screenshot({ path: path.join(output, file) }); report.screenshots.push(file);
       }
     }
-    pass('Captured all three concepts × both themes × desktop/mobile');
+    pass('Captured final cord in both themes on desktop and mobile');
     await ctx.close();
 
     const mobile = await context({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2, colorScheme: 'light', reducedMotion: 'reduce' });
     const touch = await mobile.newPage(); await ready(touch);
     await drag(touch, 0, 34, 'touch'); await assertTheme(touch, 'dark');
     await touch.getByRole('switch').tap(); await assertTheme(touch, 'light');
-    await choose(touch, 'sunset'); await drag(touch, 30, 0, 'touch'); await assertTheme(touch, 'dark');
-    await drag(touch, -30, 0, 'touch'); await assertTheme(touch, 'light');
-    await choose(touch, 'bookmark'); await touch.getByRole('switch').tap(); await assertTheme(touch, 'dark');
-    const motion = await touch.locator('.bookmark-paper').evaluate(el => getComputedStyle(el).transitionDuration);
-    assert.equal(motion, '0s'); pass('Touch tap/pull/slide and reduced-motion mode');
+    const motion = await touch.locator('.reading-light-handle').evaluate(el => getComputedStyle(el).transitionDuration);
+    assert.equal(motion, '0s'); pass('Touch tap/pull and reduced-motion mode');
     await mobile.close();
 
     for (const saved of [null, 'light', 'dark', 'invalid']) {
