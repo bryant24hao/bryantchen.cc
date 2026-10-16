@@ -28,9 +28,13 @@ python3 scripts/serve-theme-preview.py
 - `http://127.0.0.1:3000/zh?themePreview=sunset`
 - Use `/en` for English labels.
 
-This is loopback-only, so an iPhone cannot open it remotely. No account, tunnel,
-public deployment, or network-security changes were introduced. A pre-existing
-authenticated non-production deployment path was not established during this task.
+The local server is loopback-only. For phone review, the existing Cloudflare
+Pages GitHub integration publishes this feature branch at:
+
+https://feat-reading-light-theme.bryantchen-cc.pages.dev/zh
+
+Only the feature branch is pushed; main and production are unchanged. No new
+account, tunnel, permissions or network-security settings were introduced.
 
 ## Theme behavior
 
