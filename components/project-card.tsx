@@ -13,7 +13,16 @@ export function ProjectCard({ name, description, url, repo, stars, tags, status,
   const content = (
     <div className="py-4">
       <h3 className="font-medium">
-        {name}
+        {link ? (
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="after:absolute after:inset-0 after:rounded-lg"
+          >
+            {name}
+          </a>
+        ) : name}
         {link && (
           <span className="text-xs text-neutral-400 dark:text-neutral-500 ml-2 align-middle">
             &rarr;
@@ -30,7 +39,7 @@ export function ProjectCard({ name, description, url, repo, stars, tags, status,
           )}
         </div>
       )}
-      <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+      <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1 [&_a]:relative [&_a]:z-10">
         <RichText text={description[lang]} />
       </p>
       <div className="flex gap-2 mt-2">
@@ -48,14 +57,11 @@ export function ProjectCard({ name, description, url, repo, stars, tags, status,
 
   if (link) {
     return (
-      <a
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block hover:bg-neutral-50 dark:hover:bg-neutral-900 -mx-3 px-3 rounded-lg transition-colors"
+      <div
+        className="relative block hover:bg-neutral-50 dark:hover:bg-neutral-900 -mx-3 px-3 rounded-lg transition-colors"
       >
         {content}
-      </a>
+      </div>
     );
   }
 

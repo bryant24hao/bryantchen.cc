@@ -1,18 +1,18 @@
 import Link from "next/link";
 import { getDictionary, type Locale } from "@/lib/i18n";
+import { ThemePreview } from "@/components/theme-preview";
 
 const navKeys = ["thoughts", "posts", "talks", "projects", "about"] as const;
 
 export function Nav({ lang }: { lang: Locale }) {
   const t = getDictionary(lang).nav;
-  const otherLang = lang === "zh" ? "en" : "zh";
 
   return (
-    <nav className="flex items-center justify-between py-8">
+    <ThemePreview lang={lang}>
       <Link href={`/${lang}`} className="font-semibold tracking-tight">
         Bryant Chen
       </Link>
-      <div className="flex items-center gap-6 text-sm text-neutral-600 dark:text-neutral-400">
+      <div className="site-nav-links text-sm text-neutral-600 dark:text-neutral-400">
         {navKeys.map((key) => (
           <Link
             key={key}
@@ -23,6 +23,6 @@ export function Nav({ lang }: { lang: Locale }) {
           </Link>
         ))}
       </div>
-    </nav>
+    </ThemePreview>
   );
 }

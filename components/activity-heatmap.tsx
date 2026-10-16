@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import type { ActivityDay } from "@/lib/content";
 
 interface Props {
@@ -93,7 +93,7 @@ export function ActivityHeatmap({ data, locale }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Defer grid computation to client to avoid hydration mismatch
-  useState(() => { setMounted(true); });
+  useEffect(() => { setMounted(true); }, []);
 
   const weeks = useMemo(() => (mounted ? computeGrid(data) : null), [data, mounted]);
 

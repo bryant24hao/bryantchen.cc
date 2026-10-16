@@ -1,6 +1,25 @@
 @import "tailwindcss";
 
+/* Explicit choices override the OS; without JavaScript the system still works. */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) { @slot; }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme]), :root:not([data-theme]) *) { @slot; }
+  }
+}
+
 @theme {
+  --color-neutral-50: #faf8f3;
+  --color-neutral-100: #eeebe4;
+  --color-neutral-200: #dcd7ce;
+  --color-neutral-300: #c5beb2;
+  --color-neutral-400: #a69e91;
+  --color-neutral-500: #8d8579;
+  --color-neutral-600: #625c53;
+  --color-neutral-700: #49443d;
+  --color-neutral-800: #35322d;
+  --color-neutral-900: #282622;
+  --color-neutral-950: #201f1c;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "PingFang SC",
     "Noto Sans SC", "Microsoft YaHei", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
@@ -12,6 +31,7 @@
   --tw-prose-body: var(--color-neutral-800);
   --tw-prose-headings: var(--color-neutral-900);
   line-height: 1.75;
+  overflow-wrap: anywhere;
 }
 
 .prose h1 {
@@ -101,6 +121,9 @@
 }
 
 .prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
   width: 100%;
   border-collapse: collapse;
   margin-top: 1.5rem;
@@ -145,36 +168,212 @@
   margin-bottom: 2rem;
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  .prose {
+/* Explicit-theme prose surfaces. */
+.prose {
+  @variant dark {
     --tw-prose-body: var(--color-neutral-300);
     --tw-prose-headings: var(--color-neutral-100);
   }
-
-  .prose blockquote {
+}
+.prose blockquote {
+  @variant dark {
     border-left-color: var(--color-neutral-700);
     color: var(--color-neutral-400);
   }
-
-  .prose code:not(pre code) {
+}
+.prose code:not(pre code) {
+  @variant dark {
     background-color: var(--color-neutral-800);
   }
-
-  .prose pre {
+}
+.prose pre {
+  @variant dark {
     background-color: var(--color-neutral-900);
     border-color: var(--color-neutral-800);
   }
-
-  .prose thead {
+}
+.prose thead {
+  @variant dark {
     border-bottom-color: var(--color-neutral-700);
   }
-
-  .prose td {
+}
+.prose td {
+  @variant dark {
     border-bottom-color: var(--color-neutral-800);
   }
-
-  .prose hr {
+}
+.prose hr {
+  @variant dark {
     border-color: var(--color-neutral-800);
   }
+}
+
+/* Warm paper by day, warm charcoal by night. Images retain their own colors. */
+:root {
+  color-scheme: light;
+  --page: #f7f4ed;
+  --ink: #302d28;
+  --muted: #716a5f;
+  --lamp-fill: #4e473b;
+  --lamp-mark: #f7f4ed;
+  --color-white: #f7f4ed;
+  /* Small captions must remain readable on paper. */
+  --color-neutral-400: #756e63;
+  --color-neutral-500: #716a5f;
+  background-color: var(--page);
+}
+
+:root {
+  @variant dark {
+    color-scheme: dark;
+    --page: #201f1c;
+    --ink: #eeebe4;
+    --muted: #aaa295;
+    --lamp-fill: #bbb1a0;
+    --lamp-mark: #302d28;
+    --color-neutral-400: #b5ac9f;
+    --color-neutral-500: #aaa295;
+  }
+}
+
+body { background-color: var(--page); color: var(--ink); }
+::selection { background: var(--ink); color: var(--page); }
+
+.site-nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 32px 60px 32px 0;
+}
+.site-nav-links { display: flex; gap: 20px; }
+.site-nav-links a { display: inline-flex; align-items: center; min-height: 44px; }
+
+.reading-light { position: absolute; top: 0; right: 0; z-index: 10; }
+.reading-light-button {
+  position: relative;
+  display: block;
+  width: 48px;
+  height: 94px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.reading-light-button:disabled { visibility: hidden; }
+.reading-light-button[data-pulling] { cursor: grabbing; }
+.reading-light-button:focus-visible { outline: 2px solid var(--muted); outline-offset: 3px; border-radius: 0 0 10px 10px; }
+.reading-light-cord {
+  position: absolute;
+  left: 23.5px;
+  top: 0;
+  width: 1px;
+  height: calc(54px + var(--pull));
+  background: currentColor;
+  transform-origin: top;
+}
+.reading-light-handle {
+  position: absolute;
+  top: 52px;
+  left: 14px;
+  overflow: visible;
+  transform: translateY(var(--pull));
+  fill: var(--lamp-fill);
+  stroke: var(--lamp-fill);
+  stroke-width: 1;
+}
+.reading-light-mark { fill: none; stroke: var(--lamp-mark); stroke-linecap: round; }
+.reading-light-hint {
+  position: absolute;
+  top: 99px;
+  right: 0;
+  width: max-content;
+  padding: 5px 9px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 5px;
+  background: var(--page);
+  color: var(--muted);
+  font-size: 11px;
+  opacity: 0;
+  pointer-events: none;
+}
+.reading-light:focus-within .reading-light-hint { opacity: 1; }
+@media (hover: hover) {
+  .reading-light:hover .reading-light-hint { opacity: 1; }
+}
+@media (max-width: 639px) {
+  .site-nav { flex-wrap: wrap; gap: 14px; padding: 30px 0 12px; }
+  .site-nav > a { margin-right: 60px; min-height: 32px; display: flex; align-items: center; }
+  .site-nav-links { width: 100%; justify-content: space-between; gap: 8px; }
+  .reading-light-button { height: 68px; }
+  .reading-light-cord { height: calc(32px + var(--pull)); }
+  .reading-light-handle { top: 30px; }
+  .reading-light-hint { top: 66px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  body, .site-nav, main, footer, main *, footer * {
+    transition-property: color, background-color, border-color;
+    transition-duration: 240ms;
+    transition-timing-function: ease;
+  }
+  .reading-light-cord { transition: height 360ms cubic-bezier(.2, .8, .3, 1.15); }
+  .reading-light-handle { transition: transform 360ms cubic-bezier(.2, .8, .3, 1.15); }
+  .reading-light-button[data-pulling] .reading-light-cord,
+  .reading-light-button[data-pulling] .reading-light-handle { transition: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0s !important; animation-duration: 0s !important; }
+}
+
+/* Preview-only concept picker; remove after a direction is selected. */
+.theme-preview-picker {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+}
+.theme-preview-picker legend { padding: 0 6px; font-size: 10px; letter-spacing: .08em; color: var(--muted); }
+.theme-preview-picker label { flex: 1; position: relative; cursor: pointer; }
+.theme-preview-picker input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.theme-preview-picker span { display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 4px; font-size: 12px; color: var(--muted); }
+.theme-preview-picker input:checked + span { background: var(--ink); color: var(--page); }
+.theme-preview-picker input:focus-visible + span { outline: 2px solid var(--muted); outline-offset: 2px; }
+.theme-alternative-button { display: block; position: relative; width: 48px; height: 94px; border: 0; background: transparent; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.theme-alternative-button:disabled { visibility: hidden; }
+.theme-alternative-button:focus-visible { outline: 2px solid var(--muted); outline-offset: 3px; border-radius: 5px; }
+.bookmark-button { perspective: 250px; }
+.bookmark-paper { position: absolute; top: 0; left: 9px; width: 30px; height: 75px; transform-style: preserve-3d; }
+.bookmark-face { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 20px; gap: 7px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 88%, 0 100%); backface-visibility: hidden; background: #ddd4c2; color: #5b5140; font-family: Georgia, 'Songti SC', serif; font-size: 13px; }
+.bookmark-face i { width: 6px; height: 1px; background: currentColor; }
+.bookmark-night { transform: rotateY(180deg); background: #635c4e; color: #eee6d6; }
+[data-theme="dark"] .bookmark-paper { transform: rotateY(180deg); }
+.theme-sunset { top: 18px; right: -4px; }
+.sunset-button { width: 64px; height: 64px; touch-action: none; cursor: ew-resize; }
+.sunset-scene { position: absolute; inset: 8px 0; overflow: hidden; border-radius: 8px; }
+.sunset-orb { position: absolute; width: 13px; height: 13px; top: 9px; left: 11px; border: 1px solid var(--muted); border-radius: 50%; background: #b09152; transform: translate(calc(var(--sun-progress) * 28px), calc(var(--sun-progress) * 20px)); }
+.sunset-ground { position: absolute; top: 30px; bottom: 0; left: 4px; right: 4px; background: var(--page); }
+.sunset-horizon { position: absolute; top: 30px; left: 4px; right: 4px; height: 1px; background: var(--muted); }
+.sunset-star { position: absolute; top: 0; left: 20px; font-size: 21px; color: var(--muted); opacity: var(--sun-progress); }
+.theme-sunset .reading-light-hint { top: 76px; }
+@media (max-width: 639px) {
+  .theme-alternative-button { height: 68px; }
+  .bookmark-paper { height: 57px; }
+  .bookmark-face { padding-bottom: 13px; gap: 4px; }
+  .theme-sunset { top: 12px; }
+  .sunset-button { height: 52px; }
+  .theme-sunset .reading-light-hint { top: 54px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bookmark-paper { transition: transform 380ms ease-in-out; }
+  .sunset-orb { transition: transform 280ms ease; }
+  .sunset-star { transition: opacity 240ms ease; }
+  .sunset-button[data-dragging] .sunset-orb,
+  .sunset-button[data-dragging] .sunset-star { transition: none; }
 }
