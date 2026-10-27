@@ -564,8 +564,9 @@ html.theme-anim .pano *{transition:none!important}
 .amfig img{max-height:176px;width:auto;height:auto;max-width:100%}
 .slide[data-outline="form-skill"] .card{padding:16px 18px 12px}
 .amfig .cap{border-top:none;padding:6px 0 0;text-align:center}
+.rankpair{display:flex;gap:16px;align-items:flex-start;flex:none}
 .rankfig{width:max-content;max-width:100%}
-.rankfig img{height:520px;width:auto;max-width:none}
+.rankfig img{height:500px;width:auto;max-width:none}
 
 /* P42 model tiers */
 .mt{display:grid;grid-template-columns:150px 1.15fr 1.25fr 1.35fr;margin-top:6px;border-top:2px solid var(--ink)}
@@ -1038,15 +1039,21 @@ html[data-mode="dark"] .hud #mode .ico-sun{opacity:1;pointer-events:none}
 
 <section class="slide" data-outline="cw-rank" style="padding:48px 80px 28px;justify-content:flex-start">
   <div class="content">
-    <div class="figrow" style="align-items:center;gap:56px">
+    <div class="figrow" style="align-items:center;gap:36px">
       <div class="txt">
         <div class="kicker"><span class="idx">00</span><span class="rule"></span><span class="tag">前言 · 做过什么</span></div>
         <h2 class="title">最高在某地区，进入前 7 名</h2>
-        <div class="subtitle">ColorWander。这张是当时的名次。</div>
+        <div class="subtitle">ColorWander。一张是当时的名次，一张是评分。</div>
 </div>
-      <div class="fig rankfig">
-        <img src="assets/cw-rank-top7.jpg" alt="App Store 榜单，ColorWander 排在第 7">
-        <div class="cap">第 7 名是 ColorWander。</div>
+      <div class="rankpair">
+        <div class="fig rankfig">
+          <img src="assets/cw-rank-top7.jpg" alt="App Store 榜单，ColorWander 排在第 7">
+          <div class="cap">第 7 名是 ColorWander。</div>
+</div>
+        <div class="fig rankfig">
+          <img src="assets/cw-rating-4-9.jpg" alt="ColorWander 评分 4.9，356 个评分">
+          <div class="cap">4.9 分，356 个评分。</div>
+</div>
 </div>
 </div>
 </div>
