@@ -13,6 +13,14 @@
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex, noai, noimageai
   Cache-Control: private, no-store
 
+/talk/360-hackathon-2026-11-03-student
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex, noai, noimageai
+  Cache-Control: private, no-store
+
+/talk/360-hackathon-2026-11-03-student/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex, noai, noimageai
+  Cache-Control: private, max-age=3600
+
 /.well-known/resume.vault
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
   Cache-Control: public, max-age=300

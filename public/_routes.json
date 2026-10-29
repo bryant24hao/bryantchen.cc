@@ -1,5 +1,10 @@
 {
   "version": 1,
-  "include": ["/resume", "/resume/*"],
+  "include": [
+    "/resume",
+    "/resume/*",
+    "/talk/360-hackathon-2026-11-03-student",
+    "/talk/360-hackathon-2026-11-03-student/*"
+  ],
   "exclude": []
 }
