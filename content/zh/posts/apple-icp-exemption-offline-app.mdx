@@ -1,0 +1,108 @@
+---
+title: "离线 App 不备案也能上中国区：我申请 ICP 豁免的全过程（4 天搞定）"
+date: "2026-11-03T22:30:00"
+description: "离线 App 没有自建后端、没有账号系统时，如何向苹果申请中国大陆 ICP 备案例外，从 Contact Us 到声明信上传、批准与状态同步的完整记录。"
+tags: ["iOS", "App Store", "独立开发"]
+draft: false
+---
+
+我的一款离线 App 10 月 30 日过审，美区、台湾、日本都上架了，唯独中国大陆一直搜不到。在 App Store Connect 的 Pricing and Availability 里一看，中国大陆显示 **ICP Filing Number Missing**。
+
+![中国大陆显示 ICP Filing Number Missing](/images/posts/apple-icp-exemption-offline-app-01-availability.png)
+
+*图：Pricing and Availability 里，中国大陆状态为 ICP Filing Number Missing*
+
+我的 App 可以离线使用：没有自己的服务器，没有账号系统，健康数据只存在本地，付费只走 StoreKit。所以我没有去办 ICP 备案，而是向苹果申请了豁免。
+
+## 1. 先确认自己符合条件（10/30）
+
+我先把代码过了一遍，确认没有自建后端，也没有第三方统计或广告 SDK 在上传数据。地图和城市名用的是苹果自己的 Apple Maps 和逆地理编码。
+
+注意：只要接了自己的后端，或者 Firebase、AdMob、各类统计 SDK，基本就得老老实实备案，不然以后可能被下架。
+
+## 2. 通过 Contact Us 提交申请（10/30）
+
+路径是开发者网站的 Contact Us，选「有关 App 审核的其他疑问」，写清楚 App 名称、App ID 和 Team ID，再说明 App 为什么不需要联网服务（没有服务器、没有账号、数据存在本地等）。提交后会拿到一个案例号。
+
+![Contact Us 选取子主题](/images/posts/apple-icp-exemption-offline-app-02-contact-us-subtopics.png)
+
+*图：Contact Us → App 审核 → 选取「有关 App 审核的其他疑问」*
+
+![Contact Us 表单](/images/posts/apple-icp-exemption-offline-app-03-contact-us-form.png)
+
+*图：填写 Contact Us 表单（姓名与 Apple 账户已打码）*
+
+## 3. 苹果要求签一份声明信（11/3 上午）
+
+苹果中国开发者支持回信，开了一个新的案例号，要求提供一份签名的声明信，内容包括：
+
+- Team ID
+- 开发者法定姓名
+- App ID
+- 手写签名，以及用正楷写的姓名
+- 一段声明，表示自己承担相应的法律责任
+
+![顾问要求提供签名声明](/images/posts/apple-icp-exemption-offline-app-04-request-statement.png)
+
+*图：顾问来信，列出声明信需要包含的内容（Team ID、案例号已打码）*
+
+我写了中英双语版，个人开发者用中文签名就可以。我手边没有打印机，就直接在 iPhone 上用 PDF 的「标记」功能手写签名。姓名和日期可以直接打印在文件上，只有签名必须手写。
+
+## 4. 通过安全链接上传，再回复邮件（11/3 中午）
+
+苹果会从 `AppleSupport@email.apple.com` 另外发一封邮件，里面有上传文件的安全链接（30 天内有效）。先确认案例信息，再选择文件上传。
+
+![确认案例信息](/images/posts/apple-icp-exemption-offline-app-05-confirm-case.png)
+
+*图：上传前确认案例（姓名、案例 ID、联系人已打码；案例标题里的 App ID 已打码）*
+
+![选择要上传的声明 PDF](/images/posts/apple-icp-exemption-offline-app-06-upload-file.png)
+
+*图：选择签名后的声明 PDF（文件名中的 Team ID、页眉姓名已打码）*
+
+![上传成功](/images/posts/apple-icp-exemption-offline-app-07-upload-success.png)
+
+*图：文件上传成功（同样打码）*
+
+上传成功后，记得回复顾问的那封邮件，告诉她已经上传了。
+
+![回复顾问：已上传声明](/images/posts/apple-icp-exemption-offline-app-08-reply-uploaded.png)
+
+*图：回复 AppsCN_Support，说明已通过安全链接上传（邮箱、姓名、Team ID 已打码）*
+
+## 5. 批准（11/3 下午）
+
+同一天下午就收到了批准邮件。
+
+![ICP 豁免已批准](/images/posts/apple-icp-exemption-offline-app-09-approval-email.png)
+
+*图：顾问确认已批准 App ID 的 ICP 备案豁免（案例号已打码）*
+
+## 6. 等状态同步（11/3 傍晚）
+
+刚批准时后台还是显示 Missing。
+
+![批准后仍显示 Missing](/images/posts/apple-icp-exemption-offline-app-10-still-missing.png)
+
+*图：批准后不久，Pricing and Availability 仍显示 ICP Filing Number Missing*
+
+我问了顾问，她说状态已经更新，同步最长要 24 小时；结果没过多久后台就显示通过了。商店里能搜到会比后台再晚一些。
+
+![顾问：同步最长 24 小时](/images/posts/apple-icp-exemption-offline-app-11-sync-24h.png)
+
+*图：顾问回复：ICP 状态已更新，同步最长可能需要 24 小时（案例号已打码）*
+
+## 几个坑
+
+- 后台的「China Mainland ICP Filing Number → Set Up」不要填，那是给有真实备案号的 App 用的。
+
+![不要点 Set Up](/images/posts/apple-icp-exemption-offline-app-12-setup-do-not-fill.png)
+
+*图：有真实备案号才填这里；申请豁免的不要点 Set Up*
+
+- 网上有人建议先取消勾选中国大陆再重新勾选，不需要这么做，等它同步就行。
+- 不要重复提交工单，有问题直接在原来的案例里追问。
+
+## 小结
+
+整个流程从提交申请到批准用了 4 天，顾问回复都很快。希望对同样做离线 App 的朋友有帮助。
