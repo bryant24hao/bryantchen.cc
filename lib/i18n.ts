@@ -51,6 +51,12 @@ const dictionaries = {
         "C++、TypeScript、Python、Swift、Shell。硬件用 ESP32，AI 用 Claude。",
       contact: "联系方式",
       stars: "GitHub stars",
+      pixelTree: {
+        shake: "摇一摇这棵像素树",
+        still: "一棵随季节变化的像素树",
+        credit: "灵感来自 FeralUI Pixel Play",
+        season: { spring: "春", summer: "夏", autumn: "秋", winter: "冬" },
+      },
       chromeExtensions: "Chrome 插件",
       projectStatus: {
         earning: "有收入",
@@ -132,6 +138,17 @@ const dictionaries = {
         "C++, TypeScript, Python, Swift, Shell. ESP32 for hardware. Claude for AI.",
       contact: "Get in touch",
       stars: "stars on GitHub",
+      pixelTree: {
+        shake: "Shake the pixel tree",
+        still: "A pixel tree that changes with the season",
+        credit: "Inspired by FeralUI Pixel Play",
+        season: {
+          spring: "Spring",
+          summer: "Summer",
+          autumn: "Autumn",
+          winter: "Winter",
+        },
+      },
       chromeExtensions: "Chrome Extensions",
       projectStatus: {
         earning: "Earning",
