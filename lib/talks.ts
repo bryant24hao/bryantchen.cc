@@ -11,6 +11,23 @@ export interface TalkEntry {
 
 export const talks: TalkEntry[] = [
   {
+    slug: "personal-agent-2026-10-22",
+    date: "2026-10-22",
+    url: "/talk/personal-agent-2026-10-22/",
+    title: {
+      zh: "写代码交给 Coding Agent，其他事交给 Personal Agent",
+      en: "Leave coding to a Coding Agent, everything else to a Personal Agent",
+    },
+    venue: {
+      zh: "一个独立开发者的 20+ 助理实践",
+      en: "One indie developer's practice with 20+ assistants",
+    },
+    description: {
+      zh: "Coding Agent 负责写产品，Personal Agent 负责运营、数据、反馈、内容、日程和生活杂事。一个主控加二十多个专职 bot，一个 bot 只做一件事。",
+      en: "A Coding Agent writes the product. A Personal Agent handles ops, data, feedback, content, calendar, and everyday life. One lead, twenty-plus specialist bots, each doing one job.",
+    },
+  },
+  {
     slug: "ms-interns-2026-07-17",
     date: "2026-07-17",
     url: "/talk/ms-interns-2026-07-17/",
