@@ -7,6 +7,7 @@ import { ActivityHeatmap } from "@/components/activity-heatmap";
 import { VisitorCounter } from "@/components/visitor-counter";
 import { ProjectStatusBadge } from "@/components/project-status";
 import { RichText } from "@/components/rich-text";
+import { SeasonalPixelTree } from "@/components/seasonal-pixel-tree";
 import type { ProjectStatus } from "@/lib/projects";
 
 interface PageProps {
@@ -117,6 +118,24 @@ export default async function AboutPage({ params }: PageProps) {
           {t.intro2Post}
         </p>
       </div>
+
+      <figure className="mt-10 flex flex-wrap items-end gap-x-4 gap-y-2">
+        <SeasonalPixelTree
+          shakeLabel={t.pixelTree.shake}
+          stillLabel={t.pixelTree.still}
+          seasons={t.pixelTree.season}
+        />
+        <figcaption>
+          <a
+            href="https://feralui.dev/pixel-play"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-neutral-400 underline underline-offset-2 hover:decoration-2 dark:text-neutral-500"
+          >
+            {t.pixelTree.credit}
+          </a>
+        </figcaption>
+      </figure>
 
       <ActivityHeatmap data={activityData} locale={lang} />
 
