@@ -19,7 +19,7 @@ async function assertTheme(page, expected) {
     scheme: getComputedStyle(document.documentElement).colorScheme,
   }));
   assert.equal(result.theme, expected);
-  assert.equal(result.bg, expected === 'dark' ? 'rgb(32, 31, 28)' : 'rgb(247, 244, 237)');
+  assert.equal(result.bg, expected === 'dark' ? 'rgb(32, 31, 28)' : 'rgb(255, 255, 255)');
   assert.equal(result.scheme, expected);
 }
 async function ready(page, url = '/zh') {

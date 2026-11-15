@@ -208,16 +208,16 @@
   }
 }
 
-/* Warm paper by day, warm charcoal by night. Images retain their own colors. */
+/* Pure white by day, warm charcoal by night. Images retain their own colors. */
 :root {
   color-scheme: light;
-  --page: #f7f4ed;
+  --page: #ffffff;
   --ink: #302d28;
   --muted: #716a5f;
   --lamp-fill: #4e473b;
-  --lamp-mark: #f7f4ed;
-  --color-white: #f7f4ed;
-  /* Small captions must remain readable on paper. */
+  --lamp-mark: #ffffff;
+  --color-white: #ffffff;
+  /* Small captions must remain readable on the light background. */
   --color-neutral-400: #756e63;
   --color-neutral-500: #716a5f;
   background-color: var(--page);

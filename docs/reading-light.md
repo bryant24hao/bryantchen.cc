@@ -8,7 +8,7 @@ removed. Old preview URLs still open the site with the reading-light control.
 
 - Click, tap, Space or Enter toggles day/night. Pull down 24px to toggle once;
   shorter pulls return without switching. Escape or pointer cancellation cancels.
-- Day uses warm paper `#f7f4ed`; night uses warm charcoal `#201f1c`.
+- Day uses pure white `#ffffff`; night uses warm charcoal `#201f1c`.
 - First visit follows the OS. An explicit choice is saved in `bryant-reading-light`
   localStorage and synchronized between tabs. Removing that key resumes OS mode.
 - The inline head initializer selects the theme before body paint. Invalid or
