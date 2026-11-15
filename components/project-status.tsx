@@ -7,6 +7,8 @@ const DOT_COLORS: Record<ProjectStatus, string> = {
   building: "bg-amber-500",
   paused: "bg-neutral-400",
   archived: "bg-neutral-300 dark:bg-neutral-600",
+  demo: "bg-neutral-400",
+  openSource: "bg-violet-500",
 };
 
 interface Props {

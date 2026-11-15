@@ -5,9 +5,9 @@ import { SoloCounter } from "@/components/solo-counter";
 import { AgeProgress } from "@/components/age-progress";
 import { ActivityHeatmap } from "@/components/activity-heatmap";
 import { VisitorCounter } from "@/components/visitor-counter";
-import { ProjectStatusBadge } from "@/components/project-status";
+import { ProjectCard } from "@/components/project-card";
 import { RichText } from "@/components/rich-text";
-import type { ProjectStatus } from "@/lib/projects";
+import { projects } from "@/lib/projects";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -19,17 +19,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = getDictionary(lang).about;
   return { title: t.title };
 }
-
-const chromeExtensions = [
-  {
-    name: "拾刻 (Shike)",
-    href: "https://chromewebstore.google.com/detail/agoanicnncfnnilkkihplfkpkpkhdbac?utm_source=bryantchen.cc",
-  },
-  {
-    name: "Tab Cleanup",
-    href: "https://chromewebstore.google.com/detail/tab-cleanup/eefjpecolahbfgfdpcjpfbeejoplfgnp?utm_source=bryantchen.cc",
-  },
-];
 
 const openSourceItems = [
   { name: "macos-calendar-assistant-skill", href: "https://github.com/bryant24hao/macos-calendar-assistant-skill" },
@@ -49,49 +38,16 @@ export default async function AboutPage({ params }: PageProps) {
   const { lang: langParam } = await params;
   const lang = langParam as Locale;
   const t = getDictionary(lang).about;
-  const projDesc = getDictionary(lang).projectDescriptions;
   const osDesc = getDictionary(lang).openSourceDescriptions;
-  const extDesc = getDictionary(lang).chromeExtensionDescriptions;
 
   const activityData = getActivityData(lang);
 
-  const buildingProjects: Array<{
-    name: string;
-    desc: string;
-    extra?: string;
-    href?: string;
-    status: ProjectStatus;
-  }> = [
-    {
-      name: "ColorWander",
-      desc: projDesc.ColorWander,
-      href: "https://apps.apple.com/app/id6765602238",
-      status: "earning",
-    },
-    {
-      name: "ClawPuter",
-      desc: projDesc.ClawPuter,
-      extra: `145 ${t.stars}`,
-      href: "https://github.com/bryant24hao/ClawPuter",
-      status: "live",
-    },
-    {
-      name: "AIBT",
-      desc: projDesc.AIBT,
-      href: "https://aibtapp.com",
-      status: "earning",
-    },
-    {
-      name: "MemoryX",
-      desc: projDesc.MemoryX,
-      status: "paused",
-    },
-    {
-      name: "Curioso",
-      desc: projDesc.Curioso,
-      status: "paused",
-    },
-  ];
+  const buildingProjects = projects.filter((project) =>
+    project.categories.some((category) => ["app", "web", "hardware"].includes(category))
+  );
+  const chromeExtensions = projects.filter((project) =>
+    project.categories.includes("extension") && !project.categories.includes("app")
+  );
 
   return (
     <div>
@@ -122,35 +78,9 @@ export default async function AboutPage({ params }: PageProps) {
 
       <section className="mt-10">
         <h2 className="font-semibold mb-4">{t.building}</h2>
-        <div className="space-y-4">
+        <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
           {buildingProjects.map((project) => (
-            <div key={project.name}>
-              <h3 className="font-medium">
-                {project.href ? (
-                  <a
-                    href={project.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline underline-offset-2 hover:decoration-2"
-                  >
-                    {project.name}
-                  </a>
-                ) : (
-                  project.name
-                )}
-              </h3>
-              <div className="flex items-center gap-3 mt-1">
-                <ProjectStatusBadge status={project.status} lang={lang} />
-                {project.extra && (
-                  <span className="text-xs text-neutral-400 dark:text-neutral-500">
-                    {project.extra}
-                  </span>
-                )}
-              </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-                <RichText text={project.desc} />
-              </p>
-            </div>
+            <ProjectCard key={project.name} lang={lang} {...project} />
           ))}
         </div>
       </section>
@@ -161,7 +91,7 @@ export default async function AboutPage({ params }: PageProps) {
           {chromeExtensions.map((item) => (
             <li key={item.name} className="text-sm">
               <a
-                href={item.href}
+                href={item.url || item.repo}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium underline underline-offset-2 hover:decoration-2"
@@ -170,7 +100,7 @@ export default async function AboutPage({ params }: PageProps) {
               </a>
               <span className="text-neutral-500">
                 {" "}
-                — {extDesc[item.name as keyof typeof extDesc]}
+                — <RichText text={item.description[lang]} />
               </span>
             </li>
           ))}
@@ -192,7 +122,7 @@ export default async function AboutPage({ params }: PageProps) {
               </a>
               <span className="text-neutral-500">
                 {" "}
-                — {osDesc[item.name as keyof typeof osDesc]}
+                — {projects.find((project) => project.name === item.name)?.description[lang] ?? osDesc[item.name as keyof typeof osDesc]}
               </span>
             </li>
           ))}

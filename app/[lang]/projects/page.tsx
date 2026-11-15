@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { projects } from "@/lib/projects";
-import { ProjectCard } from "@/components/project-card";
+import { ProjectList } from "@/components/project-list";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -21,11 +21,7 @@ export default async function ProjectsPage({ params }: PageProps) {
   return (
     <div>
       <h1 className="text-2xl font-semibold tracking-tight mb-6">{t.title}</h1>
-      <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
-        {projects.map((project) => (
-          <ProjectCard key={project.name} lang={lang} {...project} />
-        ))}
-      </div>
+      <ProjectList projects={projects} lang={lang} />
     </div>
   );
 }

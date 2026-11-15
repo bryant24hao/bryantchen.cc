@@ -32,6 +32,18 @@ const dictionaries = {
     },
     projects: {
       title: "项目",
+      filterLabel: "按项目类型筛选",
+      all: "全部",
+      resultCount: "个项目",
+      singleResult: "个项目",
+      present: "至今",
+      categories: {
+        app: "App",
+        web: "Web",
+        extension: "插件",
+        hardware: "硬件",
+        skill: "Skill",
+      },
     },
     evolution: {
       title: "进化史",
@@ -40,10 +52,10 @@ const dictionaries = {
     about: {
       title: "关于",
       intro1:
-        "我是 Bryant — 做了 7 年产品经理，现在全职做独立开发。主力项目是 ColorWander，一个把照片变成色卡的 iOS app。也造 AI 伙伴和开发者工具，一个住在桌面上，一个住在口袋里。",
-      intro2Pre: "前",
+        "我是 Bryant — 做了 7 年产品经理，现在全职做独立开发。",
+      intro2Pre: "2026 年 2 月开始联合 AI 独立做自己想做的东西。2022—2026 年，在 ",
       intro2Link: "Motiff",
-      intro2Post: "（AI 设计工具）产品经理。2026 年出来独立做自己想做的东西。",
+      intro2Post: "（AI 设计工具）做产品经理；2020—2022 年，在猿辅导·斑马 AI 学做少儿产品；2019—2020 年，在网易做少儿编程产品。",
       building: "在做的事",
       openSource: "开源项目",
       tech: "技术栈",
@@ -56,8 +68,10 @@ const dictionaries = {
         earning: "有收入",
         live: "已上线",
         building: "开发中",
-        paused: "搁置中",
+        paused: "暂停迭代",
         archived: "已归档",
+        demo: "Demo 未推进",
+        openSource: "已开源",
       },
     },
     projectDescriptions: {
@@ -112,6 +126,18 @@ const dictionaries = {
     },
     projects: {
       title: "Projects",
+      filterLabel: "Filter projects by type",
+      all: "All",
+      resultCount: "projects",
+      singleResult: "project",
+      present: "present",
+      categories: {
+        app: "App",
+        web: "Web",
+        extension: "Extensions",
+        hardware: "Hardware",
+        skill: "Skill",
+      },
     },
     evolution: {
       title: "Evolution",
@@ -120,11 +146,11 @@ const dictionaries = {
     about: {
       title: "About",
       intro1:
-        "I'm Bryant — 7 years in product, now shipping solo. My main project is ColorWander, an iOS app that turns any photo into a color card. I also build AI companions — one lives on your desktop, the other lives in your pocket.",
-      intro2Pre: "Former PM at ",
+        "I'm Bryant — after 7 years as a product manager, I'm now a full-time indie developer.",
+      intro2Pre: "Since February 2026, I've been building independently with AI, making things I want to see in the world. From 2022 to 2026, I was a product manager at ",
       intro2Link: "Motiff",
       intro2Post:
-        " (AI design tools). Went independent in 2026 to build things I care about.",
+        " (AI design tools). From 2020 to 2022, I worked on children's learning products at Yuanfudao's Zebra AI. From 2019 to 2020, I worked on coding products for children at NetEase.",
       building: "What I'm building",
       openSource: "Open source",
       tech: "Tech I work with",
@@ -139,6 +165,8 @@ const dictionaries = {
         building: "Building",
         paused: "Paused",
         archived: "Archived",
+        demo: "Demo · Not pursued",
+        openSource: "Open source",
       },
     },
     projectDescriptions: {
