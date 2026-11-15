@@ -30,6 +30,8 @@ const openSourceItems = [
 const contacts = [
   { label: "GitHub", href: "https://github.com/bryant24hao", text: "bryant24hao" },
   { label: "X", href: "https://x.com/bryantChenzh", text: "@bryantChenzh" },
+  { label: "Threads", href: "https://www.threads.com/@bryantchenzhenghao", text: "@bryantchenzhenghao" },
+  { label: "即刻", labelEn: "Jike", href: "https://okjk.co/SNgVMs", text: "即刻主页", textEn: "Jike profile" },
   { label: "LinkedIn", href: "https://linkedin.com/in/zhenghao-chen-4ab16a16b/", text: "Zhenghao Chen" },
   { label: "Email", href: "mailto:chenzhenghao94@gmail.com", text: "chenzhenghao94@gmail.com" },
 ];
@@ -141,14 +143,14 @@ export default async function AboutPage({ params }: PageProps) {
         <ul className="space-y-1.5 text-sm">
           {contacts.map((c) => (
             <li key={c.label} className="flex gap-2">
-              <span className="text-neutral-400 w-16 shrink-0">{c.label}</span>
+              <span className="text-neutral-400 w-16 shrink-0">{lang === "en" ? c.labelEn ?? c.label : c.label}</span>
               <a
                 href={c.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline underline-offset-2 hover:decoration-2"
               >
-                {c.text}
+                {lang === "en" ? c.textEn ?? c.text : c.text}
               </a>
             </li>
           ))}
