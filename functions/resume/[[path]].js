@@ -77,6 +77,12 @@ export async function onRequest(context) {
 function fileKey(params, pathname) {
   const captured = Array.isArray(params.path) ? params.path.join("/") : params.path || "";
   let rel = (captured || pathname.replace(/^\/resume\/?/, "")).replace(/^\/+/, "");
+  // Vault entries use original filenames; request paths may be percent-encoded.
+  try {
+    rel = decodeURIComponent(rel);
+  } catch {
+    return "";
+  }
   if (!rel || rel.endsWith("/")) rel = `${rel}index.html`.replace(/^\/+/, "");
   if (rel.includes("..") || rel.startsWith("/")) return "";
   return rel;
