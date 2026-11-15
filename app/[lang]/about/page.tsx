@@ -6,6 +6,7 @@ import { AgeProgress } from "@/components/age-progress";
 import { ActivityHeatmap } from "@/components/activity-heatmap";
 import { VisitorCounter } from "@/components/visitor-counter";
 import { ProjectCard } from "@/components/project-card";
+import { ProfileIntro } from "@/components/profile-intro";
 import { RichText } from "@/components/rich-text";
 import { projects } from "@/lib/projects";
 
@@ -32,6 +33,8 @@ const contacts = [
   { label: "X", href: "https://x.com/bryantChenzh", text: "@bryantChenzh" },
   { label: "Threads", href: "https://www.threads.com/@bryantchenzhenghao", text: "@bryantchenzhenghao" },
   { label: "即刻", labelEn: "Jike", href: "https://okjk.co/SNgVMs", text: "即刻主页", textEn: "Jike profile" },
+  { label: "小红书", labelEn: "RedNote", href: "https://xhslink.cn/o/A5tKRFp4pmS", text: "小红书主页", textEn: "RedNote profile" },
+  { label: "公众号", labelEn: "WeChat", text: "豪大说" },
   { label: "LinkedIn", href: "https://linkedin.com/in/zhenghao-chen-4ab16a16b/", text: "Zhenghao Chen" },
   { label: "Email", href: "mailto:chenzhenghao94@gmail.com", text: "chenzhenghao94@gmail.com" },
 ];
@@ -61,19 +64,7 @@ export default async function AboutPage({ params }: PageProps) {
       </div>
 
       <div className="mt-6 space-y-4 text-neutral-700 dark:text-neutral-300 leading-relaxed">
-        <p>{t.intro1}</p>
-        <p>
-          {t.intro2Pre}
-          <a
-            href="https://motiff.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:decoration-2"
-          >
-            {t.intro2Link}
-          </a>
-          {t.intro2Post}
-        </p>
+        <ProfileIntro lang={lang} />
       </div>
 
       <ActivityHeatmap data={activityData} locale={lang} />
@@ -144,14 +135,18 @@ export default async function AboutPage({ params }: PageProps) {
           {contacts.map((c) => (
             <li key={c.label} className="flex gap-2">
               <span className="text-neutral-400 w-16 shrink-0">{lang === "en" ? c.labelEn ?? c.label : c.label}</span>
-              <a
-                href={c.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline underline-offset-2 hover:decoration-2"
-              >
-                {lang === "en" ? c.textEn ?? c.text : c.text}
-              </a>
+              {c.href ? (
+                <a
+                  href={c.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 hover:decoration-2"
+                >
+                  {lang === "en" ? c.textEn ?? c.text : c.text}
+                </a>
+              ) : (
+                <span>{lang === "en" ? c.textEn ?? c.text : c.text}</span>
+              )}
             </li>
           ))}
           <li className="flex gap-2">

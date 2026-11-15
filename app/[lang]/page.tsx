@@ -4,6 +4,7 @@ import { getThoughts, getPosts } from "@/lib/content";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { ThoughtCard } from "@/components/thought-card";
 import { PostCard } from "@/components/post-card";
+import { ProfileIntro } from "@/components/profile-intro";
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
@@ -43,10 +44,8 @@ export default async function Home({ params }: PageProps) {
         />
       </div>
 
-      <section className="mb-12">
-        <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
-          {t.intro}
-        </p>
+      <section className="mb-12 space-y-4 text-neutral-600 dark:text-neutral-400 leading-relaxed">
+        <ProfileIntro lang={lang} />
       </section>
 
       {compiledThoughts.length > 0 && (

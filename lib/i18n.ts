@@ -12,8 +12,6 @@ const dictionaries = {
       about: "关于",
     },
     home: {
-      intro:
-        "我是 Bryant — 做了 7 年产品经理，现在全职做独立开发。主力项目是 ColorWander，一个把照片变成色卡的 iOS app。也造 AI 伙伴和开发者工具，一个住在桌面上，一个住在口袋里。",
       recentThoughts: "最近的碎碎念",
       recentPosts: "最近的文章",
       all: "全部",
@@ -106,8 +104,6 @@ const dictionaries = {
       about: "about",
     },
     home: {
-      intro:
-        "Hi, I'm Bryant — PM turned builder. 7 years in product, now shipping solo. My main project is ColorWander, an iOS app that turns any photo into a color card. I also build AI companions and developer tools — one lives on your desktop, the other lives in your pocket.",
       recentThoughts: "Recent thoughts",
       recentPosts: "Recent posts",
       all: "all",
