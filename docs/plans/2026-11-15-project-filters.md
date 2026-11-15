@@ -41,6 +41,8 @@ The user supplied an updated introduction and career history: seven years in pro
 
 ## Validation
 
+Additional user-approved About copy for the technical stack: CTO 是 Claude Code，偶尔用 Codex（生图、computer use、杂事），Grok Bot 是管家。 Replace the programming-language list and translate this division of responsibilities into English.
+
 - Production build and TypeScript checks passed.
 - Browser checks: all five filters plus All; App 4, Web 1, Extension 3, Hardware 2, Skill 3, total 12. MemoryX appears under both App and Extension.
 - Chinese and English projects fit 320, 390 and 1280px; filter targets are 44px high. Both About pages fit 320px and contain no nested links.

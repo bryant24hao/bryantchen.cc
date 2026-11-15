@@ -60,7 +60,7 @@ const dictionaries = {
       openSource: "开源项目",
       tech: "技术栈",
       techDetail:
-        "C++、TypeScript、Python、Swift、Shell。硬件用 ESP32，AI 用 Claude。",
+        "CTO 是 Claude Code，偶尔用 Codex（生图、computer use、杂事），Grok Bot 是管家。",
       contact: "联系方式",
       stars: "GitHub stars",
       chromeExtensions: "Chrome 插件",
@@ -155,7 +155,7 @@ const dictionaries = {
       openSource: "Open source",
       tech: "Tech I work with",
       techDetail:
-        "C++, TypeScript, Python, Swift, Shell. ESP32 for hardware. Claude for AI.",
+        "Claude Code is my CTO. I occasionally use Codex for image generation, computer use and miscellaneous tasks. Grok Bot is my butler.",
       contact: "Get in touch",
       stars: "stars on GitHub",
       chromeExtensions: "Chrome Extensions",
